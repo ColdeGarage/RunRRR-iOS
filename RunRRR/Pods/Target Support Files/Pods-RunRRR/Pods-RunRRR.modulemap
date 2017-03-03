@@ -1,0 +1,6 @@
+framework module Pods_RunRRR {
+  umbrella header "Pods-RunRRR-umbrella.h"
+
+  export *
+  module * { export * }
+}
