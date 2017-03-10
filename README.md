@@ -45,3 +45,13 @@
 	* about
 	* SOS
 	* Logout
+
+### The Packages usage
+
+1. Alamofire
+	* Get method:
+
+		```swift
+			
+		```
+	

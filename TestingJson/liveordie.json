@@ -1,0 +1,7 @@
+{
+	"uid":12345678, 
+	"object":"member", 
+	"action":"liveordie", 
+	"brea":1234,
+	"status":true
+}

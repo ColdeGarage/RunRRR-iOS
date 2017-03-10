@@ -14,10 +14,28 @@ import CoreData
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-
-
+    let googleMapsApiKey = "AIzaSyBQm2DRa2pvl38adM3A8jkSRvG-0nsJT_8"
+    
+    let localUserDefault = UserDefaults.standard
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        GMSServices.provideAPIKey(googleMapsApiKey)
+        // get your storyboard
+        let isLogin = localUserDefault.bool(forKey: "RunRRR_Login")
+        if(isLogin){    //If user has login, go to map directly
+            let storyboard = UIStoryboard(name: "Maps", bundle: nil)
+            let rootController = storyboard.instantiateViewController(withIdentifier: "MapsViewController")
+            if let window = self.window {
+                window.rootViewController = rootController
+            }
+        }else{          //If not, go to login page
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            let rootController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
+            if let window = self.window {
+                window.rootViewController = rootController
+            }
+        }
         return true
     }
 

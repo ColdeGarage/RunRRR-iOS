@@ -1,0 +1,11 @@
+{
+	"uid":12345678, 
+	"object":"member", 
+	"action":"read", 
+	"brea":1234,
+	"name":"Jacky",
+	"money":10000,
+	"status":true,
+	"position_e":121.11111,
+	"position_n":23.555555
+}

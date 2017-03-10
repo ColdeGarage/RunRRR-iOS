@@ -1,0 +1,7 @@
+{
+	"uid":12345678, 
+	"object":"member", 
+	"action":"update", 
+	"brea":1234,
+	"valid_area":true
+}
