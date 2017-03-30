@@ -10,6 +10,9 @@ import UIKit
 import GoogleMaps
 import Alamofire
 import SwiftyJSON
+import SWXMLHash
+
+
 
 class MapsViewController: UIViewController {
 
@@ -33,6 +36,8 @@ class MapsViewController: UIViewController {
         pointSqr.layer.masksToBounds = true
         pointSqr.layer.cornerRadius = 8.0
         getMapsBountry(map: mainMaps)
+        getMissionLocations(map: mainMaps)
+        getPoints(pointSqr: pointSqr)
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,37 +47,78 @@ class MapsViewController: UIViewController {
     
 
     func getMapsBountry(map: GMSMapView){
-        Alamofire.request("file:///Users/jackyhuang/RunRRProject/RunRRR/TestingJson/boundary.json").responseJSON { response in
+        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/mapBoundary.xml").responseData { response in
             //print(response.request)  // original URL request
             //print(response.response) // HTTP URL response
             //print(response.data)     // server data
-            //print(response.result)   // result of response serialization
+            //print(response.result.value)   // result of response serialization
             
-            switch response.result {
+            switch response.result{
+            case .success(let value):
+                let boundaryXML = SWXMLHash.parse(value)
+                let boundaryArray = boundaryXML["kml"]["Document"]["Folder"]["Placemark"]["Polygon"]["outerBoundaryIs"]["LinearRing"]["coordinates"].element?.text
+                var trimmingBoundaryArray = boundaryArray?.replacingOccurrences(of: "\n", with: "")
+                trimmingBoundaryArray = trimmingBoundaryArray?.trimmingCharacters(in: .whitespacesAndNewlines)
+                trimmingBoundaryArray = trimmingBoundaryArray?.replacingOccurrences(of: " ", with: "")
+                //print(trimmingBoundaryArray)
+                let boundaryForGoogleMaps = trimmingBoundaryArray?.components(separatedBy: ",0")
+                //print(boundaryForGoogleMaps)
+                
+                let path = GMSMutablePath()     //Create an path obj and braw a polygon
+                
+                for item in boundaryForGoogleMaps!{
+                    if !item.isEmpty{
+                        let boundaryLocation = item.components(separatedBy: ",")
+                        path.add(CLLocationCoordinate2D(latitude: Double(boundaryLocation[1])!, longitude: Double(boundaryLocation[0])!))
+                    }
+                }
+                
+                let endPoint = boundaryForGoogleMaps![0].components(separatedBy: ",")
+                path.add(CLLocationCoordinate2D(latitude: Double(endPoint[1])!, longitude: Double(endPoint[0])!))
+                
+                let polygon = GMSPolyline(path: path)
+                polygon.map = map   //Put the polygon on the map
+                
+            case .failure(let error):
+                print(error)
+            }
+           
+            }
+    }
+    func getPoints(pointSqr:UILabel){
+        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/read.json").responseJSON{ response in
+            switch response.result{
                 case .success(let value):
                     let jsonData = JSON(value)
-                    let valid = jsonData["brea"].int
-                    
-                    if (valid == 1){
-                        let dataX = jsonData["boundary"]["x"].arrayValue
-                        let dataY = jsonData["boundary"]["y"].arrayValue
-                    
-                        let path = GMSMutablePath()     //Create an path obj and braw a polygon
-                
-                        for i in 0...dataX.count-1{
-                            path.add(CLLocationCoordinate2D(latitude: dataY[i].doubleValue, longitude: dataX[i].doubleValue))
-                        }
-                
-                        path.add(CLLocationCoordinate2D(latitude: dataY[0].doubleValue, longitude: dataX[0].doubleValue))
-                        let polygon = GMSPolyline(path: path)
-                        polygon.map = map   //Put the polygon on the map
-                    }
-                    else{
-                        print("Boundary drawing is fail, please check your network")
-                    }
-                
+                    let point = jsonData["payload"]["objects"]["score"].stringValue
+                    pointSqr.text = point
                 case .failure(let error):
                     print(error)
+            }
+        }
+    }
+    
+    func getMissionLocations(map:GMSMapView){
+        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/missionLocation.json").responseJSON{ response in
+            switch response.result{
+            
+            case .success(let value):
+                let missionJson = JSON(value)
+                let missionObjects = missionJson["payload"]["objects"].arrayValue
+                
+                
+                for item in missionObjects{
+                    let locations = item["location"].stringValue
+                    let title = item["title"].stringValue
+                    var missionLocation = locations.components(separatedBy: ",")
+                    
+                    let position = CLLocationCoordinate2D(latitude: Double(missionLocation[1])!, longitude: Double(missionLocation[0])!)
+                    let marker = GMSMarker(position:position)
+                    marker.title = title
+                    marker.map = map
+                }
+            case .failure(let error):
+                print(error)
             }
         }
     }
@@ -84,6 +130,7 @@ class MapsViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
+     timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: selector(self.updateCounting), userInfo: nil, repeats: true)
     */
 
 }

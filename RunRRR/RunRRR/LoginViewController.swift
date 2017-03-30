@@ -65,15 +65,15 @@ class LoginViewController: UIViewController {
     }
     
     private func userLogin(account: String, password: String) -> Void{
-        /*let loginURL="file:///Users/jackyhuang/Desktop/login.json"
-         let loginInfo : [String:Any] = ["email":account, "password":password]*/
+        /*let loginURL="file:///Users/jackyhuang/Desktop/login.json"*/
+        let loginInfo : [String:Any] = ["email":account, "password":password]
         
         var isLogin: Bool = false  //Check login state.
         let LocalUserDefault = UserDefaults.standard
-        Alamofire.request("file:///Users/jackyhuang/RunRRProject/RunRRR/TestingJson/login.json").responseJSON{ response in
+        Alamofire.request("http://192.168.0.2:8081/api/v1/member/login", method: .post, parameters: loginInfo).responseJSON{ response in
             if ((response.result.value) != nil) {
                 let userInfoJson = JSON(response.result.value!)
-                if(userInfoJson["correct"].boolValue){
+                if(!userInfoJson["correct"].boolValue){
                     isLogin = true
                     let userUID = userInfoJson["uid"].int
                     LocalUserDefault.set(isLogin, forKey: "RunRRR_Login")

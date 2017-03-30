@@ -7,6 +7,7 @@ target 'RunRRR' do
   pod 'GoogleMaps'
   pod 'Alamofire'
   pod 'SwiftyJSON'
+  pod 'SWXMLHash'
   # Pods for RunRRR
 
 end

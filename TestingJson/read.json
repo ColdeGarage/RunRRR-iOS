@@ -2,10 +2,19 @@
 	"uid":12345678, 
 	"object":"member", 
 	"action":"read", 
-	"brea":1234,
-	"name":"Jacky",
-	"money":10000,
-	"status":true,
-	"position_e":121.11111,
-	"position_n":23.555555
+	"brea":0,
+	"payload":
+	{
+		"type":"Objects",
+		"objects":
+		{
+			"name":"Yi-Chun",
+			"uid":12345678,
+			"money":81000,
+			"status":true,
+			"position_e":120.991607,
+			"position_n":24.793880,
+			"score":110
+		}
+	}
 }
