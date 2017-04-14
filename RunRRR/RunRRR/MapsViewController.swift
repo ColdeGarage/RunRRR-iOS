@@ -47,7 +47,7 @@ class MapsViewController: UIViewController {
     
 
     func getMapsBountry(map: GMSMapView){
-        Alamofire.request("file:///Users/jackyhuang/RunRRProject/RunRRR/TestingJson/mapBoundary.xml").responseData { response in
+        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/mapBoundary.xml").responseData { response in
             //print(response.request)  // original URL request
             //print(response.response) // HTTP URL response
             //print(response.data)     // server data
@@ -86,7 +86,7 @@ class MapsViewController: UIViewController {
             }
     }
     func getPoints(pointSqr:UILabel){
-        Alamofire.request("file:///Users/jackyhuang/RunRRProject/RunRRR/TestingJson/read.json").responseJSON{ response in
+        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/read.json").responseJSON{ response in
             switch response.result{
                 case .success(let value):
                     let jsonData = JSON(value)
@@ -99,7 +99,7 @@ class MapsViewController: UIViewController {
     }
     
     func getMissionLocations(map:GMSMapView){
-        Alamofire.request("file:///Users/jackyhuang/RunRRProject/RunRRR/TestingJson/missionLocation.json").responseJSON{ response in
+        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/missionLocation.json").responseJSON{ response in
             switch response.result{
             
             case .success(let value):
@@ -108,14 +108,17 @@ class MapsViewController: UIViewController {
                 
                 
                 for item in missionObjects{
-                    let locations = item["location"].stringValue
-                    let title = item["title"].stringValue
-                    var missionLocation = locations.components(separatedBy: ",")
                     
-                    let position = CLLocationCoordinate2D(latitude: Double(missionLocation[1])!, longitude: Double(missionLocation[0])!)
-                    let marker = GMSMarker(position:position)
-                    marker.title = title
-                    marker.map = map
+                    let locationE = item["location_e"].doubleValue
+                    let locationN = item["location_n"].doubleValue
+                    let title = item["title"].stringValue
+                    
+                    if locationE != 0 && locationN != 0 {
+                        let position = CLLocationCoordinate2D(latitude: locationN, longitude: locationE)
+                        let marker = GMSMarker(position:position)
+                        marker.title = title
+                        marker.map = map
+                    }
                 }
             case .failure(let error):
                 print(error)
