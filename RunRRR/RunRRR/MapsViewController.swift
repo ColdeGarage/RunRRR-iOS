@@ -47,7 +47,7 @@ class MapsViewController: UIViewController {
     
 
     func getMapsBountry(map: GMSMapView){
-        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/mapBoundary.xml").responseData { response in
+        Alamofire.request("file:///Users/jackyhuang/RunRRProject/RunRRR/TestingJson/mapBoundary.xml").responseData { response in
             //print(response.request)  // original URL request
             //print(response.response) // HTTP URL response
             //print(response.data)     // server data
@@ -86,7 +86,7 @@ class MapsViewController: UIViewController {
             }
     }
     func getPoints(pointSqr:UILabel){
-        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/read.json").responseJSON{ response in
+        Alamofire.request("file:///Users/jackyhuang/RunRRProject/RunRRR/TestingJson/read.json").responseJSON{ response in
             switch response.result{
                 case .success(let value):
                     let jsonData = JSON(value)
@@ -99,7 +99,7 @@ class MapsViewController: UIViewController {
     }
     
     func getMissionLocations(map:GMSMapView){
-        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/missionLocation.json").responseJSON{ response in
+        Alamofire.request("file:///Users/jackyhuang/RunRRProject/RunRRR/TestingJson/missionLocation.json").responseJSON{ response in
             switch response.result{
             
             case .success(let value):
