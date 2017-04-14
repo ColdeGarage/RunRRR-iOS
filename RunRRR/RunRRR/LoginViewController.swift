@@ -70,17 +70,19 @@ class LoginViewController: UIViewController {
         
         var isLogin: Bool = false  //Check login state.
         let LocalUserDefault = UserDefaults.standard
-        Alamofire.request("http://192.168.0.2:8081/api/v1/member/login", method: .post, parameters: loginInfo).responseJSON{ response in
+        Alamofire.request("http://coldegarage.tech:8081/api/v1/member/login", method: .post, parameters: loginInfo).responseJSON{ response in
             if ((response.result.value) != nil) {
                 let userInfoJson = JSON(response.result.value!)
-                if(!userInfoJson["correct"].boolValue){
+                if(!userInfoJson["payload"]["correct"].boolValue){
                     isLogin = true
                     let userUID = userInfoJson["uid"].int
+                    print(userInfoJson)
                     LocalUserDefault.set(isLogin, forKey: "RunRRR_Login")
                     LocalUserDefault.set(userUID, forKey: "RunRRR_UID")
                     LocalUserDefault.synchronize()
                     let login = UIStoryboard(name: "Maps", bundle: nil).instantiateViewController(withIdentifier: "MapsViewController") as! MapsViewController
                     self.present(login, animated: true)
+                    
                 }else{
                     isLogin = false
                     LocalUserDefault.set(isLogin, forKey: "RunRRR_Login")

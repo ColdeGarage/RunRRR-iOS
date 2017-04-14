@@ -24,14 +24,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // get your storyboard
         let isLogin = localUserDefault.bool(forKey: "RunRRR_Login")
         if(isLogin){    //If user has login, go to map directly
-            let storyboard = UIStoryboard(name: "Maps", bundle: nil)
-            let rootController = storyboard.instantiateViewController(withIdentifier: "MapsViewController")
+            let storyboard = UIStoryboard(name: "More", bundle: nil)
+            let rootController = storyboard.instantiateViewController(withIdentifier: "MoreNavigationViewController")
             if let window = self.window {
                 window.rootViewController = rootController
             }
         }else{          //If not, go to login page
-            let storyboard = UIStoryboard(name: "Login", bundle: nil)
-            let rootController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
+            let storyboard = UIStoryboard(name: "More", bundle: nil)
+            let rootController = storyboard.instantiateViewController(withIdentifier: "MoreNavigationViewController")
             if let window = self.window {
                 window.rootViewController = rootController
             }

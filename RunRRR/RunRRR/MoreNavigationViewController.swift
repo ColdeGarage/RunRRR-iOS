@@ -1,14 +1,14 @@
 //
-//  MissionViewController.swift
+//  MoreNavigationViewController.swift
 //  RunRRR
 //
-//  Created by Jacky Huang on 2017/3/20.
+//  Created by Jacky Huang on 2017/4/10.
 //  Copyright © 2017年 EEECamp. All rights reserved.
 //
 
 import UIKit
 
-class MissionViewController: UIViewController {
+class MoreNavigationViewController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
