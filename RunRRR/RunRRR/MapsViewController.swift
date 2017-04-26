@@ -11,18 +11,27 @@ import GoogleMaps
 import Alamofire
 import SwiftyJSON
 import SWXMLHash
+import CoreLocation
 
 
 
-class MapsViewController: UIViewController {
+
+class MapsViewController: UIViewController, GMSMapViewDelegate{
 
     @IBOutlet weak var mainMaps: GMSMapView!
     @IBOutlet weak var pointSqr: UILabel!
+    let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+    let manager = CLLocationManager()
+    var currentLocatoin : CLLocation!
+    var uploadCurrentLocationTimer = Timer()
+    //let networkQuality = Reach()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         let camera = GMSCameraPosition.camera(withLatitude: 24.794589, longitude: 120.993393, zoom: 15.0)
         //let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
+        
         mainMaps.camera = camera
         // Do any additional setup after loading the view.
         
@@ -31,13 +40,21 @@ class MapsViewController: UIViewController {
         
         // Enable the myLocationButton
         mainMaps.settings.zoomGestures = true
-        pointSqr.text! = "0"
+        pointSqr.text! = "10"
         pointSqr.backgroundColor = UIColor(red:250/255, green:250/255, blue:250/255, alpha:1.0)
         pointSqr.layer.masksToBounds = true
         pointSqr.layer.cornerRadius = 8.0
         getMapsBountry(map: mainMaps)
         getMissionLocations(map: mainMaps)
         getPoints(pointSqr: pointSqr)
+        
+        //current location
+        manager.delegate = self as? CLLocationManagerDelegate
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.requestAlwaysAuthorization()
+        manager.startUpdatingLocation()
+        //uploadCurrentLocation(manager: self.manager)
+        scheduledUploadCurrentLocationTimer()
     }
 
     override func didReceiveMemoryWarning() {
@@ -47,7 +64,7 @@ class MapsViewController: UIViewController {
     
 
     func getMapsBountry(map: GMSMapView){
-        Alamofire.request("file:///Users/jackyhuang/RunRRProject/RunRRR/TestingJson/mapBoundary.xml").responseData { response in
+        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/mapBoundary.xml").responseData { response in
             //print(response.request)  // original URL request
             //print(response.response) // HTTP URL response
             //print(response.data)     // server data
@@ -86,12 +103,14 @@ class MapsViewController: UIViewController {
             }
     }
     func getPoints(pointSqr:UILabel){
-        Alamofire.request("file:///Users/jackyhuang/RunRRProject/RunRRR/TestingJson/read.json").responseJSON{ response in
+        let getPointsPara = ["operator_uid":self.userID,"uid":self.userID]
+        
+        Alamofire.request("http://coldegarage.tech:8081/api/v1/member/read", method: .get, parameters: getPointsPara).responseJSON{ response in
             switch response.result{
                 case .success(let value):
                     let jsonData = JSON(value)
-                    let point = jsonData["payload"]["objects"]["score"].stringValue
-                    pointSqr.text = point
+                    let score = jsonData["payload"]["objects"]["score"].intValue.description
+                    pointSqr.text = score
                 case .failure(let error):
                     print(error)
             }
@@ -99,7 +118,9 @@ class MapsViewController: UIViewController {
     }
     
     func getMissionLocations(map:GMSMapView){
-        Alamofire.request("file:///Users/jackyhuang/RunRRProject/RunRRR/TestingJson/missionLocation.json").responseJSON{ response in
+        let missionPara = ["operator_uid":self.userID]
+        Alamofire.request("http://coldegarage.tech:8081/api/v1/mission/read", method: .get, parameters:missionPara
+            ).responseJSON{ response in
             switch response.result{
             
             case .success(let value):
@@ -108,29 +129,63 @@ class MapsViewController: UIViewController {
                 
                 
                 for item in missionObjects{
-                    let locations = item["location"].stringValue
+                    let locationE = item["location_e"].doubleValue
+                    let locationN = item["location_n"].doubleValue
                     let title = item["title"].stringValue
-                    var missionLocation = locations.components(separatedBy: ",")
                     
-                    let position = CLLocationCoordinate2D(latitude: Double(missionLocation[1])!, longitude: Double(missionLocation[0])!)
-                    let marker = GMSMarker(position:position)
-                    marker.title = title
-                    marker.map = map
+                    if locationE != 0 && locationN != 0 {
+                        let position = CLLocationCoordinate2D(latitude: locationN, longitude: locationE)
+                        let marker = GMSMarker(position:position)
+                        marker.title = title
+                        marker.map = map
+                    }
                 }
             case .failure(let error):
                 print(error)
             }
         }
     }
-    /*
+    
+    
+    func scheduledUploadCurrentLocationTimer(){
+        uploadCurrentLocationTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(MapsViewController.uploadCurrentLocation), userInfo: self.manager, repeats: true)
+    }
+    func uploadCurrentLocation(){
+        let currentLocation = self.manager.location!
+        let currentLocationLatitude = currentLocation.coordinate.latitude
+        let currentLocationLongitude = currentLocation.coordinate.longitude
+        //print(currentLocationLatitude)
+        //print(currentLocationLongitude)
+        //print(self.userID)
+        //print(networkQuality.connectionStatus())
+        
+        let currentLocationPara : [String:Any] = ["operator_uid":self.userID,"uid":self.userID, "position_e":currentLocationLongitude, "position_n":currentLocationLatitude]
+        Alamofire.request("http://coldegarage.tech:8081/api/v1/member/update", method: .put, parameters: currentLocationPara).responseJSON{ response in
+            print(response.timeline)
+            switch response.result{
+                
+            case .success(let value):
+                let memberUpdateInfo = JSON(value)
+                let brea = memberUpdateInfo["brea"].intValue
+                if brea != 0 {
+                    print("Something wrong")
+                }
+            case .failure(let error):
+                print(error)
+            }
+        }
+
+    }
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+    //override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
-    }
-     timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: selector(self.updateCounting), userInfo: nil, repeats: true)
-    */
+    //}
 
 }
+ 
+
+

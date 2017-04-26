@@ -16,7 +16,8 @@
                             "clue": 8,
                             "class": 0,
                             "score": 20,
-                            "location" : "120.9922978,24.7953436"
+                            "location_e" : 120.9922978,
+                            "location_n" : 24.7953436
                         },
                         {
                             "mid": 15,
@@ -28,7 +29,8 @@
                             "clue": 10,
                             "class": 1,
                             "score": 10,
-                            "location" : "120.9933978,24.7953436"
+                            "location_e" : 0,
+                            "location_n" : 0
                         }
         ]
   }

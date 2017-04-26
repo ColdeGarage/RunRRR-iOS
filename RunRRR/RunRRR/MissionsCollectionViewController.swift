@@ -33,7 +33,7 @@ import SwiftyJSON
             collectionView?.addSubview(refreshControl)
         }
         // Configure Refresh Control
-        refreshControl.addTarget(self, action: #selector(loadMissions), for: .valueChanged)
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         setupMenuBar()
         loadMissions()
     }
@@ -106,24 +106,10 @@ import SwiftyJSON
                     guard let missionItem = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,price:price,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN) else{
                         fatalError("Unable to load missionItem")
                     }
-                    /*
-                     if (type == "MAIN"){
-                     self.mainMissionList += [missionItem]
-                     }
-                     else if (type == "SUB"){
-                     self.subMissionList += [missionItem]
-                     }
-                     else{
-                     self.urgMissionList += [missionItem]
-                     }
-                     */
                     self.missionShowList += [missionItem]
                     
                     
                 }
-                //self.missionShowList = self.urgMissionList + self.mainMissionList + self.subMissionList
-                //print(self.missionShowList)
-                
             case .failure(let error):
                 print(error)
                 
@@ -175,13 +161,6 @@ import SwiftyJSON
                             }
                         }
                     }
-                    /*
-                     var sub = 0
-                     for idx in idxSet{
-                     let index = idx - sub
-                     self.missionShowList.remove(at: index)
-                     sub += 1
-                     }*/
                     self.missionShowList = self.missionShowList
                         .enumerated()
                         .filter {!idxToRemove.contains($0.offset)}
@@ -210,6 +189,7 @@ import SwiftyJSON
         view.addConstraintWithFormat(format: "V:|-0-[v0(50)]|", views: menuBar)
     }
     func refreshData(){
+        self.loadMissions()
         refreshControl.endRefreshing()
     }
 }
@@ -256,7 +236,7 @@ import SwiftyJSON
     }()
     func setupView(){
         addSubview(missionPriorityThumbnail)
-//        addSubview(seperateCell)
+        //addSubview(seperateCell)
         addSubview(missionName)
         addSubview(missionTiming)
         addSubview(missionStatus)
@@ -266,7 +246,7 @@ import SwiftyJSON
         addConstraintWithFormat(format: "V:|[v0]-0-[v1(50)]|", views: missionTiming, missionStatus)
         //Horizonal
         addConstraintWithFormat(format: "H:|[v0(80)]-0-[v1]-0-[v2(50)]|", views: missionPriorityThumbnail, missionName, missionTiming)
-//        addConstraintWithFormat(format: "H:|[v0]|", views: seperateCell)
+        //addConstraintWithFormat(format: "H:|[v0]|", views: seperateCell)
         addConstraint(NSLayoutConstraint(item: missionStatus, attribute: .left, relatedBy: .equal, toItem: missionName, attribute: .right, multiplier: 1, constant: 0))
         addConstraintWithFormat(format: "H:[v0(50)]", views: missionStatus)
         
