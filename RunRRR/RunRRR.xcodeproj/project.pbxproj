@@ -13,6 +13,7 @@
 		435E24881E9B3D820097D8EC /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435E24871E9B3D820097D8EC /* MoreViewController.swift */; };
 		435E248A1E9B3DC20097D8EC /* LogoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435E24891E9B3DC20097D8EC /* LogoutViewController.swift */; };
 		435E248E1E9BA9090097D8EC /* MoreNavigationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435E248D1E9BA9090097D8EC /* MoreNavigationViewController.swift */; };
+		436576331EACBE9300A4A617 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436576321EACBE9300A4A617 /* ItemDetailView.swift */; };
 		436862871E98F32600965A44 /* Items_Clues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436862861E98F32600965A44 /* Items_Clues.swift */; };
 		43738C861E93A63600C696CE /* MissionsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43738C851E93A63600C696CE /* MissionsCollectionViewController.swift */; };
 		439E956E1E8CEE1A0070B3CB /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439E956D1E8CEE1A0070B3CB /* Login.storyboard */; };
@@ -42,6 +43,7 @@
 		435E24871E9B3D820097D8EC /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
 		435E24891E9B3DC20097D8EC /* LogoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutViewController.swift; sourceTree = "<group>"; };
 		435E248D1E9BA9090097D8EC /* MoreNavigationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreNavigationViewController.swift; sourceTree = "<group>"; };
+		436576321EACBE9300A4A617 /* ItemDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
 		436862861E98F32600965A44 /* Items_Clues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Items_Clues.swift; sourceTree = "<group>"; };
 		43738C851E93A63600C696CE /* MissionsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MissionsCollectionViewController.swift; sourceTree = "<group>"; };
 		439E956D1E8CEE1A0070B3CB /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 		7F3E9CBE1E6920AB00A17814 /* RunRRR */ = {
 			isa = PBXGroup;
 			children = (
+				436576321EACBE9300A4A617 /* ItemDetailView.swift */,
 				4344DB4C1E9625AB00755920 /* MenuBar.swift */,
 				7F3E9CBF1E6920AB00A17814 /* AppDelegate.swift */,
 				435E248C1E9B4FF70097D8EC /* Data */,
@@ -291,6 +294,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				436576331EACBE9300A4A617 /* ItemDetailView.swift in Sources */,
 				7F3E9CC21E6920AB00A17814 /* ViewController.swift in Sources */,
 				7F3E9CC81E6920AB00A17814 /* RunRRR.xcdatamodeld in Sources */,
 				435E24861E9B33430097D8EC /* missionsData.swift in Sources */,
