@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -9,12 +9,30 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Missions View Controller-->
+        <scene sceneID="cLN-Pd-LDz">
+            <objects>
+                <viewController storyboardIdentifier="MissionsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="NjA-dh-13W" customClass="MissionsViewController" customModule="RunRRR" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="pfD-zc-kVn"/>
+                        <viewControllerLayoutGuide type="bottom" id="jel-Vu-mQx"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="409-aH-eoR">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="8P5-BH-Fvp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1913" y="-860"/>
+        </scene>
         <!--Missions Collection View Controller-->
         <scene sceneID="mur-KT-ea2">
             <objects>
-                <collectionViewController storyboardIdentifier="MissionsCollectionViewController" id="bnw-Ad-1Hd" customClass="MissionsCollectionViewController" customModule="RunRRR" customModuleProvider="target" sceneMemberID="viewController">
-                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="Fmj-vt-das">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                <collectionViewController storyboardIdentifier="MissionsCollectionViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bnw-Ad-1Hd" customClass="MissionsCollectionViewController" customModule="RunRRR" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="Fmj-vt-das">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="FPs-Sk-XLf">
@@ -25,7 +43,7 @@
                         </collectionViewFlowLayout>
                         <cells>
                             <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="missionsCell" id="Oiz-qI-08o" customClass="MissionsCell" customModule="RunRRR" customModuleProvider="target">
-                                <rect key="frame" x="3" y="0.0" width="369" height="86"/>
+                                <rect key="frame" x="22.666666666666668" y="0.0" width="369" height="86"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="369" height="86"/>

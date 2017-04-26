@@ -1,8 +1,8 @@
 //
-//  Missons.swift
+//  MissionsViewController.swift
 //  RunRRR
 //
-//  Created by Jacky Huang on 2017/4/4.
+//  Created by Jacky Huang on 2017/4/26.
 //  Copyright © 2017年 EEECamp. All rights reserved.
 //
 
@@ -10,40 +10,49 @@ import UIKit
 import Alamofire
 import SwiftyJSON
 
-@IBDesignable class MissionsCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
+class MissionsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+    
     var missionShowList = [MissionsData]()
     var completeMissionList = [MissionsData]()
     private let refreshControl = UIRefreshControl()
     
+    lazy var missionCollectionView : UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = UIColor.white
+        cv.delegate = self
+        cv.dataSource = self
+        return cv
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView?.register(MissionsCell.self, forCellWithReuseIdentifier: "missionsCell")
-        collectionView?.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
+        view.addSubview(missionCollectionView)
+        view.addConstraintWithFormat(format: "H:|[v0]|", views: missionCollectionView)
+        view.addConstraintWithFormat(format: "V:|[v0]|", views: missionCollectionView)
+        // Do any additional setup after loading the view.
+        missionCollectionView.register(MissionsCell.self, forCellWithReuseIdentifier: "missionsCell")
+        missionCollectionView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
         if #available(iOS 10.0, *){
-            collectionView?.refreshControl = refreshControl
+            missionCollectionView.refreshControl = refreshControl
         } else{
-            collectionView?.addSubview(refreshControl)
+            missionCollectionView.addSubview(refreshControl)
         }
         // Configure Refresh Control
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         setupMenuBar()
         loadMissions()
     }
-    
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
+
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return missionShowList.count
     }
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "missionsCell", for: indexPath)
             as! MissionsCell
         
@@ -71,6 +80,7 @@ import SwiftyJSON
             cell.missionStatus.backgroundColor = UIColor.brown
         }
         return cell
+
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
@@ -81,7 +91,6 @@ import SwiftyJSON
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width, height: 80)
     }
-    //Mark : Model start here
     func loadMissions(){
         Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/missionRead.json").responseJSON{ response in
             switch response.result{
@@ -172,102 +181,33 @@ import SwiftyJSON
                     print(error)
                 }
                 self.missionShowList += self.completeMissionList
-                self.collectionView?.reloadData()
+                self.missionCollectionView.reloadData()
             }
             
         }
         
+    }
+    func refreshData(){
+        self.loadMissions()
+        refreshControl.endRefreshing()
     }
     func setupMenuBar(){
         let menuBar : MenuBar = {
             let mb = MenuBar()
             return mb
         }()
-        collectionView?.addSubview(menuBar)
-        collectionView?.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
-        collectionView?.addConstraintWithFormat(format: "V:|-10-[v0(58)]|", views: menuBar)
+        view.addSubview(menuBar)
+        view.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
+        view.addConstraintWithFormat(format: "V:|-20-[v0(58)]|", views: menuBar)
     }
-    func refreshData(){
-        self.loadMissions()
-        refreshControl.endRefreshing()
-    }
-}
+    /*
+    // MARK: - Navigation
 
+    // In a storyboard-based application, you will often want to do a little preparation before navigation
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        // Get the new view controller using segue.destinationViewController.
+        // Pass the selected object to the new view controller.
+    }
+    */
 
-@IBDesignable class MissionsCell: UICollectionViewCell{
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupView()
-    }
-    let missionPriorityThumbnail: UILabel = {
-        let priorityLabel = UILabel()
-        priorityLabel.text = "主"
-        priorityLabel.textAlignment = NSTextAlignment(rawValue: 1)!
-        priorityLabel.layer.borderWidth = CGFloat(2)
-        priorityLabel.layer.borderColor = UIColor.black.cgColor
-        priorityLabel.layer.cornerRadius = 0
-        return priorityLabel
-    }()
-    let seperateCell: UIView = {
-        let view = UIView()
-        view.backgroundColor = UIColor.blue
-        return view
-    }()
-    let missionName: UILabel = {
-        let name = UILabel()
-        name.text = "Example Mission"
-        name.layer.borderColor = UIColor.black.cgColor
-        name.layer.borderWidth = CGFloat(1)
-        name.textAlignment = NSTextAlignment(rawValue: 1)!
-        return name
-    }()
-    let missionTiming: UILabel = {
-        let time = UILabel()
-        time.text = "23:59"
-        time.layer.borderWidth = CGFloat(1)
-        return time
-    }()
-    let missionStatus: UIImageView = {
-        let status = UIImageView()
-        status.backgroundColor = UIColor.green
-        status.layer.borderWidth = CGFloat(1)
-        return status
-    }()
-    func setupView(){
-        addSubview(missionPriorityThumbnail)
-        //addSubview(seperateCell)
-        addSubview(missionName)
-        addSubview(missionTiming)
-        addSubview(missionStatus)
-        //Vertical
-        addConstraintWithFormat(format: "V:|[v0]|", views: missionPriorityThumbnail)
-        addConstraintWithFormat(format: "V:|[v0]|", views: missionName)
-        addConstraintWithFormat(format: "V:|[v0]-0-[v1(50)]|", views: missionTiming, missionStatus)
-        //Horizonal
-        addConstraintWithFormat(format: "H:|[v0(80)]-0-[v1]-0-[v2(50)]|", views: missionPriorityThumbnail, missionName, missionTiming)
-        //addConstraintWithFormat(format: "H:|[v0]|", views: seperateCell)
-        addConstraint(NSLayoutConstraint(item: missionStatus, attribute: .left, relatedBy: .equal, toItem: missionName, attribute: .right, multiplier: 1, constant: 0))
-        addConstraintWithFormat(format: "H:[v0(50)]", views: missionStatus)
-        
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-}
-
-extension UIView{
-    func addConstraintWithFormat(format: String, views:UIView...){
-        var viewsDictionary = [String: UIView]()
-        for(index, view) in views.enumerated(){
-            let key = "v\(index)"
-            view.translatesAutoresizingMaskIntoConstraints = false
-            viewsDictionary[key] = view
-        }
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
-    }
-    
-    
 }
