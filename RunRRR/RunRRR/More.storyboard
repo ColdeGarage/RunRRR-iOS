@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="bRd-5E-JYo">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="bRd-5E-JYo">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -14,7 +14,7 @@
         <!--More View Controller-->
         <scene sceneID="kcn-oF-k8b">
             <objects>
-                <viewController storyboardIdentifier="MoreViewController" title="More" wantsFullScreenLayout="YES" id="g3t-Zk-9wD" userLabel="More View Controller" customClass="MoreViewController" customModule="RunRRR" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MoreViewController" title="More" wantsFullScreenLayout="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="g3t-Zk-9wD" userLabel="More View Controller" customClass="MoreViewController" customModule="RunRRR" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BFg-lG-o5T"/>
                         <viewControllerLayoutGuide type="bottom" id="WB5-u6-211"/>
@@ -71,7 +71,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="vq7-yV-1NR">
-                                <rect key="frame" x="48.5" y="285.5" width="278" height="96"/>
+                                <rect key="frame" x="49" y="286" width="278" height="96"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sure to Logout?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="1yq-oo-TFa">
                                         <rect key="frame" x="0.0" y="0.0" width="278" height="48"/>
@@ -169,7 +169,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dPG-xK-BEv">
-                                <rect key="frame" x="137.5" y="482" width="100" height="75"/>
+                                <rect key="frame" x="138" y="482" width="100" height="75"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="105" id="Sgb-Dd-zxC"/>
@@ -307,11 +307,11 @@
                                 <exclude reference="uTj-r2-a3B"/>
                                 <exclude reference="w0n-do-Tm2"/>
                                 <exclude reference="zen-Dl-IOS"/>
+                                <exclude reference="Tox-ii-bOK"/>
+                                <exclude reference="gme-LI-dgZ"/>
                                 <exclude reference="Ga5-xI-P9s"/>
                                 <exclude reference="Gxt-y9-zlg"/>
                                 <exclude reference="QdM-ab-vH1"/>
-                                <exclude reference="Tox-ii-bOK"/>
-                                <exclude reference="gme-LI-dgZ"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact-widthClass=compact">
@@ -329,20 +329,20 @@
                                 <exclude reference="lLa-81-MlO"/>
                                 <include reference="oh5-Y4-BH9"/>
                                 <exclude reference="tOM-DW-YuW"/>
-                                <include reference="Ga5-xI-P9s"/>
-                                <exclude reference="QdM-ab-vH1"/>
                                 <include reference="Tox-ii-bOK"/>
                                 <exclude reference="fha-Bn-ww4"/>
+                                <include reference="Ga5-xI-P9s"/>
+                                <exclude reference="QdM-ab-vH1"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact-widthClass=regular">
                             <mask key="constraints">
                                 <include reference="w0n-do-Tm2"/>
                                 <include reference="zen-Dl-IOS"/>
-                                <include reference="Gxt-y9-zlg"/>
-                                <exclude reference="iOB-g0-kwc"/>
                                 <exclude reference="fha-Bn-ww4"/>
                                 <include reference="gme-LI-dgZ"/>
+                                <include reference="Gxt-y9-zlg"/>
+                                <exclude reference="iOB-g0-kwc"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=regular-widthClass=compact">
@@ -406,10 +406,9 @@
         <!--Navigation Controller-->
         <scene sceneID="gJ0-ng-QgG">
             <objects>
-                <navigationController storyboardIdentifier="Navigator" automaticallyAdjustsScrollViewInsets="NO" id="bRd-5E-JYo" sceneMemberID="viewController">
-
+                <navigationController storyboardIdentifier="MoreNavigator" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bRd-5E-JYo" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mIa-5Z-oHp">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="mIa-5Z-oHp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>

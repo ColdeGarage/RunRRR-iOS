@@ -13,23 +13,45 @@ import SwiftyJSON
 private let reuseIdentifier = "BagItemCell"
 
 class BagCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    var delegate: segueBetweenViewController!
+    
     let LocalUserDefault = UserDefaults.standard
     var packs: [Pack] = []
     var tools: [Tool] = []
     var clues: [Clue] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupMenuBar()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
         self.collectionView!.register(BagItemCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
+        self.collectionView!.contentInset = UIEdgeInsetsMake(90, 0, 0, 0)
         // Do any additional setup after loading the view.
         fetchPacks()
     }
-
+    func setupMenuBar(){
+        let menuBar : MenuBar = {
+            let mb = MenuBar("Bag")
+            return mb
+        }()
+        view.addSubview(menuBar)
+        view.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
+        view.addConstraintWithFormat(format: "V:|-20-[v0(58)]|", views: menuBar)
+        (menuBar.arrangedSubviews[0] as! UIButton).addTarget(self, action: #selector(segueToMap), for: .touchUpInside)
+        (menuBar.arrangedSubviews[1] as! UIButton).addTarget(self, action: #selector(changeToMissions), for: .touchUpInside)
+        (menuBar.arrangedSubviews[3] as! UIButton).addTarget(self, action: #selector(changeToMore), for: .touchUpInside)
+    }
+    func segueToMap(){
+        dismiss(animated: true, completion: nil)
+    }
+    func changeToMissions(){
+        delegate!.segueToMission()
+    }
+    func changeToMore(){
+        delegate!.segueToMore()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
