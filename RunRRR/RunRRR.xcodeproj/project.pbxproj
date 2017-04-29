@@ -13,9 +13,10 @@
 		435E248A1E9B3DC20097D8EC /* LogoutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435E24891E9B3DC20097D8EC /* LogoutViewController.swift */; };
 		436576331EACBE9300A4A617 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436576321EACBE9300A4A617 /* ItemDetailView.swift */; };
 		436862871E98F32600965A44 /* Items_Clues.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436862861E98F32600965A44 /* Items_Clues.swift */; };
-		43738C861E93A63600C696CE /* MissionsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43738C851E93A63600C696CE /* MissionsCollectionViewController.swift */; };
+		43738C861E93A63600C696CE /* MissionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43738C851E93A63600C696CE /* MissionsCell.swift */; };
 		4382F5E01EB087B80085F563 /* MenuBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382F5DF1EB087B80085F563 /* MenuBar.swift */; };
 		4382F5E21EB098990085F563 /* MissionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382F5E11EB098990085F563 /* MissionsViewController.swift */; };
+		4382F5E41EB0B9D40085F563 /* lib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382F5E31EB0B9D40085F563 /* lib.swift */; };
 		439E956E1E8CEE1A0070B3CB /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439E956D1E8CEE1A0070B3CB /* Login.storyboard */; };
 		439E95701E8CEE260070B3CB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439E956F1E8CEE260070B3CB /* LoginViewController.swift */; };
 		439E95721E8CEE2C0070B3CB /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439E95711E8CEE2C0070B3CB /* MapsViewController.swift */; };
@@ -43,9 +44,10 @@
 		435E24891E9B3DC20097D8EC /* LogoutViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutViewController.swift; sourceTree = "<group>"; };
 		436576321EACBE9300A4A617 /* ItemDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
 		436862861E98F32600965A44 /* Items_Clues.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Items_Clues.swift; sourceTree = "<group>"; };
-		43738C851E93A63600C696CE /* MissionsCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MissionsCollectionViewController.swift; sourceTree = "<group>"; };
+		43738C851E93A63600C696CE /* MissionsCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MissionsCell.swift; sourceTree = "<group>"; };
 		4382F5DF1EB087B80085F563 /* MenuBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBar.swift; sourceTree = "<group>"; };
 		4382F5E11EB098990085F563 /* MissionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MissionsViewController.swift; sourceTree = "<group>"; };
+		4382F5E31EB0B9D40085F563 /* lib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = lib.swift; sourceTree = "<group>"; };
 		439E956D1E8CEE1A0070B3CB /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		439E956F1E8CEE260070B3CB /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		439E95711E8CEE2C0070B3CB /* MapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
@@ -81,6 +83,8 @@
 		435E248C1E9B4FF70097D8EC /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				43738C851E93A63600C696CE /* MissionsCell.swift */,
+				4382F5E31EB0B9D40085F563 /* lib.swift */,
 				436862861E98F32600965A44 /* Items_Clues.swift */,
 				435E24851E9B33430097D8EC /* missionsData.swift */,
 			);
@@ -105,7 +109,6 @@
 				435E24891E9B3DC20097D8EC /* LogoutViewController.swift */,
 				435E24871E9B3D820097D8EC /* MoreViewController.swift */,
 				431D4D3E1E94C6FA00D5EDE0 /* BagCollectionViewController.swift */,
-				43738C851E93A63600C696CE /* MissionsCollectionViewController.swift */,
 				4382F5E11EB098990085F563 /* MissionsViewController.swift */,
 				439E95711E8CEE2C0070B3CB /* MapsViewController.swift */,
 				439E956F1E8CEE260070B3CB /* LoginViewController.swift */,
@@ -306,9 +309,10 @@
 				436862871E98F32600965A44 /* Items_Clues.swift in Sources */,
 				7F3E9CC01E6920AB00A17814 /* AppDelegate.swift in Sources */,
 				431D4D3F1E94C6FA00D5EDE0 /* BagCollectionViewController.swift in Sources */,
-				43738C861E93A63600C696CE /* MissionsCollectionViewController.swift in Sources */,
+				43738C861E93A63600C696CE /* MissionsCell.swift in Sources */,
 				439E95721E8CEE2C0070B3CB /* MapsViewController.swift in Sources */,
 				435E248A1E9B3DC20097D8EC /* LogoutViewController.swift in Sources */,
+				4382F5E41EB0B9D40085F563 /* lib.swift in Sources */,
 				435E24881E9B3D820097D8EC /* MoreViewController.swift in Sources */,
 				439E95701E8CEE260070B3CB /* LoginViewController.swift in Sources */,
 				4382F5E01EB087B80085F563 /* MenuBar.swift in Sources */,

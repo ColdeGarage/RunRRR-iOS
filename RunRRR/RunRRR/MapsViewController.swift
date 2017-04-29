@@ -14,9 +14,7 @@ import SWXMLHash
 import CoreLocation
 
 
-
-
-class MapsViewController: UIViewController, GMSMapViewDelegate{
+class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenViewController{
 
     @IBOutlet weak var mainMaps: GMSMapView!
     @IBOutlet weak var pointSqr: UILabel!
@@ -176,7 +174,33 @@ class MapsViewController: UIViewController, GMSMapViewDelegate{
         }
 
     }
-    
+    @IBAction func missionButtonTapped(_ sender: Any) {
+        let vc = UIStoryboard(name: "Missions", bundle: nil).instantiateViewController(withIdentifier: "MissionsViewController") as! MissionsViewController
+        vc.delegate = self
+        self.present(vc, animated: true, completion: nil)
+    }
+    @IBAction func bagButtonTapped(_ sender: Any) {
+        let vc = UIStoryboard(name: "Bag", bundle: nil).instantiateViewController(withIdentifier: "BagCollectionViewController") as! BagCollectionViewController
+        vc.delegate = self
+        self.present(vc, animated: true, completion: nil)
+    }
+    func segueToBag(){
+        self.dismiss(animated: true, completion: nil)
+        let vc = UIStoryboard(name: "Bag", bundle: nil).instantiateViewController(withIdentifier: "BagCollectionViewController") as! BagCollectionViewController
+        vc.delegate = self
+        self.present(vc, animated: true, completion: nil)
+    }
+    func segueToMore(){
+        self.dismiss(animated: true, completion: nil)
+        let vc = UIStoryboard(name: "More", bundle: nil).instantiateViewController(withIdentifier: "MoreNavigator") as! UINavigationController
+        self.present(vc, animated: true, completion: nil)
+    }
+    func segueToMission(){
+        self.dismiss(animated: true, completion: nil)
+        let vc = UIStoryboard(name: "Missions", bundle: nil).instantiateViewController(withIdentifier: "MissionsViewController") as! MissionsViewController
+        vc.delegate = self
+        self.present(vc, animated: true, completion: nil)
+    }
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -186,6 +210,11 @@ class MapsViewController: UIViewController, GMSMapViewDelegate{
     //}
 
 }
- 
+
+protocol segueBetweenViewController {
+    func segueToBag()
+    func segueToMore()
+    func segueToMission()
+}
 
 

@@ -12,7 +12,7 @@
         <!--Bag Collection View Controller-->
         <scene sceneID="kaP-o7-hc4">
             <objects>
-                <collectionViewController storyboardIdentifier="BagCollectionViewController" id="Y8V-YM-ddv" customClass="BagCollectionViewController" customModule="RunRRR" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="BagCollectionViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="Y8V-YM-ddv" customClass="BagCollectionViewController" customModule="RunRRR" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="vS9-H2-NhM">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

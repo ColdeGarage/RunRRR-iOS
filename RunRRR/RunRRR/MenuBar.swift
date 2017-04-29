@@ -8,19 +8,25 @@
 
 import UIKit
 
-class MenuBar: UIStackView {
+@IBDesignable class MenuBar: UIStackView {
     private var menuBarPages = [UIButton]()
     var pageInMenu : [String] = ["Map", "Mission", "Bag", "More"]
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupButtons()
+    init(_ pageFrom: String) {
+        super.init(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        setupStackView()
+        setupButtons(pageFrom)
     }
     
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    private func setupButtons(){
+    private func setupStackView(){
+        axis = .horizontal
+        alignment = .fill
+        spacing = 0
+        distribution = .fillEqually
+    }
+    private func setupButtons(_ pageFrom: String){
         for page in 0..<4 {
             let button = UIButton()
             button.backgroundColor = UIColor.white
@@ -31,16 +37,13 @@ class MenuBar: UIStackView {
             button.widthAnchor.constraint(equalToConstant: frame.width/4).isActive = true
             
             //setup the button action
-            button.addTarget(self, action: #selector(MenuBar.segueToAnotherPage(button:)), for: .touchUpInside)
-            
             button.setTitle(pageInMenu[page], for: .normal)
-            button.setTitleColor(UIColor.blue, for: .normal)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+            button.isEnabled = true
+            button.setTitleColor(UIColor.black, for: .normal)
             self.addArrangedSubview(button)
             menuBarPages.append(button)
         }
-        
-    }
-    func segueToAnotherPage(button: UIButton){
         
     }
 }

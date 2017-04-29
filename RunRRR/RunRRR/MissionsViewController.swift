@@ -11,7 +11,7 @@ import Alamofire
 import SwiftyJSON
 
 class MissionsViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    
+    var delegate: segueBetweenViewController!
     var missionShowList = [MissionsData]()
     var completeMissionList = [MissionsData]()
     private let refreshControl = UIRefreshControl()
@@ -28,9 +28,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.addSubview(missionCollectionView)
-        view.addConstraintWithFormat(format: "H:|[v0]|", views: missionCollectionView)
-        view.addConstraintWithFormat(format: "V:|[v0]|", views: missionCollectionView)
+        setupCollectionView()
         // Do any additional setup after loading the view.
         missionCollectionView.register(MissionsCell.self, forCellWithReuseIdentifier: "missionsCell")
         missionCollectionView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
@@ -44,13 +42,18 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
         setupMenuBar()
         loadMissions()
     }
-
+    func setupCollectionView(){
+        view.addSubview(missionCollectionView)
+        view.addConstraintWithFormat(format: "H:|[v0]|", views: missionCollectionView)
+        view.addConstraintWithFormat(format: "V:|[v0]|", views: missionCollectionView)
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return missionShowList.count
+
     }
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "missionsCell", for: indexPath)
@@ -193,12 +196,24 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     func setupMenuBar(){
         let menuBar : MenuBar = {
-            let mb = MenuBar()
+            let mb = MenuBar("Mission")
             return mb
         }()
         view.addSubview(menuBar)
         view.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
         view.addConstraintWithFormat(format: "V:|-20-[v0(58)]|", views: menuBar)
+        (menuBar.arrangedSubviews[0] as! UIButton).addTarget(self, action: #selector(segueToMap), for: .touchUpInside)
+        (menuBar.arrangedSubviews[2] as! UIButton).addTarget(self, action: #selector(changeToBag), for: .touchUpInside)
+        (menuBar.arrangedSubviews[3] as! UIButton).addTarget(self, action: #selector(changeToMore), for: .touchUpInside)
+    }
+    func segueToMap(){
+        dismiss(animated: true, completion: nil)
+    }
+    func changeToBag(){
+        delegate!.segueToBag()
+    }
+    func changeToMore(){
+        delegate!.segueToMore()
     }
     /*
     // MARK: - Navigation
