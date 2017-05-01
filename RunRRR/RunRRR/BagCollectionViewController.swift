@@ -14,7 +14,7 @@ private let reuseIdentifier = "BagItemCell"
 
 class BagCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     var delegate: segueBetweenViewController!
-    
+    private let refreshControl = UIRefreshControl()
     let LocalUserDefault = UserDefaults.standard
     var packs: [Pack] = []
     var tools: [Tool] = []
@@ -29,7 +29,17 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         self.collectionView!.register(BagItemCell.self, forCellWithReuseIdentifier: reuseIdentifier)
         self.collectionView!.contentInset = UIEdgeInsetsMake(90, 0, 0, 0)
         // Do any additional setup after loading the view.
+        if #available(iOS 10.0, *){
+            self.collectionView!.refreshControl = refreshControl
+        } else{
+            self.collectionView!.addSubview(refreshControl)
+        }
+        refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         fetchPacks()
+    }
+    func refreshData(){
+        fetchPacks()
+        refreshControl.endRefreshing()
     }
     func setupMenuBar(){
         let menuBar : MenuBar = {
@@ -146,6 +156,9 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     }
     
     private func fetchPacks(){
+        packs.removeAll()
+        tools.removeAll()
+        clues.removeAll()
         let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
         let packParameter : Parameters = ["operator_uid":UID, "uid":UID]
         Alamofire.request("http://coldegarage.tech:8081/api/v1/pack/read", parameters: packParameter).responseJSON{ response in
