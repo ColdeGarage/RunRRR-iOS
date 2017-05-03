@@ -15,6 +15,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
     var missionShowList = [MissionsData]()
     var completeMissionList = [MissionsData]()
     private let refreshControl = UIRefreshControl()
+    let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
     
     lazy var missionCollectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -95,7 +96,8 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
         return CGSize(width: view.frame.width, height: 80)
     }
     func loadMissions(){
-        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read").responseJSON{ response in
+        let missionReadParameter = ["operator_uid":self.userID]
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read",parameters:missionReadParameter).responseJSON{ response in
             switch response.result{
             case .success(let value):
                 let missionsJson = JSON(value)
@@ -126,8 +128,8 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                 
             }
             self.missionShowList.sort(by: {$0.type < $1.type})
-            
-            Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/reportRead.json").responseJSON{ response in
+            let reportReadParameter = ["operator_uid":self.userID, "uid":self.userID]
+            Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/report/read",parameters:reportReadParameter).responseJSON{ response in
                 switch response.result{
                     
                 case .success(let value):
@@ -158,6 +160,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     
                     //filter out the fail mission
                     var idxToRemove = Set<Int>()
+                    
                     for idx in 0...self.missionShowList.count-1{
                         let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
                         let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
@@ -176,9 +179,6 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                         .enumerated()
                         .filter {!idxToRemove.contains($0.offset)}
                         .map {$0.element}
-                    
-                    
-                    
                 case .failure(let error):
                     print(error)
                 }

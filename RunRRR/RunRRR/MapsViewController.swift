@@ -104,7 +104,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
 
         let getPointsPara = ["operator_uid":self.userID,"uid":self.userID]
         
-        Alamofire.request("http://coldegarage.tech:8081/api/v1/member/read", method: .get, parameters: getPointsPara).responseJSON{ response in
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/read", method: .get, parameters: getPointsPara).responseJSON{ response in
 
             switch response.result{
                 case .success(let value):
@@ -165,8 +165,8 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
         //print(networkQuality.connectionStatus())
         
         let currentLocationPara : [String:Any] = ["operator_uid":self.userID,"uid":self.userID, "position_e":currentLocationLongitude, "position_n":currentLocationLatitude]
-        Alamofire.request("http://coldegarage.tech:8081/api/v1/member/update", method: .put, parameters: currentLocationPara).responseJSON{ response in
-            print(response.timeline)
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/update", method: .put, parameters: currentLocationPara).responseJSON{ response in
+            //print(response.timeline)
             switch response.result{
                 
             case .success(let value):
