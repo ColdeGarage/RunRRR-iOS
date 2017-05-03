@@ -30,8 +30,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 window.rootViewController = rootController
             }
         }else{          //If not, go to login page
-            let storyboard = UIStoryboard(name: "Maps", bundle: nil)
-            let rootController = storyboard.instantiateViewController(withIdentifier: "MapsViewController")
+
+
+            let storyboard = UIStoryboard(name: "Login", bundle: nil)
+            let rootController = storyboard.instantiateViewController(withIdentifier: "LoginViewController")
             if let window = self.window {
                 window.rootViewController = rootController
             }

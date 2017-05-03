@@ -26,19 +26,36 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F0X-oB-Faq" userLabel="Maps">
                                         <rect key="frame" x="0.0" y="0.0" width="94" height="58"/>
-                                        <state key="normal" title="Maps"/>
+                                        <state key="normal" title="Maps">
+                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7UG-2K-jeJ" userLabel="Misson">
                                         <rect key="frame" x="94" y="0.0" width="93.5" height="58"/>
-                                        <state key="normal" title="Misson"/>
+                                        <state key="normal" title="Mission">
+                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="missionButtonTapped:" destination="J5w-Gc-Hvx" eventType="touchUpInside" id="Sgr-D5-UUF"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SuV-p8-ee1" userLabel="Bag">
                                         <rect key="frame" x="187.5" y="0.0" width="94" height="58"/>
-                                        <state key="normal" title="Bag"/>
+                                        <state key="normal" title="Bag">
+                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="bagButtonTapped:" destination="J5w-Gc-Hvx" eventType="touchUpInside" id="LO0-Qp-KmY"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BAG-uD-gyJ" userLabel="More">
                                         <rect key="frame" x="281.5" y="0.0" width="93.5" height="58"/>
-                                        <state key="normal" title="More"/>
+                                        <state key="normal" title="More">
+                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <segue destination="f7N-gI-SNU" kind="show" id="NS1-9I-vJb"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <constraints>
@@ -82,6 +99,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RPt-R6-HKu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="352.80000000000001" y="-226.23688155922042"/>
+        </scene>
+        <!--MoreNavigator-->
+        <scene sceneID="fxw-1Q-t2O">
+            <objects>
+                <viewControllerPlaceholder storyboardName="More" referencedIdentifier="MoreNavigator" id="f7N-gI-SNU" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jmj-Hv-tnT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1022" y="-138"/>
         </scene>
     </scenes>
 </document>

@@ -13,23 +13,45 @@ import SwiftyJSON
 private let reuseIdentifier = "BagItemCell"
 
 class BagCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+    var delegate: segueBetweenViewController!
+    
     let LocalUserDefault = UserDefaults.standard
     var packs: [Pack] = []
     var tools: [Tool] = []
     var clues: [Clue] = []
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        setupMenuBar()
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
         self.collectionView!.register(BagItemCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        
+        self.collectionView!.contentInset = UIEdgeInsetsMake(90, 0, 0, 0)
         // Do any additional setup after loading the view.
         fetchPacks()
     }
-
+    func setupMenuBar(){
+        let menuBar : MenuBar = {
+            let mb = MenuBar("Bag")
+            return mb
+        }()
+        view.addSubview(menuBar)
+        view.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
+        view.addConstraintWithFormat(format: "V:|-20-[v0(58)]|", views: menuBar)
+        (menuBar.arrangedSubviews[0] as! UIButton).addTarget(self, action: #selector(segueToMap), for: .touchUpInside)
+        (menuBar.arrangedSubviews[1] as! UIButton).addTarget(self, action: #selector(changeToMissions), for: .touchUpInside)
+        (menuBar.arrangedSubviews[3] as! UIButton).addTarget(self, action: #selector(changeToMore), for: .touchUpInside)
+    }
+    func segueToMap(){
+        dismiss(animated: true, completion: nil)
+    }
+    func changeToMissions(){
+        delegate!.segueToMission()
+    }
+    func changeToMore(){
+        delegate!.segueToMore()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -55,7 +77,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return tools.count + 1
+        return tools.count + clues.count + 1
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -64,6 +86,15 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         if(indexPath.item == 0){  // the first block displays money
             cell.itemImage.image = UIImage(named: "money")
             cell.itemName.text = "金錢"
+        } else if (indexPath.item <= tools.count){
+            cell.itemName.text = tools[indexPath.item-1].name
+            let imageURL = URL(string: tools[indexPath.item-1].imageURL!)
+            let imageData = try? Data(contentsOf: imageURL!)
+            cell.itemImage.image = UIImage(data: imageData!)
+            cell.itemCount.text = "99"
+        } else{
+            cell.itemName.text = "線索"
+            cell.itemCount.text = "99"
         }
         return cell
     }
@@ -72,6 +103,12 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: view.frame.width/3, height: view.frame.height/4)
+    }
+    
+    let itemDetailView = ItemDetailView()
+    
+    func showItemDetail(_ item: BagItemCell){
+        itemDetailView.showDetail()
     }
     // MARK: UICollectionViewDelegate
 
@@ -89,7 +126,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     }
     */
 
-    /*
+    
     // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
     override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
         return false
@@ -100,9 +137,14 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     }
 
     override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
-    
+        
     }
-    */
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("tapped")
+        let cell = collectionView.cellForItem(at: indexPath)
+        showItemDetail(cell as! BagItemCell)
+    }
+    
     private func fetchPacks(){
         let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
         let packParameter : Parameters = ["operator_uid":UID, "uid":UID]
@@ -164,7 +206,27 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         }
     }
     private func fetchClues(){
-        
+        for clue in packs{
+            if(clue.itemClass == .clue){
+                let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
+                let cluesParameter : Parameters = ["operator_uid":UID, "cid":clue.id as Any]
+                Alamofire.request("http://coldegarage.tech:8081/api/v1/clue/read", parameters:cluesParameter).responseJSON{ response in
+                    switch(response.result){
+                    case .success(let value):
+                        let cluesJSON = JSON(value)
+                        let clue : Clue = {
+                            let clue = Clue()
+                            clue.content = cluesJSON["payload"]["objects"]["content"].stringValue
+                            clue.cid = cluesJSON["payload"]["objects"]["cid"].intValue
+                            return clue
+                        }()
+                        self.clues.append(clue)
+                    case .failure:
+                        print("error")
+                    }
+                }
+            }
+        }
     }
 }
 

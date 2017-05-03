@@ -66,9 +66,8 @@ class LoginViewController: UIViewController {
     
     private func userLogin(account: String, password: String) -> Void{
         /*let loginURL="file:///Users/jackyhuang/Desktop/login.json"*/
+        var isLogin : Bool = false
         let loginInfo : [String:Any] = ["email":account, "password":password]
-        
-        var isLogin: Bool = false  //Check login state.
         let LocalUserDefault = UserDefaults.standard
         Alamofire.request("http://coldegarage.tech:8081/api/v1/member/login", method: .post, parameters: loginInfo).responseJSON{ response in
             if ((response.result.value) != nil) {
@@ -76,7 +75,7 @@ class LoginViewController: UIViewController {
                 if(!userInfoJson["payload"]["correct"].boolValue){
                     isLogin = true
                     let userUID = userInfoJson["uid"].int
-                    print(userInfoJson)
+                    //print(userInfoJson)
                     LocalUserDefault.set(isLogin, forKey: "RunRRR_Login")
                     LocalUserDefault.set(userUID, forKey: "RunRRR_UID")
                     LocalUserDefault.synchronize()

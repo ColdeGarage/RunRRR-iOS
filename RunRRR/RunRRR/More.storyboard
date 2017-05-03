@@ -14,7 +14,7 @@
         <!--More View Controller-->
         <scene sceneID="kcn-oF-k8b">
             <objects>
-                <viewController storyboardIdentifier="MoreViewController" title="More" wantsFullScreenLayout="YES" id="g3t-Zk-9wD" userLabel="More View Controller" customClass="MoreViewController" customModule="RunRRR" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MoreViewController" title="More" wantsFullScreenLayout="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="g3t-Zk-9wD" userLabel="More View Controller" customClass="MoreViewController" customModule="RunRRR" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="BFg-lG-o5T"/>
                         <viewControllerLayoutGuide type="bottom" id="WB5-u6-211"/>
@@ -32,7 +32,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="68"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="60g-xx-jJY" id="AoJ-66-a6U">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="67.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="67"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -71,7 +71,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="vq7-yV-1NR">
-                                <rect key="frame" x="48.5" y="285.5" width="278" height="96"/>
+                                <rect key="frame" x="49" y="286" width="278" height="96"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sure to Logout?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" translatesAutoresizingMaskIntoConstraints="NO" id="1yq-oo-TFa">
                                         <rect key="frame" x="0.0" y="0.0" width="278" height="48"/>
@@ -169,7 +169,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dPG-xK-BEv">
-                                <rect key="frame" x="137.5" y="482" width="100" height="75"/>
+                                <rect key="frame" x="138" y="482" width="100" height="75"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="105" id="Sgb-Dd-zxC"/>
@@ -406,7 +406,8 @@
         <!--Navigation Controller-->
         <scene sceneID="gJ0-ng-QgG">
             <objects>
-                <navigationController storyboardIdentifier="MoreNavigationViewController" automaticallyAdjustsScrollViewInsets="NO" id="bRd-5E-JYo" sceneMemberID="viewController">
+
+                <navigationController storyboardIdentifier="MoreNavigator" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="bRd-5E-JYo" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" id="mIa-5Z-oHp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>

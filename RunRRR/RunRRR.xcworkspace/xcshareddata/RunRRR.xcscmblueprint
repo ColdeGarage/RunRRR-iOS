@@ -1,0 +1,44 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++E846F5D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++E846F5D" : 9223372036854775807,
+    "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++E0B68E7" : 9223372036854775807,
+    "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++B216F42" : 9223372036854775807,
+    "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++F15278A" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "86135F0D-AACC-4006-8BC6-A2B6895E0405",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++E846F5D" : "RunRRR\/",
+    "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++E0B68E7" : "",
+    "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++B216F42" : "RunRRR-iOS\/",
+    "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++F15278A" : ""
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "RunRRR",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "RunRRR\/RunRRR.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ColdeGarage\/RunRRR-iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++B216F42"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ColdeGarage\/RunRRR-iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++E0B68E7"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ColdeGarage\/RunRRR-iOS.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++E846F5D"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/YiChunHung\/RunRRR.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2AF3D789DF37DA3328E56E0256286744C25E3ADD+++F15278A"
+    }
+  ]
+}

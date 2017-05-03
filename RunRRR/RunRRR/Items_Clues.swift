@@ -19,11 +19,8 @@ class Pack: NSObject{
 class Clue: NSObject{
     var cid: Int?
     var content: String?
-    init?(cid: Int, content: String){
-        self.cid = cid
-        self.content = content
-    }
 }
+
 class Tool: NSObject{
     var tid: Int?
     var name: String?
