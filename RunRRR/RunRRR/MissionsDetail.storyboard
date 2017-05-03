@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C68" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Missions Detail View Controller-->
+        <scene sceneID="Tkg-Sy-DfG">
+            <objects>
+                <viewController storyboardIdentifier="MissionsDetailViewController" id="nbl-95-gkX" customClass="MissionsDetailViewController" customModule="RunRRR" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="UBB-8W-O5d"/>
+                        <viewControllerLayoutGuide type="bottom" id="QQX-hc-fz8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="PDZ-gk-T3a" customClass="MissionsDe">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Lyr-7g-lAY">
+                                <rect key="frame" x="66" y="155" width="243" height="357"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <string key="text">I am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission.</string>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="psh-Hi-F1V">
+                                <rect key="frame" x="21" y="25" width="333" height="80"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="主" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8g5-Q7-a4k" customClass="PriorityLabel" customModule="RunRRR" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="15" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="8g5-Q7-a4k" secondAttribute="height" multiplier="1:1" id="CKV-AM-vIe"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="CornerRadius">
+                                                <real key="value" value="25"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="BorderColor">
+                                                <color key="value" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="BorderWidth">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GRl-H4-uOd" customClass="CloseButton" customModule="RunRRR" customModuleProvider="target">
+                                        <rect key="frame" x="283" y="15" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="GRl-H4-uOd" secondAttribute="height" multiplier="1:1" id="kU2-PI-cNt"/>
+                                        </constraints>
+                                        <inset key="imageEdgeInsets" minX="10" minY="10" maxX="10" maxY="10"/>
+                                        <state key="normal" title="Button" image="red-x-small-clip-art"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="BorderWidth">
+                                                <real key="value" value="5"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="CornerRadius">
+                                                <real key="value" value="25"/>
+                                            </userDefinedRuntimeAttribute>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="BorderColor">
+                                                <color key="value" red="0.80392156859999997" green="0.078431372550000003" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                    </button>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example Mission" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="GsI-XE-tgY">
+                                        <rect key="frame" x="55" y="15" width="223" height="50"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="21"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstItem="GRl-H4-uOd" firstAttribute="leading" secondItem="GsI-XE-tgY" secondAttribute="trailing" constant="5" id="5bu-6F-aNi"/>
+                                    <constraint firstAttribute="height" constant="80" id="Eqk-vS-soj"/>
+                                    <constraint firstItem="8g5-Q7-a4k" firstAttribute="leading" secondItem="psh-Hi-F1V" secondAttribute="leading" id="F5c-ba-Rli"/>
+                                    <constraint firstItem="8g5-Q7-a4k" firstAttribute="centerY" secondItem="psh-Hi-F1V" secondAttribute="centerY" id="F8h-Li-IhJ"/>
+                                    <constraint firstItem="GsI-XE-tgY" firstAttribute="top" secondItem="psh-Hi-F1V" secondAttribute="top" constant="15" id="FFr-2Z-b5y"/>
+                                    <constraint firstItem="GsI-XE-tgY" firstAttribute="leading" secondItem="8g5-Q7-a4k" secondAttribute="trailing" constant="5" id="G1u-BM-z2Z"/>
+                                    <constraint firstAttribute="bottom" secondItem="GRl-H4-uOd" secondAttribute="bottom" constant="15" id="GHV-2I-ijk"/>
+                                    <constraint firstAttribute="bottom" secondItem="8g5-Q7-a4k" secondAttribute="bottom" constant="15" id="etl-IJ-Mvw"/>
+                                    <constraint firstItem="8g5-Q7-a4k" firstAttribute="top" secondItem="psh-Hi-F1V" secondAttribute="top" constant="15" id="jpa-lL-N8F"/>
+                                    <constraint firstAttribute="bottom" secondItem="GsI-XE-tgY" secondAttribute="bottom" constant="15" id="kZm-It-gRt"/>
+                                    <constraint firstAttribute="trailing" secondItem="GRl-H4-uOd" secondAttribute="trailing" id="p1Z-F1-82p"/>
+                                    <constraint firstItem="GRl-H4-uOd" firstAttribute="top" secondItem="psh-Hi-F1V" secondAttribute="top" constant="15" id="vZm-SF-IxZ"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EvR-Fo-hqC" customClass="CameraButton" customModule="RunRRR" customModuleProvider="target">
+                                <rect key="frame" x="116.5" y="470" width="142" height="142"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="EvR-Fo-hqC" secondAttribute="height" multiplier="1:1" id="7z9-YW-mLg"/>
+                                    <constraint firstAttribute="width" constant="142" id="RS6-v4-QBA"/>
+                                    <constraint firstAttribute="height" constant="142" id="iTr-ed-rxy"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="10" minY="19.699999999999999" maxX="10" maxY="19.699999999999999"/>
+                                <state key="normal" image="Cute-camera-clipart-danaami2-top-2"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="CornerRadius">
+                                        <real key="value" value="70.75"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="BorderWidth">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="BorderColor">
+                                        <color key="value" red="0.97647058819999999" green="0.29803921570000003" blue="0.52549019610000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <segue destination="CVg-qO-Qra" kind="show" id="fCL-mx-H7i"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Lyr-7g-lAY" firstAttribute="centerY" secondItem="PDZ-gk-T3a" secondAttribute="centerY" id="9CM-G0-gx2"/>
+                            <constraint firstItem="QQX-hc-fz8" firstAttribute="top" secondItem="EvR-Fo-hqC" secondAttribute="bottom" constant="55" id="HSG-FN-kzg"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="psh-Hi-F1V" secondAttribute="trailing" constant="5" id="Qgn-48-3DH"/>
+                            <constraint firstItem="Lyr-7g-lAY" firstAttribute="leading" secondItem="PDZ-gk-T3a" secondAttribute="leadingMargin" constant="50" id="cXS-uk-Fia"/>
+                            <constraint firstItem="psh-Hi-F1V" firstAttribute="leading" secondItem="PDZ-gk-T3a" secondAttribute="leadingMargin" constant="5" id="fNa-f7-GKp"/>
+                            <constraint firstItem="Lyr-7g-lAY" firstAttribute="top" secondItem="psh-Hi-F1V" secondAttribute="bottom" constant="50" id="kOD-rb-YL2"/>
+                            <constraint firstItem="psh-Hi-F1V" firstAttribute="top" secondItem="UBB-8W-O5d" secondAttribute="bottom" constant="5" id="lzc-DJ-197"/>
+                            <constraint firstItem="EvR-Fo-hqC" firstAttribute="centerX" secondItem="PDZ-gk-T3a" secondAttribute="centerX" id="mgS-xt-mey"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Lyr-7g-lAY" secondAttribute="trailing" constant="50" id="oJW-mg-taW"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="orG-Kc-7fV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3444.375" y="-797.53521126760563"/>
+        </scene>
+        <!--Camera-->
+        <scene sceneID="M8z-nj-zZO">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="CameraViewController" storyboardName="Camera" id="CVg-qO-Qra" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="RVJ-Dz-BIh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4092" y="-600"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="Cute-camera-clipart-danaami2-top-2" width="607" height="511"/>
+        <image name="red-x-small-clip-art" width="300" height="262"/>
+    </resources>
+</document>

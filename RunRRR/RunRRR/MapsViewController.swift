@@ -120,7 +120,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     func getMissionLocations(map:GMSMapView){
 
         let missionPara = ["operator_uid":self.userID]
-        Alamofire.request("http://coldegarage.tech:8081/api/v1/mission/read", method: .get, parameters:missionPara
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read", method: .get, parameters:missionPara
             ).responseJSON{ response in
 
             switch response.result{
