@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4318300B1EB8971E0057683B /* configData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4318300A1EB8971E0057683B /* configData.swift */; };
 		431D4D3F1E94C6FA00D5EDE0 /* BagCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D4D3E1E94C6FA00D5EDE0 /* BagCollectionViewController.swift */; };
 		435E24861E9B33430097D8EC /* missionsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435E24851E9B33430097D8EC /* missionsData.swift */; };
 		435E24881E9B3D820097D8EC /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435E24871E9B3D820097D8EC /* MoreViewController.swift */; };
@@ -38,6 +39,7 @@
 		03A84B3247D28A89072CDBEE /* Pods_RunRRR.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RunRRR.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		18DD482414C4A29D10535B49 /* Pods-RunRRR.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunRRR.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunRRR/Pods-RunRRR.debug.xcconfig"; sourceTree = "<group>"; };
 		1F13B208C49A62ECD2B8B2B5 /* Pods-RunRRR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunRRR.release.xcconfig"; path = "Pods/Target Support Files/Pods-RunRRR/Pods-RunRRR.release.xcconfig"; sourceTree = "<group>"; };
+		4318300A1EB8971E0057683B /* configData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = configData.swift; sourceTree = "<group>"; };
 		431D4D3E1E94C6FA00D5EDE0 /* BagCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BagCollectionViewController.swift; sourceTree = "<group>"; };
 		435E24851E9B33430097D8EC /* missionsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = missionsData.swift; sourceTree = "<group>"; };
 		435E24871E9B3D820097D8EC /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				436576321EACBE9300A4A617 /* ItemDetailView.swift */,
 				4382F5DF1EB087B80085F563 /* MenuBar.swift */,
 				7F3E9CBF1E6920AB00A17814 /* AppDelegate.swift */,
+				4318300A1EB8971E0057683B /* configData.swift */,
 				7F3E9CC31E6920AB00A17814 /* Main.storyboard */,
 				7F3E9CCB1E6920AB00A17814 /* LaunchScreen.storyboard */,
 				435E248C1E9B4FF70097D8EC /* Data */,
@@ -303,6 +306,7 @@
 			files = (
 				4382F5E21EB098990085F563 /* MissionsViewController.swift in Sources */,
 				436576331EACBE9300A4A617 /* ItemDetailView.swift in Sources */,
+				4318300B1EB8971E0057683B /* configData.swift in Sources */,
 				7F3E9CC21E6920AB00A17814 /* ViewController.swift in Sources */,
 				7F3E9CC81E6920AB00A17814 /* RunRRR.xcdatamodeld in Sources */,
 				435E24861E9B33430097D8EC /* missionsData.swift in Sources */,

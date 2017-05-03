@@ -16,20 +16,8 @@ class Pack: NSObject{
     }
     var id: Int?
 }
-class Clue: NSObject{
-    var cid: Int?
-    var content: String?
-}
-
-class Tool: NSObject{
-    var tid: Int?
-    var name: String?
-    var content: String?
-    var imageURL: String?
-    var expireSec: Int?
-    var price: Int?
-}
 class Item: NSObject{
+    var name: String?
     var tid: Int?
     var cid: Int?
     var itemClass: itemClasses?

@@ -16,9 +16,9 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     var delegate: segueBetweenViewController!
     private let refreshControl = UIRefreshControl()
     let LocalUserDefault = UserDefaults.standard
-    var packs: [Pack] = []
-    var tools: [Tool] = []
-    var clues: [Clue] = []
+    var packs = [Pack]()
+//    var items = [Item]()
+    var bag = [[Item]]()
     override func viewDidLoad() {
         super.viewDidLoad()
         setupMenuBar()
@@ -37,9 +37,12 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         fetchPacks()
     }
+    override func viewDidAppear(_ animated: Bool) {
+        self.collectionView?.reloadData()
+    }
     func refreshData(){
+        self.collectionView?.reloadData()
         fetchPacks()
-        refreshControl.endRefreshing()
     }
     func setupMenuBar(){
         let menuBar : MenuBar = {
@@ -87,7 +90,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
-        return tools.count + clues.count + 1
+        return bag.count + 1
     }
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -96,15 +99,10 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         if(indexPath.item == 0){  // the first block displays money
             cell.itemImage.image = UIImage(named: "money")
             cell.itemName.text = "金錢"
-        } else if (indexPath.item <= tools.count){
-            cell.itemName.text = tools[indexPath.item-1].name
-            let imageURL = URL(string: tools[indexPath.item-1].imageURL!)
-            let imageData = try? Data(contentsOf: imageURL!)
-            cell.itemImage.image = UIImage(data: imageData!)
-            cell.itemCount.text = "99"
-        } else{
-            cell.itemName.text = "線索"
-            cell.itemCount.text = "99"
+        }else{
+            cell.itemName.text = bag[indexPath.item-1][0].name
+//            cell.itemImage.image = UIImage(named: "money")
+            cell.itemCount.text = String(bag[indexPath.item-1].count)
         }
         return cell
     }
@@ -150,18 +148,19 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         
     }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("tapped")
+//        print("tapped")
         let cell = collectionView.cellForItem(at: indexPath)
         showItemDetail(cell as! BagItemCell)
     }
     
     private func fetchPacks(){
         packs.removeAll()
-        tools.removeAll()
-        clues.removeAll()
+//        items.removeAll()
+        bag.removeAll()
         let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
         let packParameter : Parameters = ["operator_uid":UID, "uid":UID]
-        Alamofire.request("http://coldegarage.tech:8081/api/v1/pack/read", parameters: packParameter).responseJSON{ response in
+        Alamofire.request("\(API_URL)/pack/read", parameters: packParameter).responseJSON{ response in
+            print("\(API_URL)/pack/read")
             switch response.result{
             case .success(let value):
                 let packJSON = JSON(value)
@@ -170,7 +169,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                     let pack: Pack = {
                         let item = Pack()
                         item.pid = eachPack["pid"].intValue
-                        if(eachPack["class"].stringValue == "tool"){
+                        if(eachPack["class"].stringValue == "TOOL"){
                             item.itemClass = .tool
                         }else{
                             item.itemClass = .clue
@@ -178,67 +177,101 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                         item.id = eachPack["id"].intValue
                         return item
                     }()
-                    self.packs.append(pack)
+                    self.packs += [pack]
                 }
             case .failure:
                 print("error")
             }
-            self.fetchTools()
-            self.fetchClues()
-            
-            DispatchQueue.main.async {
-                self.collectionView?.reloadData()
-            }
+            self.fetchItem()
         }
     }
-    private func fetchTools(){
-        for tool in packs{
-            if(tool.itemClass == .tool){
+    private func fetchItem(){
+        for item in packs{
+            if(item.itemClass == .tool){
                 let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
-                let toolsParameter : Parameters = ["operator_uid":UID, "tid":tool.id as Any]
-                Alamofire.request("http://coldegarage.tech:8081/api/v1/tool/read", parameters:toolsParameter).responseJSON{ response in
+                let toolsParameter : Parameters = ["operator_uid":UID, "tid":item.id as Any]
+                Alamofire.request("\(API_URL)/tool/read", parameters:toolsParameter).responseJSON{ response in
+//                    print(response)
                     switch(response.result){
                     case .success(let value):
                         let toolsJSON = JSON(value)
-                        let tool : Tool = {
-                            let tool = Tool()
-                            tool.tid = toolsJSON["payload"]["objects"]["tid"].intValue
-                            tool.content = toolsJSON["payload"]["objects"]["content"].stringValue
-                            tool.expireSec = toolsJSON["payload"]["objects"]["expire"].intValue
-                            tool.imageURL = toolsJSON["payload"]["objects"]["url"].stringValue
-                            tool.price = toolsJSON["payload"]["objects"]["price"].intValue
-                            tool.name = toolsJSON["payload"]["objects"]["title"].stringValue
-                            return tool
+                        let toolsArray = toolsJSON["payload"]["objects"].arrayValue
+                        let tool : Item = {
+                            let item = Item()
+                            item.itemClass = .tool
+                            item.tid = toolsArray[0]["tid"].intValue
+                            item.content = toolsArray[0]["content"].stringValue
+                            item.expireSec = toolsArray[0]["expire"].intValue
+                            item.imageURL = toolsArray[0]["url"].stringValue
+                            item.price = toolsArray[0]["price"].intValue
+                            item.name = toolsArray[0]["title"].stringValue
+                            return item
                         }()
-                        self.tools.append(tool)
+//                        print(tool)
+                        self.putIntoBag(tool)
+//                        self.items += [tool]
+                        
                     case .failure:
                         print("error")
                     }
+                    self.itemsDidFetch()
                 }
             }
-        }
-    }
-    private func fetchClues(){
-        for clue in packs{
-            if(clue.itemClass == .clue){
+            else{
                 let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
-                let cluesParameter : Parameters = ["operator_uid":UID, "cid":clue.id as Any]
-                Alamofire.request("http://coldegarage.tech:8081/api/v1/clue/read", parameters:cluesParameter).responseJSON{ response in
+                let toolsParameter : Parameters = ["operator_uid":UID, "cid":item.id as Any]
+                Alamofire.request("\(API_URL)/clue/read", parameters:toolsParameter).responseJSON{ response in
                     switch(response.result){
                     case .success(let value):
                         let cluesJSON = JSON(value)
-                        let clue : Clue = {
-                            let clue = Clue()
-                            clue.content = cluesJSON["payload"]["objects"]["content"].stringValue
-                            clue.cid = cluesJSON["payload"]["objects"]["cid"].intValue
-                            return clue
+                        let clueArray = cluesJSON["payload"]["objects"].arrayValue
+                        let clue : Item = {
+                            let item = Item()
+                            item.itemClass = .clue
+                            item.cid = clueArray[0]["cid"].intValue
+                            item.content = clueArray[0]["content"].stringValue
+                            item.name = "線索"
+                            return item
                         }()
-                        self.clues.append(clue)
+//                        self.items += [clue]
+                        self.putIntoBag(clue)
                     case .failure:
                         print("error")
                     }
+                    self.itemsDidFetch()
                 }
             }
+        }
+        self.collectionView?.reloadData()
+    }
+    
+    private func putIntoBag(_ itemPutInto: Item){
+        var itemIsExist: Bool = false
+        var index = 0
+        for item in bag{
+            
+            if(item[0].name == itemPutInto.name){
+                itemIsExist = true
+                bag[index].append(itemPutInto)
+//                let indexOfItem = bag.index(of: item)
+//                bag[indexOfItem].append(itemPutInto)
+            }
+            index += 1
+        }
+        if(itemIsExist == false){
+            bag.append([itemPutInto])
+        }
+    }
+    
+    private func itemsDidFetch(){
+        var total = 0
+        for item in bag {
+            total += item.count
+        }
+        if(total == packs.count){
+//            self.items.sort(by: {$0.itemClass!.hashValue < $1.itemClass!.hashValue})
+            self.collectionView?.reloadData()
+            self.refreshControl.endRefreshing()
         }
     }
 }

@@ -95,9 +95,8 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
         return CGSize(width: view.frame.width, height: 80)
     }
     func loadMissions(){
-        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/missionRead.json").responseJSON{ response in
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read").responseJSON{ response in
             switch response.result{
-                
             case .success(let value):
                 let missionsJson = JSON(value)
                 let missions = missionsJson["payload"]["objects"].arrayValue
