@@ -98,6 +98,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
     func loadMissions(){
         let missionReadParameter = ["operator_uid":self.userID]
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read",parameters:missionReadParameter).responseJSON{ response in
+
             switch response.result{
             case .success(let value):
                 let missionsJson = JSON(value)

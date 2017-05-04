@@ -8,11 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		4318300B1EB8971E0057683B /* configData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4318300A1EB8971E0057683B /* configData.swift */; };
+
 		4318300D1EB9BDE50057683B /* Camera.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4318300C1EB9BDE50057683B /* Camera.storyboard */; };
 		4318300F1EB9BDF00057683B /* MissionsDetail.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4318300E1EB9BDF00057683B /* MissionsDetail.storyboard */; };
 		431830111EB9BE080057683B /* CameraViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431830101EB9BE080057683B /* CameraViewController.swift */; };
 		431830131EB9BE1B0057683B /* PhotoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431830121EB9BE1B0057683B /* PhotoViewController.swift */; };
 		431830151EB9BE210057683B /* RoundButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431830141EB9BE210057683B /* RoundButton.swift */; };
+
 		431D4D3F1E94C6FA00D5EDE0 /* BagCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431D4D3E1E94C6FA00D5EDE0 /* BagCollectionViewController.swift */; };
 		435E24861E9B33430097D8EC /* missionsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435E24851E9B33430097D8EC /* missionsData.swift */; };
 		435E24881E9B3D820097D8EC /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 435E24871E9B3D820097D8EC /* MoreViewController.swift */; };
@@ -45,11 +47,13 @@
 		18DD482414C4A29D10535B49 /* Pods-RunRRR.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunRRR.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunRRR/Pods-RunRRR.debug.xcconfig"; sourceTree = "<group>"; };
 		1F13B208C49A62ECD2B8B2B5 /* Pods-RunRRR.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunRRR.release.xcconfig"; path = "Pods/Target Support Files/Pods-RunRRR/Pods-RunRRR.release.xcconfig"; sourceTree = "<group>"; };
 		4318300A1EB8971E0057683B /* configData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = configData.swift; sourceTree = "<group>"; };
+
 		4318300C1EB9BDE50057683B /* Camera.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Camera.storyboard; sourceTree = "<group>"; };
 		4318300E1EB9BDF00057683B /* MissionsDetail.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MissionsDetail.storyboard; sourceTree = "<group>"; };
 		431830101EB9BE080057683B /* CameraViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CameraViewController.swift; sourceTree = "<group>"; };
 		431830121EB9BE1B0057683B /* PhotoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoViewController.swift; sourceTree = "<group>"; };
 		431830141EB9BE210057683B /* RoundButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundButton.swift; sourceTree = "<group>"; };
+
 		431D4D3E1E94C6FA00D5EDE0 /* BagCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BagCollectionViewController.swift; sourceTree = "<group>"; };
 		435E24851E9B33430097D8EC /* missionsData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = missionsData.swift; sourceTree = "<group>"; };
 		435E24871E9B3D820097D8EC /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
