@@ -14,7 +14,7 @@
         <!--Missions Detail View Controller-->
         <scene sceneID="Tkg-Sy-DfG">
             <objects>
-                <viewController storyboardIdentifier="MissionsDetailViewController" id="nbl-95-gkX" customClass="MissionsDetailViewController" customModule="RunRRR" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MissionsDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nbl-95-gkX" customClass="MissionsDetailViewController" customModule="RunRRR" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UBB-8W-O5d"/>
                         <viewControllerLayoutGuide type="bottom" id="QQX-hc-fz8"/>
@@ -71,6 +71,9 @@
                                                 <color key="value" red="0.80392156859999997" green="0.078431372550000003" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="exitMissionDetailButtonTapped:" destination="nbl-95-gkX" eventType="touchUpInside" id="RtF-Kw-2BK"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example Mission" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="GsI-XE-tgY">
                                         <rect key="frame" x="55" y="15" width="223" height="50"/>
@@ -133,6 +136,11 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Lyr-7g-lAY" secondAttribute="trailing" constant="50" id="oJW-mg-taW"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="missionContentTextView" destination="Lyr-7g-lAY" id="GAS-tp-g3d"/>
+                        <outlet property="missionNameLabel" destination="GsI-XE-tgY" id="kAj-Ct-rgC"/>
+                        <outlet property="priorityLabel" destination="8g5-Q7-a4k" id="IsH-G7-mCe"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="orG-Kc-7fV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

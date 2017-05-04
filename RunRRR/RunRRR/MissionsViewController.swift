@@ -32,7 +32,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
         setupCollectionView()
         // Do any additional setup after loading the view.
         missionCollectionView.register(MissionsCell.self, forCellWithReuseIdentifier: "missionsCell")
-        missionCollectionView.contentInset = UIEdgeInsetsMake(60, 0, 0, 0)
+        missionCollectionView.contentInset = UIEdgeInsetsMake(80, 0, 0, 0)
         if #available(iOS 10.0, *){
             missionCollectionView.refreshControl = refreshControl
         } else{
@@ -188,6 +188,25 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
             
         }
         
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "ShowMissionDetail", sender: collectionView.cellForItem(at: indexPath))
+        
+    }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        switch(segue.identifier ?? ""){
+            case "ShowMissionDetail":
+            let missionDetailViewController = segue.destination as? MissionsDetailViewController
+            let selectedMissionCell = sender as? MissionsCell
+            let indexPath = missionCollectionView.indexPath(for: selectedMissionCell!)
+            
+            let selectedMission = missionShowList[(indexPath?.item)!]
+            missionDetailViewController?.mission = selectedMission
+        default: break
+            
+        }
     }
     func refreshData(){
         self.loadMissions()
