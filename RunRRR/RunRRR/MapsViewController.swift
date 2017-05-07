@@ -128,7 +128,11 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
             case .success(let value):
                 let missionJson = JSON(value)
                 let missionObjects = missionJson["payload"]["objects"].arrayValue
-                
+                //let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
+                //let serverHour = 5
+                //let serverMin = 30
+                //let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
+                //let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
                 
                 for item in missionObjects{
 
