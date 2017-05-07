@@ -62,7 +62,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     
 
     func getMapsBountry(map: GMSMapView){
-        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/mapBoundary.xml").responseData { response in
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/download/map/boundary.kml").responseData { response in
             //print(response.request)  // original URL request
             //print(response.response) // HTTP URL response
             //print(response.data)     // server data
