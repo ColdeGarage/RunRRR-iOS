@@ -21,13 +21,11 @@ class MissionsData{
     var score:Int
     var locationE:Double
     var locationN:Double
-    var check:String           //Mission status check
-                            //0:not sloved, 1:checking 2:complete
+    var check:Int           //Mission status check
+                            // 0:審核失敗 1:審核中 2:審核成功 3.未解任務
     
     
-    enum checkType:String{
-        case unsloved, review, complete
-    }
+    
     
     struct PropertyKey {
         static let mid = "mid"
@@ -90,7 +88,7 @@ class MissionsData{
         self.score = score
         self.locationE = locationE
         self.locationN = locationN
-        self.check = "unsolved"
+        self.check = 3 // not solved
         
     }
     

@@ -10,22 +10,25 @@ import UIKit
 
 class ItemDetailView: NSObject{
     let blackView = UIView()
-    func showDetail(){
+    let detailWindow = ItemDetailWindow()
+    func showDetail(_ itemToDisplay: Item){
         //show detail view
-        let detailWindow = ItemDetailWindow()
+        
         if let window = UIApplication.shared.keyWindow{
             blackView.backgroundColor = UIColor(white: 0, alpha: 0.5)
             detailWindow.backgroundColor = UIColor.white
             window.addSubview(blackView)
             blackView.frame = window.frame
             blackView.alpha = 0
-            
+            blackView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(dismissDetail)))
+            detailWindow.itemNameLabel.text = itemToDisplay.name
             window.addSubview(detailWindow)
             window.addConstraintWithFormat(format: "H:|-50-[v0]-50-|", views: detailWindow)
             window.addConstraintWithFormat(format: "V:|-80-[v0]-80-|", views: detailWindow)
             detailWindow.setupWindow()
             UIView.animate(withDuration: 0.5, animations: {
                 self.blackView.alpha = 1
+                self.detailWindow.alpha = 1
             })
             
         }
@@ -34,7 +37,9 @@ class ItemDetailView: NSObject{
     func dismissDetail(){
         UIView.animate(withDuration: 0.5, animations: {
             self.blackView.alpha = 0
+            self.detailWindow.alpha = 0
         })
+        
     }
 }
 
