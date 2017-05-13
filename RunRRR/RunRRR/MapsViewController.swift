@@ -62,7 +62,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     
 
     func getMapsBountry(map: GMSMapView){
-        Alamofire.request("file:///Users/yi-chun/Desktop/RunRRR/RunRRR/TestingJson/mapBoundary.xml").responseData { response in
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/download/map/boundary.kml").responseData { response in
             //print(response.request)  // original URL request
             //print(response.response) // HTTP URL response
             //print(response.data)     // server data
@@ -128,7 +128,11 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
             case .success(let value):
                 let missionJson = JSON(value)
                 let missionObjects = missionJson["payload"]["objects"].arrayValue
-                
+                //let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
+                //let serverHour = 5
+                //let serverMin = 30
+                //let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
+                //let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
                 
                 for item in missionObjects{
 
