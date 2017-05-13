@@ -99,7 +99,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EvR-Fo-hqC" customClass="CameraButton" customModule="RunRRR" customModuleProvider="target">
-                                <rect key="frame" x="116.5" y="470" width="142" height="142"/>
+                                <rect key="frame" x="117" y="470" width="142" height="142"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="EvR-Fo-hqC" secondAttribute="height" multiplier="1:1" id="7z9-YW-mLg"/>
                                     <constraint firstAttribute="width" constant="142" id="RS6-v4-QBA"/>
