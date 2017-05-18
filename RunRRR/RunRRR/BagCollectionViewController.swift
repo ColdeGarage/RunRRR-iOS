@@ -115,8 +115,8 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     
     let itemDetailView = ItemDetailView()
     
-    func showItemDetail(_ item: BagItemCell){
-        itemDetailView.showDetail()
+    func showItemDetail(_ item: Item){
+        itemDetailView.showDetail(item)
     }
     // MARK: UICollectionViewDelegate
 
@@ -149,8 +149,11 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     }
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        print("tapped")
-        let cell = collectionView.cellForItem(at: indexPath)
-        showItemDetail(cell as! BagItemCell)
+//        let cell = collectionView.cellForItem(at: indexPath)
+        if (indexPath.item != 0){
+            let itemToDisplay = bag[indexPath.item-1][0] as Item
+            showItemDetail(itemToDisplay)
+        }
     }
     
     private func fetchPacks(){

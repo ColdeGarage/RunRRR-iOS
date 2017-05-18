@@ -14,7 +14,7 @@
         <!--Missions Detail View Controller-->
         <scene sceneID="Tkg-Sy-DfG">
             <objects>
-                <viewController storyboardIdentifier="MissionsDetailViewController" id="nbl-95-gkX" customClass="MissionsDetailViewController" customModule="RunRRR" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MissionsDetailViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="nbl-95-gkX" customClass="MissionsDetailViewController" customModule="RunRRR" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="UBB-8W-O5d"/>
                         <viewControllerLayoutGuide type="bottom" id="QQX-hc-fz8"/>
@@ -23,8 +23,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Lyr-7g-lAY">
-                                <rect key="frame" x="66" y="155" width="243" height="357"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lyr-7g-lAY">
+                                <rect key="frame" x="66" y="155" width="243" height="112"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <string key="text">I am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission. I  am an example mission.</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -71,6 +71,9 @@
                                                 <color key="value" red="0.80392156859999997" green="0.078431372550000003" blue="0.12549019610000001" alpha="1" colorSpace="calibratedRGB"/>
                                             </userDefinedRuntimeAttribute>
                                         </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="exitMissionDetailButtonTapped:" destination="nbl-95-gkX" eventType="touchUpInside" id="RtF-Kw-2BK"/>
+                                        </connections>
                                     </button>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Example Mission" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" translatesAutoresizingMaskIntoConstraints="NO" id="GsI-XE-tgY">
                                         <rect key="frame" x="55" y="15" width="223" height="50"/>
@@ -96,7 +99,7 @@
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EvR-Fo-hqC" customClass="CameraButton" customModule="RunRRR" customModuleProvider="target">
-                                <rect key="frame" x="116.5" y="470" width="142" height="142"/>
+                                <rect key="frame" x="117" y="470" width="142" height="142"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="EvR-Fo-hqC" secondAttribute="height" multiplier="1:1" id="7z9-YW-mLg"/>
                                     <constraint firstAttribute="width" constant="142" id="RS6-v4-QBA"/>
@@ -122,7 +125,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="Lyr-7g-lAY" firstAttribute="centerY" secondItem="PDZ-gk-T3a" secondAttribute="centerY" id="9CM-G0-gx2"/>
+                            <constraint firstItem="QQX-hc-fz8" firstAttribute="top" secondItem="Lyr-7g-lAY" secondAttribute="bottom" constant="400" id="7fB-i7-8as"/>
                             <constraint firstItem="QQX-hc-fz8" firstAttribute="top" secondItem="EvR-Fo-hqC" secondAttribute="bottom" constant="55" id="HSG-FN-kzg"/>
                             <constraint firstAttribute="trailingMargin" secondItem="psh-Hi-F1V" secondAttribute="trailing" constant="5" id="Qgn-48-3DH"/>
                             <constraint firstItem="Lyr-7g-lAY" firstAttribute="leading" secondItem="PDZ-gk-T3a" secondAttribute="leadingMargin" constant="50" id="cXS-uk-Fia"/>
@@ -133,10 +136,15 @@
                             <constraint firstAttribute="trailingMargin" secondItem="Lyr-7g-lAY" secondAttribute="trailing" constant="50" id="oJW-mg-taW"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="missionContentTextView" destination="Lyr-7g-lAY" id="GAS-tp-g3d"/>
+                        <outlet property="missionNameLabel" destination="GsI-XE-tgY" id="kAj-Ct-rgC"/>
+                        <outlet property="priorityLabel" destination="8g5-Q7-a4k" id="IsH-G7-mCe"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="orG-Kc-7fV" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3444.375" y="-797.53521126760563"/>
+            <point key="canvasLocation" x="3444" y="-798.35082458770626"/>
         </scene>
         <!--Camera-->
         <scene sceneID="M8z-nj-zZO">
