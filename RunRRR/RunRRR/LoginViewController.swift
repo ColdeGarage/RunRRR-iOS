@@ -76,6 +76,7 @@ class LoginViewController: UIViewController {
                     isLogin = true
                     let userUID = userInfoJson["uid"].int
                     //print(userInfoJson)
+                    //print(userInfoJson)
                     LocalUserDefault.set(isLogin, forKey: "RunRRR_Login")
                     LocalUserDefault.set(userUID, forKey: "RunRRR_UID")
                     LocalUserDefault.synchronize()

@@ -8,6 +8,8 @@ target 'RunRRR' do
   pod 'Alamofire'
   pod 'SwiftyJSON'
   pod 'SWXMLHash'
+  pod 'ALCameraViewController'
+  pod 'SwiftyCam'
   # Pods for RunRRR
 
 end

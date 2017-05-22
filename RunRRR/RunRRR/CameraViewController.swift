@@ -9,7 +9,7 @@
 import UIKit
 import AVFoundation
 
-class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
 
     let captureSession = AVCaptureSession()
     var previewLayer:CALayer!
@@ -75,6 +75,36 @@ class CameraViewController: UIViewController, AVCaptureVideoDataOutputSampleBuff
         }
         
     }
+
+    @IBAction func importPhoto(_ sender: Any) {
+    
+        let image = UIImagePickerController()
+        image.delegate = self
+        
+        image.sourceType = UIImagePickerControllerSourceType.photoLibrary
+        
+        image.allowsEditing = false
+        
+        self.present(image, animated: true)
+        {
+            
+        }
+    }
+    
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let image = info[UIImagePickerControllerOriginalImage] as? UIImage{
+            let Display = UIStoryboard(name: "Camera", bundle: nil).instantiateViewController(withIdentifier: "PhotoVCimport") as! PhotoImportViewController
+            
+            Display.importPhoto = image
+            DispatchQueue.main.async {
+                self.present(Display, animated: true, completion: nil)
+            }
+        }
+        
+        self.dismiss(animated: true, completion: nil)
+    }
+    
     @IBAction func Cancel(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }

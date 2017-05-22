@@ -101,8 +101,17 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             cell.itemName.text = "金錢"
         }else{
             cell.itemName.text = bag[indexPath.item-1][0].name
-//            cell.itemImage.image = UIImage(named: "money")
-            cell.itemCount.text = String(bag[indexPath.item-1].count)
+            if let imageUrl = bag[indexPath.item-1][0].imageURL {
+                let imageURLAllowedCharacters = imageUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
+                let downloadURL = "\(API_URL)/download/img/\(imageURLAllowedCharacters!)"
+                Alamofire.request(downloadURL).responseData{
+                    responds in
+                    if let image = responds.result.value{
+                        cell.itemImage.image = UIImage(data: image)
+                    }
+                }
+            }
+            cell.itemCount.text = String(self.bag[indexPath.item-1].count)
         }
         return cell
     }
@@ -157,15 +166,18 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     }
     
     private func fetchPacks(){
+        // Remove history items
         packs.removeAll()
-//        items.removeAll()
         bag.removeAll()
+        
+        //Start calling API
         let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
         let packParameter : Parameters = ["operator_uid":UID, "uid":UID]
         Alamofire.request("\(API_URL)/pack/read", parameters: packParameter).responseJSON{ response in
-            print("\(API_URL)/pack/read")
             switch response.result{
             case .success(let value):
+                
+                //Parse the "packs" into array
                 let packJSON = JSON(value)
                 let packsArray = packJSON["payload"]["objects"].arrayValue
                 for eachPack in packsArray{
