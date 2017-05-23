@@ -26,6 +26,9 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
         return cv
     }()
     
+    override func viewWillAppear(_ animated: Bool) {
+        loadMissions()
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -41,7 +44,6 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
         // Configure Refresh Control
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
         setupMenuBar()
-        loadMissions()
     }
     func setupCollectionView(){
         view.addSubview(missionCollectionView)
@@ -76,11 +78,11 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
         switch self.missionShowList[indexPath.row].check {
         case 0:
             cell.missionStatus.backgroundColor = UIColor.green
-        case 1:
+        case 1: //審核中
             cell.missionStatus.backgroundColor = UIColor.blue
         case 2:
             cell.missionStatus.backgroundColor = UIColor.darkGray
-        default:
+        default: //未解任務
             cell.missionStatus.backgroundColor = UIColor.brown
         }
         return cell
@@ -134,31 +136,37 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     
                 case .success(let value):
                     let missionReportJson = JSON(value)
+                    //print(missionReportJson.description)
                     let missionReport = missionReportJson["payload"]["objects"].arrayValue
                     let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
-                    let serverHour = 5
-                    let serverMin = 30
+                    let serverHour = 7
+                    let serverMin = 0
+                    //print(missionReport.description)
                     //let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
                     //let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
                     //filter the complete mission to the button
                     for missionStatus in missionReport{
+                        let rid = missionStatus["rid"].intValue
                         let mid = missionStatus["mid"].intValue
                         let status = missionStatus["status"].intValue
+                        let imageURL = missionStatus["url"].stringValue
                         let index = self.missionShowList.index(where:{$0.mid == mid})
                         
-                        //if mission complete
+                        self.missionShowList[index!].imageURL = imageURL
+                        self.missionShowList[index!].rid = rid
                         //0:審核失敗 1:審核中 2:審核成功 3.未解任務
+                        //if mission complete
                         if status == 1 {
                             self.missionShowList[index!].check = 2
                             let missionComplete = self.missionShowList[index!]
                             self.missionShowList.remove(at: index!)
                             self.completeMissionList += [missionComplete]
                         }
-                            //if mission is reviewing
+                        //if mission is reviewing
                         else if status == 0 {
                             self.missionShowList[index!].check = 1
                         }
-                        else {
+                        else { //mission fail
                             self.missionShowList[index!].check = 0
                         }
                     }
@@ -169,7 +177,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     for idx in 0...self.missionShowList.count-1{
                         let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
                         let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
-                        if self.missionShowList[idx].check != 1 {
+                        if self.missionShowList[idx].check != 0 { //if reviewing and expired, still need to show
                             if timeHour < serverHour{
                                 idxToRemove.insert(idx)
                             }

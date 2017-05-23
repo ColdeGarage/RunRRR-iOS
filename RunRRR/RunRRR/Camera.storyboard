@@ -36,6 +36,9 @@
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pkw-xJ-cmo">
                                 <rect key="frame" x="316" y="612" width="44" height="30"/>
                                 <state key="normal" title="Album"/>
+                                <connections>
+                                    <action selector="importPhoto:" destination="BYZ-38-t0r" eventType="touchUpInside" id="MV5-d8-Czr"/>
+                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bJS-cP-aeZ">
                                 <rect key="frame" x="15" y="612" width="48" height="30"/>
@@ -100,6 +103,46 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mc4-Nw-MFg" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1709.5999999999999" y="190.25487256371815"/>
+        </scene>
+        <!--Photo Import View Controller-->
+        <scene sceneID="oRk-Rc-wnp">
+            <objects>
+                <viewController storyboardIdentifier="PhotoVCimport" id="eVx-uZ-LRX" customClass="PhotoImportViewController" customModule="RunRRR" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="hGs-wc-i2l"/>
+                        <viewControllerLayoutGuide type="bottom" id="0lg-UN-3ME"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="3gh-4c-trZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="K9G-ZW-iho">
+                                <rect key="frame" x="22" y="20" width="34" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Back"/>
+                                <connections>
+                                    <action selector="goBack:" destination="eVx-uZ-LRX" eventType="touchUpInside" id="Ved-nh-kz8"/>
+                                </connections>
+                            </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IdX-Ri-haT">
+                                <rect key="frame" x="0.0" y="58" width="375" height="609"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hjT-wt-OsQ">
+                                <rect key="frame" x="309" y="20" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Send"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="imageView" destination="IdX-Ri-haT" id="ebb-bk-tq6"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="al8-WH-hAJ" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2412" y="190"/>
         </scene>
     </scenes>
     <resources>

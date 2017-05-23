@@ -1,25 +1,31 @@
 PODS:
   - Alamofire (4.4.0)
+  - ALCameraViewController (1.2.7)
   - GoogleMaps (2.2.0):
     - GoogleMaps/Maps (= 2.2.0)
   - GoogleMaps/Base (2.2.0)
   - GoogleMaps/Maps (2.2.0):
     - GoogleMaps/Base
+  - SwiftyCam (2.1.0)
   - SwiftyJSON (3.1.4)
   - SWXMLHash (3.0.4)
 
 DEPENDENCIES:
   - Alamofire
+  - ALCameraViewController
   - GoogleMaps
+  - SwiftyCam
   - SwiftyJSON
   - SWXMLHash
 
 SPEC CHECKSUMS:
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
+  ALCameraViewController: 4a513b8d5ecfdb3f34c50b1d469c373aae1ec7b4
   GoogleMaps: 104c418d61ab8a05dff06ed0784c25ea9d37da45
+  SwiftyCam: 2f13473f67afa4658bff79453d7db6890e2fa84d
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   SWXMLHash: 29d20b84692fc319ea8ed933058fe7d8d005139b
 
-PODFILE CHECKSUM: 1123d6d4496e5977bac1f78c7e54e8d535c6b4e6
+PODFILE CHECKSUM: 51f65a28b3373fb7205919a49a4ca17b4e6d667a
 
 COCOAPODS: 1.2.0

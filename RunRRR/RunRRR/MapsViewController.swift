@@ -18,11 +18,21 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
 
     @IBOutlet weak var mainMaps: GMSMapView!
     @IBOutlet weak var pointSqr: UILabel!
+    var missionShowList = [MissionsData]()
+    var completeMissionList = [MissionsData]()
     let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
     let manager = CLLocationManager()
     var currentLocatoin : CLLocation!
     var uploadCurrentLocationTimer = Timer()
     //let networkQuality = Reach()
+    
+    override func viewWillAppear(_ animated: Bool) {
+        self.mainMaps.clear()
+        getMapsBountry(map: mainMaps)
+        getMissionLocations(map: mainMaps)
+        getPoints(pointSqr: pointSqr)
+        
+    }
     
     
     override func viewDidLoad() {
@@ -42,9 +52,6 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
         pointSqr.backgroundColor = UIColor(red:250/255, green:250/255, blue:250/255, alpha:1.0)
         pointSqr.layer.masksToBounds = true
         pointSqr.layer.cornerRadius = 8.0
-        getMapsBountry(map: mainMaps)
-        getMissionLocations(map: mainMaps)
-        getPoints(pointSqr: pointSqr)
         
         //current location
         manager.delegate = self as? CLLocationManagerDelegate
@@ -119,7 +126,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     
     func getMissionLocations(map:GMSMapView){
 
-        let missionPara = ["operator_uid":self.userID]
+        /*let missionPara = ["operator_uid":self.userID]
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read", method: .get, parameters:missionPara
             ).responseJSON{ response in
 
@@ -129,30 +136,153 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
                 let missionJson = JSON(value)
                 let missionObjects = missionJson["payload"]["objects"].arrayValue
                 //let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
-                //let serverHour = 5
-                //let serverMin = 30
+                let serverHour = 7
+                let serverMin = 0
                 //let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
                 //let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
                 
                 for item in missionObjects{
 
-
+                    print(item)
+                    let timeEnd = item["time_end"].stringValue
+                    let timeWithoutDate = timeEnd.components(separatedBy: "T")[1]
+                    let timeHour = Int(timeWithoutDate.components(separatedBy: ":")[0])!
+                    let timeMin = Int(timeWithoutDate.components(separatedBy: ":")[1])!
+                    
                     let locationE = item["location_e"].doubleValue
                     let locationN = item["location_n"].doubleValue
                     let title = item["title"].stringValue
                     
+                    
                     if locationE != 0 && locationN != 0 {
-                        let position = CLLocationCoordinate2D(latitude: locationN, longitude: locationE)
-                        let marker = GMSMarker(position:position)
-                        marker.title = title
-                        marker.map = map
+                        if timeHour > serverHour {
+                            let position = CLLocationCoordinate2D(latitude: locationN, longitude: locationE)
+                            let marker = GMSMarker(position:position)
+                            marker.title = title
+                            marker.map = map
+                        }else if (timeHour == serverHour) && (timeMin > serverMin){
+                            let position = CLLocationCoordinate2D(latitude: locationN, longitude: locationE)
+                            let marker = GMSMarker(position:position)
+                            marker.title = title
+                            marker.map = map
+                        }
                     }
-
                 }
             case .failure(let error):
                 print(error)
             }
+        }*/
+        map.clear()
+        missionShowList.removeAll()
+        completeMissionList.removeAll()
+        let missionReadParameter = ["operator_uid":self.userID]
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read",parameters:missionReadParameter).responseJSON{ response in
+            
+            switch response.result{
+            case .success(let value):
+                let missionsJson = JSON(value)
+                let missions = missionsJson["payload"]["objects"].arrayValue
+                for mission in missions{
+                    let mid = mission["mid"].intValue
+                    let title = mission["title"].stringValue
+                    let content = mission["content"].stringValue
+                    let timeStart = mission["time_start"].stringValue
+                    let timeEnd = mission["time_end"].stringValue
+                    let price = mission["price"].intValue
+                    let clue = mission["clue"].intValue
+                    let type = mission["class"].stringValue
+                    let score = mission["score"].intValue
+                    let locationE = mission["location_e"].doubleValue
+                    let locationN = mission["location_n"].doubleValue
+                    
+                    guard let missionItem = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,price:price,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN) else{
+                        fatalError("Unable to load missionItem")
+                    }
+                    self.missionShowList += [missionItem]
+                }
+            case .failure(let error):
+                print(error)
+            }
+            self.missionShowList.sort(by: {$0.type < $1.type})
+            
+            let reportReadParameter = ["operator_uid":self.userID, "uid":self.userID]
+            Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/report/read",parameters:reportReadParameter).responseJSON{ response in
+                switch response.result{
+                    
+                case .success(let value):
+                    let missionReportJson = JSON(value)
+                    //print(missionReportJson.description)
+                    let missionReport = missionReportJson["payload"]["objects"].arrayValue
+                    let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
+                    let serverHour = 7
+                    let serverMin = 0
+                    //print(missionReport.description)
+                    //let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
+                    //let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
+                    //filter the complete mission to the button
+                    for missionStatus in missionReport{
+                        //let rid = missionStatus["rid"].intValue
+                        let mid = missionStatus["mid"].intValue
+                        let status = missionStatus["status"].intValue
+                        //let imageURL = missionStatus["url"].stringValue
+                        let index = self.missionShowList.index(where:{$0.mid == mid})
+                        
+                        //0:審核失敗 1:審核中 2:審核成功 3.未解任務
+                        //if mission complete
+                        if status == 1 {
+                            self.missionShowList[index!].check = 2
+                            let missionComplete = self.missionShowList[index!]
+                            self.missionShowList.remove(at: index!)
+                            self.completeMissionList += [missionComplete]
+                        }
+                            //if mission is reviewing
+                        else if status == 0 {
+                            self.missionShowList[index!].check = 1
+                        }
+                        else { //mission fail
+                            self.missionShowList[index!].check = 0
+                        }
+                    }
+                    
+                    //filter out the fail mission
+                    var idxToRemove = Set<Int>()
+                    
+                    for idx in 0...self.missionShowList.count-1{
+                        let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
+                        let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
+                        //if self.missionShowList[idx].check != 0 { //if reviewing and expired, still need to show
+                            if timeHour < serverHour{
+                                idxToRemove.insert(idx)
+                            }
+                            else if timeHour == serverHour{
+                                if timeMin < serverMin{
+                                    idxToRemove.insert(idx)
+                                }
+                            }
+                        //}
+                    }
+                    self.missionShowList = self.missionShowList
+                        .enumerated()
+                        .filter {!idxToRemove.contains($0.offset)}
+                        .map {$0.element}
+                case .failure(let error):
+                    print(error)
+                }
+                
+                for mission in self.missionShowList{
+                    let locationE = mission.locationE
+                    let locationN = mission.locationN
+                    let position = CLLocationCoordinate2D(latitude: locationN, longitude: locationE)
+                    let marker = GMSMarker(position:position)
+                    marker.title = mission.title
+                    marker.map = map
+                }
+            }
+            
         }
+        
+
+        
     }
     
     
@@ -189,29 +319,29 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     @IBAction func missionButtonTapped(_ sender: Any) {
         let vc = UIStoryboard(name: "Missions", bundle: nil).instantiateViewController(withIdentifier: "MissionsViewController") as! MissionsViewController
         vc.delegate = self
-        self.present(vc, animated: true, completion: nil)
+        self.present(vc, animated: false, completion: nil)
     }
     @IBAction func bagButtonTapped(_ sender: Any) {
         let vc = UIStoryboard(name: "Bag", bundle: nil).instantiateViewController(withIdentifier: "BagCollectionViewController") as! BagCollectionViewController
         vc.delegate = self
-        self.present(vc, animated: true, completion: nil)
+        self.present(vc, animated: false, completion: nil)
     }
     func segueToBag(){
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
         let vc = UIStoryboard(name: "Bag", bundle: nil).instantiateViewController(withIdentifier: "BagCollectionViewController") as! BagCollectionViewController
         vc.delegate = self
-        self.present(vc, animated: true, completion: nil)
+        self.present(vc, animated: false, completion: nil)
     }
     func segueToMore(){
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
         let vc = UIStoryboard(name: "More", bundle: nil).instantiateViewController(withIdentifier: "MoreNavigator") as! UINavigationController
-        self.present(vc, animated: true, completion: nil)
+        self.present(vc, animated: false, completion: nil)
     }
     func segueToMission(){
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
         let vc = UIStoryboard(name: "Missions", bundle: nil).instantiateViewController(withIdentifier: "MissionsViewController") as! MissionsViewController
         vc.delegate = self
-        self.present(vc, animated: true, completion: nil)
+        self.present(vc, animated: false, completion: nil)
     }
     // MARK: - Navigation
 
