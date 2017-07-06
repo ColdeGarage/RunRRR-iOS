@@ -16,6 +16,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
     
     var imagePicker: UIImagePickerController!
     let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+    let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
     var mission : MissionsData?
     @IBOutlet weak var ShowImage: UIImageView!
     @IBOutlet weak var priorityLabel: PriorityLabel!
@@ -24,15 +25,38 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
     }
     @IBOutlet weak var missionContentTextView: UITextView!
     @IBOutlet weak var missionNameLabel: UILabel!
+    
+    @IBOutlet weak var cameraButton: CameraButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupMissionDetail()
+        
+        Alamofire.request("http://coldegarage.tech:8081/api/v1/member/read").responseJSON{ response in
+            if response.result.isSuccess {
+                let statusJson = JSON(response.result.value!)
+                let statusArray = statusJson["payload"]["object"].arrayValue
+                let userStatus = statusArray[0].intValue
+                    if ( userStatus == 1) {
+                        self.cameraButton.isHidden = false
+                    }
+                    else {
+                        self.cameraButton.isHidden = true
+                    }
+            } else {
+            print("error: \(response.error)")
+            }
+        }
+    
+    
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     
     }
+    
+    
     private func setupMissionDetail(){
         if let missionPriority = mission?.type{
             switch(missionPriority){
@@ -66,6 +90,8 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
             print("no photo")
         }
     }
+    
+    
     @IBAction func choosePhoto(_ sender: Any) {
         if (mission?.check != 1) && (mission?.check != 2){
             let croppingEnabled = false
@@ -88,7 +114,9 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                         methodReport = Alamofire.HTTPMethod.post
                     }
                     
-                    let reportImagePara : [String:Any] = ["operator_uid":self!.userID,"mid" : mid, "image":imageBase64!]
+
+                    let reportImagePara : [String:Any] = ["operator_uid":self!.userID,"token":self?.token,"mid" : mid, "image":imageBase64!]
+
                     Alamofire.request(urlReport,method: methodReport, parameters:reportImagePara).validate().responseJSON{ response in
                         
                         switch response.result{

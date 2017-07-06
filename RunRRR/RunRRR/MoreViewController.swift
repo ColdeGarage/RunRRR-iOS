@@ -14,8 +14,8 @@ class MoreViewController: UIViewController , UITableViewDelegate, UITableViewDat
         self.dismiss(animated: true, completion: nil)
     }
     
-    let list = ["Die","About","SOS","Logout"]
-    let identities = ["Die","About","SOS","Logout"]
+    let list = ["Barcode","Die","About","SOS","Logout"]
+    let identities = ["Barcode","Die","About","SOS","Logout"]
     
     override func viewDidLoad() {
         super.viewDidLoad()

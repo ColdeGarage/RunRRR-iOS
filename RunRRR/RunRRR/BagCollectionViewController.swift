@@ -16,6 +16,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     var delegate: segueBetweenViewController!
     private let refreshControl = UIRefreshControl()
     let LocalUserDefault = UserDefaults.standard
+    let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
     var packs = [Pack]()
 //    var items = [Item]()
     var bag = [[Item]]()
@@ -50,8 +51,8 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             return mb
         }()
         view.addSubview(menuBar)
-        view.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
-        view.addConstraintWithFormat(format: "V:|-20-[v0(58)]|", views: menuBar)
+        view.addConstraintWithFormat(format: "H:|-0-[v0]-0-|", views: menuBar)
+        view.addConstraintWithFormat(format: "V:|-20-[v0(58)]", views: menuBar)
         (menuBar.arrangedSubviews[0] as! UIButton).addTarget(self, action: #selector(segueToMap), for: .touchUpInside)
         (menuBar.arrangedSubviews[1] as! UIButton).addTarget(self, action: #selector(changeToMissions), for: .touchUpInside)
         (menuBar.arrangedSubviews[3] as! UIButton).addTarget(self, action: #selector(changeToMore), for: .touchUpInside)
@@ -100,8 +101,8 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             cell.itemImage.image = UIImage(named: "money")
             cell.itemName.text = "金錢"
         }else{
-            cell.itemName.text = bag[indexPath.item-1][0].name
-            if let imageUrl = bag[indexPath.item-1][0].imageURL {
+            cell.itemName.text = bag[indexPath.item-1].last?.name
+            if let imageUrl = bag[indexPath.item-1].last?.imageURL {
                 let imageURLAllowedCharacters = imageUrl.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed)
                 let downloadURL = "\(API_URL)/download/img/\(imageURLAllowedCharacters!)"
                 Alamofire.request(downloadURL).responseData{
@@ -125,6 +126,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     let itemDetailView = ItemDetailView()
     
     func showItemDetail(_ item: Item){
+        itemDetailView.delegateViewController = self
         itemDetailView.showDetail(item)
     }
     // MARK: UICollectionViewDelegate
@@ -160,7 +162,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
 //        print("tapped")
 //        let cell = collectionView.cellForItem(at: indexPath)
         if (indexPath.item != 0){
-            let itemToDisplay = bag[indexPath.item-1][0] as Item
+            let itemToDisplay = bag[indexPath.item-1].last! as Item
             showItemDetail(itemToDisplay)
         }
     }
@@ -172,7 +174,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         
         //Start calling API
         let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
-        let packParameter : Parameters = ["operator_uid":UID, "uid":UID]
+        let packParameter : Parameters = ["operator_uid":UID,"token":self.token, "uid":UID]
         Alamofire.request("\(API_URL)/pack/read", parameters: packParameter).responseJSON{ response in
             switch response.result{
             case .success(let value):
@@ -201,10 +203,10 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         }
     }
     private func fetchItem(){
-        for item in packs{
-            if(item.itemClass == .tool){
+        for itemToFetch in packs{
+            if(itemToFetch.itemClass == .tool){
                 let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
-                let toolsParameter : Parameters = ["operator_uid":UID, "tid":item.id as Any]
+                let toolsParameter : Parameters = ["operator_uid":UID,"token":self.token, "tid":itemToFetch.id as Any]
                 Alamofire.request("\(API_URL)/tool/read", parameters:toolsParameter).responseJSON{ response in
 //                    print(response)
                     switch(response.result){
@@ -214,6 +216,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                         let tool : Item = {
                             let item = Item()
                             item.itemClass = .tool
+                            item.pid = itemToFetch.pid
                             item.tid = toolsArray[0]["tid"].intValue
                             item.content = toolsArray[0]["content"].stringValue
                             item.expireSec = toolsArray[0]["expire"].intValue
@@ -234,7 +237,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             }
             else{
                 let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
-                let toolsParameter : Parameters = ["operator_uid":UID, "cid":item.id as Any]
+                let toolsParameter : Parameters = ["operator_uid":UID,"token":self.token, "cid":itemToFetch.id as Any]
                 Alamofire.request("\(API_URL)/clue/read", parameters:toolsParameter).responseJSON{ response in
                     switch(response.result){
                     case .success(let value):
@@ -289,6 +292,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             self.refreshControl.endRefreshing()
         }
     }
+    
 }
 
 @IBDesignable class BagItemCell: UICollectionViewCell{
@@ -319,14 +323,14 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     }()
     func setupView(){
         addSubview(itemImage)
-        addConstraintWithFormat(format: "H:|[v0]|", views: itemImage)
-        addConstraintWithFormat(format: "V:|[v0(\(frame.width))]|", views: itemImage)
+        addConstraintWithFormat(format: "H:|-0-[v0]-0-|", views: itemImage)
+        addConstraintWithFormat(format: "V:|-0-[v0(\(frame.width))]", views: itemImage)
         addSubview(itemName)
-        addConstraintWithFormat(format: "H:|[v0]|", views: itemName)
-        addConstraintWithFormat(format: "V:|-\(frame.width)-[v0]|", views: itemName)
+        addConstraintWithFormat(format: "H:|-0-[v0]-0-|", views: itemName)
+        addConstraintWithFormat(format: "V:|-\(frame.width)-[v0(35)]", views: itemName)
         addSubview(itemCount)
-        addConstraintWithFormat(format: "H:|-\(frame.width/2)-[v0]-\(frame.width/10)-|", views: itemCount)
-        addConstraintWithFormat(format: "V:|-\(frame.width/7*5)-[v0(\(frame.width/4))]|", views: itemCount)
+        addConstraintWithFormat(format: "H:|-\(frame.width/2)-[v0]-\(frame.width/12)-|", views: itemCount)
+        addConstraintWithFormat(format: "V:|-\(frame.width/7*5)-[v0(\(frame.width/4))]", views: itemCount)
         
     }
     required init?(coder aDecoder: NSCoder) {

@@ -21,9 +21,12 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     var missionShowList = [MissionsData]()
     var completeMissionList = [MissionsData]()
     let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+    let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
+    var validArea:Bool = true
     let manager = CLLocationManager()
     var currentLocatoin : CLLocation!
     var uploadCurrentLocationTimer = Timer()
+    var notInAreaWarningTimer = Timer()
     //let networkQuality = Reach()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -58,8 +61,9 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
         manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.requestAlwaysAuthorization()
         manager.startUpdatingLocation()
-        //uploadCurrentLocation(manager: self.manager)
         scheduledUploadCurrentLocationTimer()
+        scheduledNotInAreaWarning()
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -109,7 +113,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     }
     func getPoints(pointSqr:UILabel){
 
-        let getPointsPara = ["operator_uid":self.userID,"uid":self.userID]
+        let getPointsPara = ["operator_uid":self.userID,"token":self.token,"uid":self.userID] as [String : Any]
         
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/read", method: .get, parameters: getPointsPara).responseJSON{ response in
 
@@ -175,7 +179,9 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
         map.clear()
         missionShowList.removeAll()
         completeMissionList.removeAll()
-        let missionReadParameter = ["operator_uid":self.userID]
+
+        let missionReadParameter = ["operator_uid":self.userID,"token":self.token] as [String : Any]
+
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read",parameters:missionReadParameter).responseJSON{ response in
             
             switch response.result{
@@ -205,7 +211,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
             }
             self.missionShowList.sort(by: {$0.type < $1.type})
             
-            let reportReadParameter = ["operator_uid":self.userID, "uid":self.userID]
+            let reportReadParameter = ["operator_uid":self.userID,"token":self.token, "uid":self.userID] as [String : Any]
             Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/report/read",parameters:reportReadParameter).responseJSON{ response in
                 switch response.result{
                     
@@ -216,7 +222,9 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
                     let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
                     let serverHour = 7
                     let serverMin = 0
+
                     //print(missionReport.description)
+
                     //let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
                     //let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
                     //filter the complete mission to the button
@@ -245,8 +253,9 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
                     }
                     
                     //filter out the fail mission
+
                     var idxToRemove = Set<Int>()
-                    
+
                     for idx in 0...self.missionShowList.count-1{
                         let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
                         let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
@@ -265,6 +274,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
                         .enumerated()
                         .filter {!idxToRemove.contains($0.offset)}
                         .map {$0.element}
+
                 case .failure(let error):
                     print(error)
                 }
@@ -289,33 +299,41 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     func scheduledUploadCurrentLocationTimer(){
         uploadCurrentLocationTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(MapsViewController.uploadCurrentLocation), userInfo: self.manager, repeats: true)
     }
+    func scheduledNotInAreaWarning(){
+        uploadCurrentLocationTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(MapsViewController.notInAreaWarning), userInfo: self.manager, repeats: true)
+    }
+    
     func uploadCurrentLocation(){
         let currentLocation = self.manager.location!
         let currentLocationLatitude = currentLocation.coordinate.latitude
         let currentLocationLongitude = currentLocation.coordinate.longitude
-        //print(currentLocationLatitude)
-        //print(currentLocationLongitude)
-        //print(self.userID)
-        //print(networkQuality.connectionStatus())
         
-        let currentLocationPara : [String:Any] = ["operator_uid":self.userID,"uid":self.userID, "position_e":currentLocationLongitude, "position_n":currentLocationLatitude]
+        let currentLocationPara : [String:Any] = ["operator_uid":self.userID,"token":self.token,"uid":self.userID, "position_e":currentLocationLongitude, "position_n":currentLocationLatitude]
+        
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/update", method: .put, parameters: currentLocationPara).responseJSON{ response in
             //print(response.timeline)
             switch response.result{
                 
             case .success(let value):
                 let memberUpdateInfo = JSON(value)
-                let brea = memberUpdateInfo["brea"].intValue
-                if brea != 0 {
-                    print("Something wrong")
-
-                }
+                //print(memberUpdateInfo)
+                self.validArea = memberUpdateInfo["payload"]["valid_area"].boolValue
+                //print(self.validArea)
             case .failure(let error):
                 print(error)
             }
         }
 
     }
+    func notInAreaWarning(){
+        if self.validArea == false{
+            let ac = UIAlertController(title: "Not in the boundary", message: "趕快回範圍內，不然我會一直警告你", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "Behave", style: .default))
+            present(ac, animated: true)
+        }
+    
+    }
+    
     @IBAction func missionButtonTapped(_ sender: Any) {
         let vc = UIStoryboard(name: "Missions", bundle: nil).instantiateViewController(withIdentifier: "MissionsViewController") as! MissionsViewController
         vc.delegate = self
@@ -335,6 +353,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     func segueToMore(){
         self.dismiss(animated: false, completion: nil)
         let vc = UIStoryboard(name: "More", bundle: nil).instantiateViewController(withIdentifier: "MoreNavigator") as! UINavigationController
+        //print(vc.description)
         self.present(vc, animated: false, completion: nil)
     }
     func segueToMission(){

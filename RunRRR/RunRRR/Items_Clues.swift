@@ -20,6 +20,7 @@ class Item: NSObject{
     var name: String?
     var tid: Int?
     var cid: Int?
+    var pid: Int?
     var itemClass: itemClasses?
     enum itemClasses{
         case tool

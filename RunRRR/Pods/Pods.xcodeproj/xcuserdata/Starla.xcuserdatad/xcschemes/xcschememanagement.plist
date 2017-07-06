@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>ALCameraViewController.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>5</integer>
+		</dict>
 		<key>Alamofire.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -19,6 +24,11 @@
 			<key>orderHint</key>
 			<integer>3</integer>
 		</dict>
+		<key>SwiftyCam.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>SwiftyJSON.xcscheme</key>
 		<dict>
 			<key>orderHint</key>
@@ -27,6 +37,11 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>778FE9FA06A680C064826C3596B6EFE2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>7F221F31AF663AEB19F9408570DC7037</key>
 		<dict>
 			<key>primary</key>
@@ -42,7 +57,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
+		<key>D7FAEFEAF68AE19EB2D22369766AF24E</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>DD9DE3F95DED0242D8F6F447679AFC20</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E83FE6B5EA1B69D62D09BE605EBB59D0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F5901A26DF1A12CD15B156D9FA199CAB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FBDB2528C342AF42297BFB2AA191E8E2</key>
 		<dict>
 			<key>primary</key>
 			<true/>

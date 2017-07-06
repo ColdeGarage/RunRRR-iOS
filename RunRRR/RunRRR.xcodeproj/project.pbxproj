@@ -30,6 +30,7 @@
 		439E957E1E8CEE970070B3CB /* More.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439E957D1E8CEE970070B3CB /* More.storyboard */; };
 		439E95801E8CEF060070B3CB /* Maps.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439E957F1E8CEF060070B3CB /* Maps.storyboard */; };
 		484918901EC73A43004958D4 /* PhotoImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4849188F1EC73A43004958D4 /* PhotoImportViewController.swift */; };
+		4887F87E1EDD18BE00788235 /* BarcodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4887F87D1EDD18BE00788235 /* BarcodeViewController.swift */; };
 		59A80B7F7333D9983BEB6DD3 /* Pods_RunRRR.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 03A84B3247D28A89072CDBEE /* Pods_RunRRR.framework */; };
 		7F3E9CC01E6920AB00A17814 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3E9CBF1E6920AB00A17814 /* AppDelegate.swift */; };
 		7F3E9CC21E6920AB00A17814 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F3E9CC11E6920AB00A17814 /* ViewController.swift */; };
@@ -38,6 +39,7 @@
 		7F3E9CCA1E6920AB00A17814 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E9CC91E6920AB00A17814 /* Assets.xcassets */; };
 		7F3E9CCD1E6920AB00A17814 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7F3E9CCB1E6920AB00A17814 /* LaunchScreen.storyboard */; };
 		7F575D691E6EAE880096E8F5 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7F575D681E6EAE880096E8F5 /* Reachability.swift */; };
+		7F972B771ED6CE31009ADA72 /* MoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 487FF3EB1E8E79C200F38EBA /* MoreViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +70,7 @@
 		439E957F1E8CEF060070B3CB /* Maps.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Maps.storyboard; sourceTree = "<group>"; };
 		4849188F1EC73A43004958D4 /* PhotoImportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoImportViewController.swift; sourceTree = "<group>"; };
 		487FF3EB1E8E79C200F38EBA /* MoreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MoreViewController.swift; sourceTree = "<group>"; };
+		4887F87D1EDD18BE00788235 /* BarcodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BarcodeViewController.swift; sourceTree = "<group>"; };
 		7F3E9CBC1E6920AB00A17814 /* RunRRR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RunRRR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		7F3E9CBF1E6920AB00A17814 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7F3E9CC11E6920AB00A17814 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -119,6 +122,7 @@
 		439E95821E8CF02A0070B3CB /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				4887F87D1EDD18BE00788235 /* BarcodeViewController.swift */,
 				439E956F1E8CEE260070B3CB /* LoginViewController.swift */,
 				431830121EB9BE1B0057683B /* PhotoViewController.swift */,
 				439E95711E8CEE2C0070B3CB /* MapsViewController.swift */,
@@ -232,7 +236,7 @@
 				TargetAttributes = {
 					7F3E9CBB1E6920AB00A17814 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = NZQD5E4ZVD;
+						DevelopmentTeam = 64MJ2M9HET;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -328,6 +332,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7F972B771ED6CE31009ADA72 /* MoreViewController.swift in Sources */,
 				4382F5E21EB098990085F563 /* MissionsViewController.swift in Sources */,
 				431830111EB9BE080057683B /* CameraViewController.swift in Sources */,
 				484918901EC73A43004958D4 /* PhotoImportViewController.swift in Sources */,
@@ -348,6 +353,7 @@
 				439E95701E8CEE260070B3CB /* LoginViewController.swift in Sources */,
 				4382F5E01EB087B80085F563 /* MenuBar.swift in Sources */,
 				7F575D691E6EAE880096E8F5 /* Reachability.swift in Sources */,
+				4887F87E1EDD18BE00788235 /* BarcodeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,10 +480,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = NZQD5E4ZVD;
+				DEVELOPMENT_TEAM = 64MJ2M9HET;
 				INFOPLIST_FILE = RunRRR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = EEECamp.RunRRR;
+				PRODUCT_BUNDLE_IDENTIFIER = EEECamp777.RunRRR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -489,10 +495,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = NZQD5E4ZVD;
+				DEVELOPMENT_TEAM = 64MJ2M9HET;
 				INFOPLIST_FILE = RunRRR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = EEECamp.RunRRR;
+				PRODUCT_BUNDLE_IDENTIFIER = EEECamp777.RunRRR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
