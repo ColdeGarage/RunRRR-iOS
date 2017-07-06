@@ -82,7 +82,7 @@ class ItemDetailWindow : UIView{
         return label
     }()
     let itemUseButton: UIButton = {
-        let button = UIButton(type = .system)
+        let button = UIButton()
         button.isEnabled = true
         button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         button.setTitleColor(UIColor.black, for: .normal)

@@ -269,7 +269,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
                                 }
                             }
                         //}
-                    }         */
+                    }
                     self.missionShowList = self.missionShowList
                         .enumerated()
                         .filter {!idxToRemove.contains($0.offset)}
