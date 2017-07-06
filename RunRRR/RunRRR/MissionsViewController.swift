@@ -16,6 +16,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
     var completeMissionList = [MissionsData]()
     private let refreshControl = UIRefreshControl()
     let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+    let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
     
     lazy var missionCollectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -100,13 +101,14 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
     func loadMissions(){
         missionShowList.removeAll()
         completeMissionList.removeAll()
-        let missionReadParameter = ["operator_uid":self.userID]
+        let missionReadParameter:[String:Any] = ["operator_uid":self.userID,"token":self.token]
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read",parameters:missionReadParameter).responseJSON{ response in
 
             switch response.result{
             case .success(let value):
                 let missionsJson = JSON(value)
                 let missions = missionsJson["payload"]["objects"].arrayValue
+                
                 for mission in missions{
                     let mid = mission["mid"].intValue
                     let title = mission["title"].stringValue
@@ -119,6 +121,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     let score = mission["score"].intValue
                     let locationE = mission["location_e"].doubleValue
                     let locationN = mission["location_n"].doubleValue
+                    let missionImageURL = mission["url"].stringValue
                     
                     guard let missionItem = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,price:price,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN) else{
                         fatalError("Unable to load missionItem")
@@ -130,7 +133,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
             }
             self.missionShowList.sort(by: {$0.type < $1.type})
             
-            let reportReadParameter = ["operator_uid":self.userID, "uid":self.userID]
+            let reportReadParameter = ["operator_uid":self.userID,"token":self.token, "uid":self.userID] as [String : Any]
             Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/report/read",parameters:reportReadParameter).responseJSON{ response in
                 switch response.result{
                     
@@ -172,9 +175,9 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     }
                     
                     //filter out the fail mission
-                    var idxToRemove = Set<Int>()
+                    /*var idxToRemove = Set<Int>()
                     
-                    for idx in 0...self.missionShowList.count-1{
+                   /*for idx in 0...self.missionShowList.count-1{
                         let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
                         let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
                         if self.missionShowList[idx].check != 0 { //if reviewing and expired, still need to show
@@ -187,11 +190,11 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                                 }
                             }
                         }
-                    }
+                    }*/
                     self.missionShowList = self.missionShowList
                         .enumerated()
                         .filter {!idxToRemove.contains($0.offset)}
-                        .map {$0.element}
+                        .map {$0.element}*/
                 case .failure(let error):
                     print(error)
                 }

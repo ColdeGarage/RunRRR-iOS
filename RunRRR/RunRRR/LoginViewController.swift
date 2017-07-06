@@ -75,10 +75,11 @@ class LoginViewController: UIViewController {
                 if(!userInfoJson["payload"]["correct"].boolValue){
                     isLogin = true
                     let userUID = userInfoJson["uid"].int
-                    //print(userInfoJson)
-                    //print(userInfoJson)
+                    let token = userInfoJson["token"].stringValue
+                    print(userInfoJson)
                     LocalUserDefault.set(isLogin, forKey: "RunRRR_Login")
                     LocalUserDefault.set(userUID, forKey: "RunRRR_UID")
+                    LocalUserDefault.set(token, forKey: "RunRRR_Token")
                     LocalUserDefault.synchronize()
                     let login = UIStoryboard(name: "Maps", bundle: nil).instantiateViewController(withIdentifier: "MapsViewController") as! MapsViewController
                     self.present(login, animated: true)

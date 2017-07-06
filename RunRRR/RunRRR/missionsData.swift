@@ -25,7 +25,7 @@ class MissionsData{
                             // 0:審核失敗 1:審核中 2:審核成功 3.未解任務
     var rid:Int? = nil
     var imageURL:String? = nil
-    
+    var missionImageURL:String? = nil
     
     
     struct PropertyKey {
