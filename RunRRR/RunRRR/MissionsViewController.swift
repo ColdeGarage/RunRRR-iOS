@@ -123,7 +123,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     let locationN = mission["location_n"].doubleValue
                     let missionImageURL = mission["url"].stringValue
                     
-                    guard let missionItem = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,price:price,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN) else{
+                    guard let missionItem = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,price:price,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN,missionImageURL:missionImageURL) else{
                         fatalError("Unable to load missionItem")
                     }
                     self.missionShowList += [missionItem]

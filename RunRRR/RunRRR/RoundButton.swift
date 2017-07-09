@@ -18,25 +18,27 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
     let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
     let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
     var mission : MissionsData?
-    @IBOutlet weak var ShowImage: UIImageView!
+    @IBOutlet weak var showImage: UIImageView!
+    @IBOutlet weak var missionImage: UIImageView!
     @IBOutlet weak var priorityLabel: PriorityLabel!
     @IBAction func exitMissionDetailButtonTapped(_ sender: Any) {
         dismiss(animated: true, completion: nil)
     }
     @IBOutlet weak var missionContentTextView: UITextView!
     @IBOutlet weak var missionNameLabel: UILabel!
-    
     @IBOutlet weak var cameraButton: CameraButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupMissionDetail()
-        
-        Alamofire.request("http://coldegarage.tech:8081/api/v1/member/read").responseJSON{ response in
+        self.missionImage.contentMode = .scaleAspectFit
+        self.showImage.contentMode = .scaleAspectFit
+        let parameterSent : Parameters = ["operator_uid":userID, "token":token, "uid":userID]
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/read", parameters: parameterSent).responseJSON{ response in
             if response.result.isSuccess {
                 let statusJson = JSON(response.result.value!)
                 let statusArray = statusJson["payload"]["object"].arrayValue
-                let userStatus = statusArray[0].intValue
+                let userStatus = statusArray[0]["status"].intValue
                     if ( userStatus == 1) {
                         self.cameraButton.isHidden = false
                     }
@@ -44,7 +46,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                         self.cameraButton.isHidden = true
                     }
             } else {
-            print("error: \(response.error)")
+            print(response.error!)
             }
         }
     
@@ -81,13 +83,30 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                 switch response.result{
                     case .success(let value):
                         let image2Show = UIImage(data:value)!
-                        self.ShowImage.image = image2Show
+                        self.showImage.image = image2Show
                     case .failure(let error):
                         print(error)
                 }
             }
         }else{
             print("no photo")
+        }
+ 
+        if let remoteMissionImage = mission?.missionImageURL{
+            print(remoteMissionImage)
+            let missionImageURL:URLConvertible = "\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/download/img/" + remoteMissionImage
+            Alamofire.request(missionImageURL).validate().responseData{ response in
+                switch response.result{
+                    case .success(let value):
+                        let missionImage2Show = UIImage(data:value)!
+                        self.missionImage.image = missionImage2Show
+                    case .failure(let error):
+                        print(error)
+                }
+            
+            }
+        }else{
+            print("No photo mission")
         }
     }
     
@@ -115,7 +134,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                     }
                     
 
-                    let reportImagePara : [String:Any] = ["operator_uid":self!.userID,"token":self?.token,"mid" : mid, "image":imageBase64!]
+                    let reportImagePara : [String:Any] = ["operator_uid":self!.userID,"token":self!.token,"mid" : mid, "image":imageBase64!]
 
                     Alamofire.request(urlReport,method: methodReport, parameters:reportImagePara).validate().responseJSON{ response in
                         
@@ -123,7 +142,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                         
                         case .success(let value):
                             self?.mission?.check = 1 //審核中
-                            self?.ShowImage.image = image!
+                            self?.showImage.image = image!
                             //let photoUpdateInfo = JSON(value)
                             //print(photoUpdateInfo.description)
                         case .failure(let error):
@@ -151,7 +170,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
 
         UIImageWriteToSavedPhotosAlbum(chosenImage, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
         
-        ShowImage.image = chosenImage
+        showImage.image = chosenImage
         dismiss(animated: true, completion: nil)
     }
     
