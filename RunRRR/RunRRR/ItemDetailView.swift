@@ -57,6 +57,7 @@ class ItemDetailView: NSObject{
     func useItem(){
         let paraForDelete = ["operator_uid":self.UID, "pid":self.item?.pid as Any] as Parameters
         Alamofire.request("\(API_URL)/pack/delete", method: .delete, parameters: paraForDelete).responseJSON{ response in
+            print(response.result)
             switch(response.result){
             case .success:
                 _ = BagCollectionViewController().packs.popLast()

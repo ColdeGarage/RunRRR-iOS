@@ -33,9 +33,9 @@ class LoginViewController: UIViewController {
         let userAccount = accountTextField.text! as String
         let userPassword = passwordTextField.text! as String
         if(userAccount.isEmpty){
-            showMessage(message: "Please enter your account.")
+            showMessage(title:"Error", message: "Please enter your account.")
         }else if(userPassword.isEmpty){
-            showMessage(message: "Please enter your password.")
+            showMessage(title:"Error", message: "Please enter your password.")
         }else{
             // Auth
             userLogin(account: userAccount, password: userPassword)
@@ -45,11 +45,7 @@ class LoginViewController: UIViewController {
     }
     
     
-    func showMessage(message: String){
-        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: UIAlertControllerStyle.alert)
-        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
-        present(alertController, animated: true, completion: nil)
-    }
+    
     private func initLoginAppearance(){
         loginButton.layer.cornerRadius = 5
         loginButton.layer.borderWidth = CGFloat(3)
@@ -88,13 +84,13 @@ class LoginViewController: UIViewController {
                     isLogin = false
                     LocalUserDefault.set(isLogin, forKey: "RunRRR_Login")
                     LocalUserDefault.synchronize()
-                    self.showMessage(message:"Wrong password or the account doesn't exist")
+                    self.showMessage(title: "Error", message:"Wrong password or the account doesn't exist")
                 }
             }else{
                 isLogin = false
                 LocalUserDefault.set(isLogin, forKey: "RunRRR_Login")
                 LocalUserDefault.synchronize()
-                self.showMessage(message:"Time OUT")
+                self.showMessage(title: "Error",message:"Time OUT")
             }
         }
         //Because the request process is async, and the built-in function is executed after the completion of the request.(That is a completionHandler)
@@ -109,4 +105,12 @@ class LoginViewController: UIViewController {
     }
     */
     
+}
+
+extension UIViewController{
+    func showMessage(title: String, message: String){
+        let alertController = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.alert)
+        alertController.addAction(UIAlertAction(title: "OK", style: UIAlertActionStyle.default, handler: nil))
+        present(alertController, animated: true, completion: nil)
+    }
 }

@@ -44,8 +44,8 @@ class MissionsData{
     }
     
     init?(mid:Int,title:String,content:String,timeStart:String,timeEnd:String,price:Int,
-          clue:Int,type:String,score:Int,locationE:Double,locationN:Double){
-    
+          clue:Int,type:String,score:Int,locationE:Double,locationN:Double,missionImageURL:String){
+        
         guard !title.isEmpty else{
             return nil
         }
@@ -90,6 +90,10 @@ class MissionsData{
         self.locationE = locationE
         self.locationN = locationN
         self.check = 3 // not solved
+        
+        if !missionImageURL.isEmpty{
+            self.missionImageURL = missionImageURL
+        }
         
     }
     
