@@ -23,9 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         
         //Test
-        UserDefaults.standard.set(290, forKey: "RunRRR_UID")
-        UserDefaults.standard.set(123, forKey: "RunRRR_Token")
-        UserDefaults.standard.synchronize()
+       
         
         GMSServices.provideAPIKey(googleMapsApiKey)
         // get your storyboard
