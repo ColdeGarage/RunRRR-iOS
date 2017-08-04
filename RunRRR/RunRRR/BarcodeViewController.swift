@@ -13,6 +13,9 @@ import Foundation
 
 class BarcodeViewController: UIViewController {
 
+    @IBAction func CancelButtonTapped(_ sender: Any) {
+        dismiss(animated: false, completion: nil)
+    }
     @IBOutlet weak var barcodeDisplay: UIImageView!
     let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
     

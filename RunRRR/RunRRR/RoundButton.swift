@@ -18,100 +18,56 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
     let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
     let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
     var mission : MissionsData?
-    @IBOutlet weak var showImage: UIImageView!
-    @IBOutlet weak var missionImage: UIImageView!
-    @IBOutlet weak var priorityLabel: PriorityLabel!
-    @IBAction func exitMissionDetailButtonTapped(_ sender: Any) {
-        dismiss(animated: true, completion: nil)
-    }
-    @IBOutlet weak var missionContentTextView: UITextView!
-    @IBOutlet weak var missionNameLabel: UILabel!
-    @IBOutlet weak var cameraButton: CameraButton!
+    var missionReportImage: UIImageView?
+    var missionImage: UIImageView?
+
+    
+    let cameraButton : UIButton = {
+        let button = UIButton()
+        button.isEnabled = true
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        button.setTitleColor(UIColor.red, for: .normal)
+        button.setTitle("CAMERA", for: .normal)
+        button.titleLabel?.textAlignment = NSTextAlignment.center
+        return button
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupMissionDetail()
-        self.missionImage.contentMode = .scaleAspectFit
-        self.showImage.contentMode = .scaleAspectFit
-        let parameterSent : Parameters = ["operator_uid":userID, "token":token, "uid":userID]
-        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/read", parameters: parameterSent).responseJSON{ response in
-            if response.result.isSuccess {
-                let statusJson = JSON(response.result.value!)
-                let statusArray = statusJson["payload"]["object"].arrayValue
-                let userStatus = statusArray[0]["status"].intValue
+        isCameraButton()
+        cameraButton.addTarget(self, action: #selector(choosePhoto), for: .touchUpInside)
+     //   self.missionImage?.contentMode = .scaleAspectFit
+       // self.missionReportImage?.contentMode = .scaleAspectFit
+    }
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    func isCameraButton(){
+        
+        let parameterSent : Parameters = ["operator_uid":self.userID, "token":self.token, "uid":self.userID]
+            Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/read", parameters: parameterSent).responseJSON{ response in
+                print(response)
+                if response.result.isSuccess {
+                    let statusJson = JSON(response.result.value!)
+                    let statusArray = statusJson["payload"]["objects"].arrayValue
+                    let userStatus = statusArray[0]["status"].intValue
                     if ( userStatus == 1) {
                         self.cameraButton.isHidden = false
                     }
                     else {
                         self.cameraButton.isHidden = true
                     }
-            } else {
-            print(response.error!)
-            }
-        }
-    
-    
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    
-    }
-    
-    
-    private func setupMissionDetail(){
-        if let missionPriority = mission?.type{
-            switch(missionPriority){
-            case "1":
-                priorityLabel.text = "緊"
-            case "2":
-                priorityLabel.text = "主"
-            case "3":
-                priorityLabel.text = "支"
-            default:
-                priorityLabel.text = "?"
-            }
-        }
-        
-        
-        missionNameLabel.text = mission?.title
-        missionContentTextView.text = mission?.content
-        if let remoteImage = mission?.imageURL{
-            let imageURL:URLConvertible = "\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/download/img/" + remoteImage
-            //print(imageURL)
-            Alamofire.request(imageURL).validate().responseData{ response in
-                switch response.result{
-                    case .success(let value):
-                        let image2Show = UIImage(data:value)!
-                        self.showImage.image = image2Show
-                    case .failure(let error):
-                        print(error)
+                } else {
+                    print(response.error!)
                 }
             }
-        }else{
-            print("no photo")
-        }
- 
-        if let remoteMissionImage = mission?.missionImageURL{
-            print(remoteMissionImage)
-            let missionImageURL:URLConvertible = "\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/download/img/" + remoteMissionImage
-            Alamofire.request(missionImageURL).validate().responseData{ response in
-                switch response.result{
-                    case .success(let value):
-                        let missionImage2Show = UIImage(data:value)!
-                        self.missionImage.image = missionImage2Show
-                    case .failure(let error):
-                        print(error)
-                }
-            
-            }
-        }else{
-            print("No photo mission")
-        }
+        
     }
     
     
-    @IBAction func choosePhoto(_ sender: Any) {
+    func choosePhoto() {
         if (mission?.check != 1) && (mission?.check != 2){
             let croppingEnabled = false
             let cameraViewController = ALCameraViewController.CameraViewController(croppingEnabled: croppingEnabled) { [weak self] image, asset in
@@ -133,18 +89,18 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                         methodReport = Alamofire.HTTPMethod.post
                     }
                     
-
+                    
                     let reportImagePara : [String:Any] = ["operator_uid":self!.userID,"token":self!.token,"mid" : mid, "image":imageBase64!]
-
+                    
                     Alamofire.request(urlReport,method: methodReport, parameters:reportImagePara).validate().responseJSON{ response in
-                        
+                        print(response)
                         switch response.result{
-                        
+                            
                         case .success(let value):
                             self?.mission?.check = 1 //審核中
-                            self?.showImage.image = image!
+                            self?.missionReportImage?.image = image!
                             //let photoUpdateInfo = JSON(value)
-                            //print(photoUpdateInfo.description)
+                        //print(photoUpdateInfo.description)
                         case .failure(let error):
                             print(error)
                         }
@@ -165,12 +121,13 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
             present(checkingAlert,animated: true)
         }
     }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-
+        
         UIImageWriteToSavedPhotosAlbum(chosenImage, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
         
-        showImage.image = chosenImage
+        missionReportImage?.image = chosenImage
         dismiss(animated: true, completion: nil)
     }
     
@@ -190,70 +147,265 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
             present(ac, animated: true)
         }
     }
-
-}
-
-
-@IBDesignable class CloseButton: UIButton {
-    @IBInspectable var CornerRadius: CGFloat = 0{
-        didSet{
-            self.layer.cornerRadius = CornerRadius
-        }
-    }
-    @IBInspectable var BorderWidth: CGFloat = 0{
-        didSet{
-            self.layer.borderWidth = BorderWidth
-        }
-    }
-    @IBInspectable var BorderColor: UIColor = UIColor.clear{
-        didSet{
-            self.layer.borderColor = BorderColor.cgColor
-        }
+    
+    func dismissDetail(){
+        self.dismiss(animated: true, completion: nil)
     }
     
-}
+    
+    
+    
+    
+    
+    
+    
+    func setupMissionDetail(){
+        view.backgroundColor = UIColor(red: 230/255, green: 230/255, blue:230/255, alpha: 1)
+        
+        
+        
+        let missionPriorityLabel : UILabel = {
+            let label = UILabel()
+            if let missionPriority = mission?.type{
+                switch(missionPriority){
+                case "1":
+                    label.text = "限"
+                    label.textColor = UIColor(red: 255/255, green: 41/255, blue:41/255, alpha: 1)
+                    
+                case "2":
+                    label.text = "主"
+                    label.textColor = UIColor(red: 75/255, green: 220/255, blue:191/255, alpha: 1)
+                    
+                case "3":
+                    label.text = "支"
+                    label.textColor = UIColor(red: 245/255, green: 157/255, blue:52/255, alpha: 1)
+                default:
+                    label.text = "?"
+                }
+            }
+            label.layer.cornerRadius = 35
+            label.font = UIFont.systemFont(ofSize: 36)
+            label.clipsToBounds = true
+            label.backgroundColor = UIColor.white
+            label.textAlignment = .center
+            return label
+        }()
+        
+        
+        
+        
+        
+        let cancelButton : UIButton = {
+            let button = UIButton()
+            button.isEnabled = true
+            button.addTarget(self, action: #selector(dismissDetail), for: .touchUpInside)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+            button.setTitleColor(UIColor.black, for: .normal)
+            button.setTitle("CANCEL", for: .normal)
+            button.titleLabel?.textAlignment = NSTextAlignment.center
+            button.layer.borderWidth = 0
+            return button
+        }()
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        let missionTimingLabel : UILabel = {
+            let label = UILabel()
+            label.text = mission?.timeEnd
+            label.textColor = UIColor.darkGray
+            
+            return label
+        }()
+        
+        
+        
+        
+        
+        
+        
+        let missionStatusImage: UIImageView = {
+            let status = UIImageView()
+            status.layer.borderWidth = CGFloat(0)
+            status.layer.borderColor = UIColor.white.cgColor
+            status.layer.cornerRadius = 15
+            status.layer.masksToBounds = true
+            status.layer.backgroundColor = UIColor(red: 230/255, green: 230/255, blue:230/255, alpha: 0).cgColor
+            if let missionStatus = mission?.check{
+                switch (missionStatus) {
+                case 0:
+                    status.image = UIImage(named: "state_failed")
+                case 1: //審核中
+                    status.image = UIImage(named: "state_loading")
+                case 2:
+                    status.image = UIImage(named: "state_passed")
+                default: //未解任務
+                    status.backgroundColor = UIColor(red: 230/255, green: 230/255, blue:230/255, alpha: 0)
+                }
+            }
+            return status
+        }()
+        
+        
+        
+        let missionNameLabel : UILabel = {
+            let label = UILabel()
+            
+            label.textColor = UIColor.white
+            label.text = mission?.title
+            label.textAlignment = .center
+            return label
+        }()
+        
+        let missionTopView : UIView = {
+            let view = UIView()
+            if let missionPriority = mission?.type{
+                switch(missionPriority){
+                case "1":
+                    view.backgroundColor = UIColor(red: 255/255, green: 41/255, blue:41/255, alpha: 1)
+                    
+                case "2":
+                    view.backgroundColor = UIColor(red: 75/255, green: 220/255, blue:191/255, alpha: 1)
+                    
+                case "3":
+                    view.backgroundColor = UIColor(red: 245/255, green: 157/255, blue:52/255, alpha: 1)
+                default:
+                    view.backgroundColor = UIColor.white
+                }
+            }
+            return view
+        }()
+        
+        let missionContentTextView : UITextView = {
+            let textView = UITextView()
+            textView.text = mission?.content
+            textView.backgroundColor = UIColor(red: 230/255, green: 230/255, blue:230/255, alpha: 1)
+            textView.isScrollEnabled = true
+            textView.isEditable = false
+            return textView
+        }()
+        
+        
+        
+        
+        let missionImage: UIImageView = {
+            let image = UIImageView()
+            if let remoteMissionImage = mission?.missionImageURL{
+                print(remoteMissionImage)
+                let missionImageURL:URLConvertible = "\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/download/img/" + remoteMissionImage
+                Alamofire.request(missionImageURL).validate().responseData{ response in
+                    switch response.result{
+                    case .success(let value):
+                        let missionImage2Show = UIImage(data:value)!
+                        image.image = missionImage2Show
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            }else{
+                print("No photo mission")
+            }
+            image.contentMode = .scaleAspectFit
+            image.layer.borderWidth = CGFloat(2)
+            image.layer.borderColor = UIColor.white.cgColor
+            image.layer.cornerRadius = 5
+            image.layer.masksToBounds = true
+            return image
+        }()
+        
+        
+        
+        
+        let missionReportImage: UIImageView = {
+            let image = UIImageView()
+            if let remoteImage = mission?.imageURL{
+                let imageURL:URLConvertible = "\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/download/img/" + remoteImage
+                Alamofire.request(imageURL).validate().responseData{ response in
+                    switch response.result{
+                    case .success(let value):
+                        let image2Show = UIImage(data:value)!
+                        image.image = image2Show
+                    case .failure(let error):
+                        print(error)
+                    }
+                }
+            }else{
+                print("no photo")
+            }
+            
+            image.contentMode = .scaleAspectFit
+            image.layer.borderWidth = CGFloat(2)
+            image.layer.borderColor = UIColor.white.cgColor
+            image.layer.cornerRadius = 5
+            image.layer.masksToBounds = true
+            return image
+        }()
+        
+        
+        
+        
+        
+        view.addSubview(missionTopView)
+        view.addSubview(missionReportImage)
+        view.addSubview(missionPriorityLabel)
+        view.addSubview(cancelButton)
+        view.addSubview(cameraButton)
+        view.addSubview(missionTimingLabel)
+        view.addSubview(missionStatusImage)
+        view.addSubview(missionNameLabel)
+        view.addSubview(missionContentTextView)
+        view.addSubview(missionImage)
+        
+        view.addConstraintWithFormat(format: "V:|-20-[v0(80)]", views: missionTopView)
+        view.addConstraintWithFormat(format: "V:|-25-[v0(70)]", views: missionPriorityLabel)
+        view.addConstraintWithFormat(format: "V:|-65-[v0(30)]", views: missionTimingLabel)
+        view.addConstraintWithFormat(format: "V:|-70-[v0(30)]", views: missionStatusImage)
+        
+        
+        view.addConstraintWithFormat(format: "V:|-25-[v0(70)]-\(view.frame.height/25)-[v1]-\(view.frame.height/25)-[v2(\(view.frame.height/5))]-\(view.frame.height/25)-[v3(\(view.frame.height/5))]-\(view.frame.height/25)-[v4]",
+            views: missionNameLabel,missionContentTextView, missionImage, missionReportImage, cameraButton)
+        view.addConstraintWithFormat(format: "V:[v0(\(view.frame.height/15))]-\(view.frame.height/20)-|", views: cancelButton)
+        view.addConstraintWithFormat(format: "V:[v0(\(view.frame.height/15))]-\(view.frame.height/20)-|", views: cameraButton)
+        
+        
+        
+        view.addConstraintWithFormat(format: "H:|-\(view.frame.width/8)-[v0]-\(view.frame.width/8)-|", views: missionContentTextView)
+        view.addConstraintWithFormat(format: "H:|[v0(\(view.frame.width))]|", views: missionTopView)
+        
+        view.addConstraintWithFormat(format: "H:|-5-[v0(70)]-5-[v1]-5-[v2(50)]-5-|", views: missionPriorityLabel, missionNameLabel,missionTimingLabel)
+        
+        view.addConstraintWithFormat(format: "H:|-50-[v0(30)]", views: missionStatusImage)
 
+        
+        
+        view.addConstraintWithFormat(format: "H:[v0(70)]-\(view.frame.width/10)-|", views: cameraButton)
 
-@IBDesignable class PriorityLabel: UILabel {
-    @IBInspectable var CornerRadius: CGFloat = 0{
-        didSet{
-            self.layer.cornerRadius = CornerRadius
-        }
-    }
-    @IBInspectable var BorderWidth: CGFloat = 0{
-        didSet{
-            self.layer.borderWidth = BorderWidth
-        }
-    }
-    @IBInspectable var BorderColor: UIColor = UIColor.clear{
-        didSet{
-            self.layer.borderColor = BorderColor.cgColor
-        }
+        
+        view.addConstraintWithFormat(format: "H:|-\(view.frame.width/10)-[v0(70)]", views: cancelButton)
+        
+        
+        
+        view.addConstraintWithFormat(format: "H:|-\(view.frame.width/8)-[v0]-\(view.frame.width/8)-|", views: missionImage)
+        view.addConstraintWithFormat(format: "H:|-\(view.frame.width/8)-[v0]-\(view.frame.width/8)-|", views: missionReportImage)
+        
+   
     }
     
-}
-
-
-
-
-@IBDesignable class CameraButton: UIButton {
-    @IBInspectable var CornerRadius: CGFloat = 0{
-        didSet{
-            self.layer.cornerRadius = CornerRadius
-        }
-    }
-    @IBInspectable var BorderWidth: CGFloat = 0{
-        didSet{
-            self.layer.borderWidth = BorderWidth
-        }
-    }
-    @IBInspectable var BorderColor: UIColor = UIColor.clear{
-        didSet{
-            self.layer.borderColor = BorderColor.cgColor
-        }
-    }
     
+    
+
 }
+
+
+
+
 
 
 

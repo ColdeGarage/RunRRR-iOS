@@ -15,12 +15,13 @@ import CoreLocation
 
 class SOSViewController: UIViewController, GMSMapViewDelegate{
     
-    let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
-    let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
+    let userID = 290//UserDefaults.standard.integer(forKey: "RunRRR_UID")
+    let token = 123//UserDefaults.standard.string(forKey: "RunRRR_Token")!
     var validArea:Bool = true
     let manager = CLLocationManager()
     var currentLocatoin : CLLocation!
-
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

@@ -12,23 +12,36 @@ import SwiftyJSON
 
 private let reuseIdentifier = "BagItemCell"
 
-class BagCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-    var delegate: segueBetweenViewController!
+class BagCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, segueViewController {
     private let refreshControl = UIRefreshControl()
     let LocalUserDefault = UserDefaults.standard
+    let UID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
     let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
     var packs = [Pack]()
 //    var items = [Item]()
     var bag = [[Item]]()
+    var prevVC: UIViewController?
+    var memberMoney: Int?
+    let menuBar : MenuBarBelow = {
+        let menubar = MenuBarBelow()
+        menubar.currentPage = "Bags"
+        return menubar
+    }()
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupMenuBar()
+        prevVC?.dismiss(animated: false, completion: nil)
+        //setupMenuBar()
+        
+        self.view.addSubview(menuBar)
+        self.view.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
+        self.view.addConstraintWithFormat(format: "V:[v0(\(self.view.frame.height/6))]-0-|", views: menuBar)
+        
         // Uncomment the following line to preserve selection between presentations
         // self.clearsSelectionOnViewWillAppear = false
 
         // Register cell classes
         self.collectionView!.register(BagItemCell.self, forCellWithReuseIdentifier: reuseIdentifier)
-        self.collectionView!.contentInset = UIEdgeInsetsMake(90, 0, 0, 0)
+        self.collectionView!.contentInset = UIEdgeInsetsMake(20, 0, 0, 0)
         // Do any additional setup after loading the view.
         if #available(iOS 10.0, *){
             self.collectionView!.refreshControl = refreshControl
@@ -36,7 +49,10 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             self.collectionView!.addSubview(refreshControl)
         }
         refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        fetchMoney()
         fetchPacks()
+        menuBar.delegate = self
+        menuBar.dataSource = self
     }
     override func viewDidAppear(_ animated: Bool) {
         self.collectionView?.reloadData()
@@ -44,27 +60,6 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     func refreshData(){
         self.collectionView?.reloadData()
         fetchPacks()
-    }
-    func setupMenuBar(){
-        let menuBar : MenuBar = {
-            let mb = MenuBar("Bag")
-            return mb
-        }()
-        view.addSubview(menuBar)
-        view.addConstraintWithFormat(format: "H:|-0-[v0]-0-|", views: menuBar)
-        view.addConstraintWithFormat(format: "V:|-20-[v0(58)]", views: menuBar)
-        (menuBar.arrangedSubviews[0] as! UIButton).addTarget(self, action: #selector(segueToMap), for: .touchUpInside)
-        (menuBar.arrangedSubviews[1] as! UIButton).addTarget(self, action: #selector(changeToMissions), for: .touchUpInside)
-        (menuBar.arrangedSubviews[3] as! UIButton).addTarget(self, action: #selector(changeToMore), for: .touchUpInside)
-    }
-    func segueToMap(){
-        dismiss(animated: true, completion: nil)
-    }
-    func changeToMissions(){
-        delegate!.segueToMission()
-    }
-    func changeToMore(){
-        delegate!.segueToMore()
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -96,10 +91,12 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! BagItemCell
+        
         // Configure the cell
         if(indexPath.item == 0){  // the first block displays money
             cell.itemImage.image = UIImage(named: "money")
             cell.itemName.text = "金錢"
+            cell.itemCount.text = memberMoney?.description
         }else{
             cell.itemName.text = bag[indexPath.item-1].last?.name
             if let imageUrl = bag[indexPath.item-1].last?.imageURL {
@@ -116,18 +113,20 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         }
         return cell
     }
+    
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width/3, height: view.frame.height/4)
+        return CGSize(width: view.frame.width/3, height: view.frame.height/5)
     }
     
     let itemDetailView = ItemDetailView()
     
-    func showItemDetail(_ item: Item){
+    func showItemDetail(_ item: Item, itemCount:Int){
         itemDetailView.delegateViewController = self
-        itemDetailView.showDetail(item)
+        itemDetailView.showDetail(item, itemCount: itemCount)
     }
     // MARK: UICollectionViewDelegate
 
@@ -163,11 +162,25 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
 //        let cell = collectionView.cellForItem(at: indexPath)
         if (indexPath.item != 0){
             let itemToDisplay = bag[indexPath.item-1].last! as Item
-            showItemDetail(itemToDisplay)
+            showItemDetail(itemToDisplay, itemCount: bag[indexPath.item-1].count)
+        }
+    }
+
+    func fetchMoney(){
+        let moneyParameter : Parameters = ["operator_uid":UID, "token":token, "uid":UID]
+        Alamofire.request("\(API_URL)/member/read", parameters: moneyParameter).responseJSON{ response in
+            switch response.result{
+            case .success(let value):
+                let memberReadJSON = JSON(value)
+                let memberReadArray = memberReadJSON["payload"]["objects"].arrayValue
+                self.memberMoney = memberReadArray[0]["money"].intValue
+            case .failure:
+                print("error")
+            }
         }
     }
     
-    private func fetchPacks(){
+    func fetchPacks(){
         // Remove history items
         packs.removeAll()
         bag.removeAll()
@@ -196,10 +209,15 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                     }()
                     self.packs += [pack]
                 }
+                
             case .failure:
                 print("error")
             }
             self.fetchItem()
+//            self.packs.sort(by: {($0.itemClass?.hashValue)! > ($1.itemClass?.hashValue)!})
+//            for i in self.packs{
+//                print(i.itemClass.debugDescription)
+//            }
         }
     }
     private func fetchItem(){
@@ -246,9 +264,11 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                         let clue : Item = {
                             let item = Item()
                             item.itemClass = .clue
+                            item.pid = itemToFetch.pid
                             item.cid = clueArray[0]["cid"].intValue
                             item.content = clueArray[0]["content"].stringValue
                             item.name = "線索"
+                            item.imageURL = "clue.jpg"
                             return item
                         }()
 //                        self.items += [clue]
@@ -282,15 +302,51 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     }
     
     private func itemsDidFetch(){
+        var sortTool = [[Item]]()
+        var sortClue = [Item]()
         var total = 0
         for item in bag {
             total += item.count
         }
         if(total == packs.count){
-//            self.items.sort(by: {$0.itemClass!.hashValue < $1.itemClass!.hashValue})
+//          self.items.sort(by: {$0.itemClass!.hashValue < $1.itemClass!.hashValue})
+            for item in bag{
+                if item.last?.itemClass == .clue{
+                    for clue in item{
+                        sortClue.append(clue)
+                    }
+                }else{
+                    sortTool.append(item)
+                }
+            }
+            sortTool.sort(by: {$0[0].tid! < $1[0].tid!})
+            sortClue.sort(by: {$0.pid! < $1.pid!})
+            self.bag = sortTool
+            for clue in sortClue{
+                self.bag.append([clue])
+            }
             self.collectionView?.reloadData()
             self.refreshControl.endRefreshing()
         }
+    }
+    
+    func segueToMissions() {
+        let vc = UIStoryboard(name: "Missions", bundle: nil).instantiateViewController(withIdentifier: "MissionsViewController") as! MissionsViewController
+        //print(vc.description)
+        vc.prevVC = self
+        self.present(vc, animated: false, completion: nil)
+    }
+    func segueToMore() {
+        let vc = UIStoryboard(name: "More", bundle: nil).instantiateViewController(withIdentifier: "MoreViewController") as! MoreViewController
+        //print(vc.description)
+        vc.prevVC = self
+        self.present(vc, animated: false, completion: nil)
+    }
+    func segueToBags() {
+        
+    }
+    func segueToMaps() {
+        dismiss(animated: false, completion: nil)
     }
     
 }
@@ -303,34 +359,45 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     let itemImage: UIImageView = {
         let image = UIImageView()
         image.image = UIImage(named: "sticker")
-        image.layer.borderWidth = 1
+        //image.layer.borderWidth = 1
         image.layer.borderColor = UIColor.black.cgColor
+        image.layer.cornerRadius = 15
+        image.layer.masksToBounds = true
         return image
     }()
     let itemName: UILabel = {
         let name = UILabel()
         name.text = "Unknown"
         name.textAlignment = NSTextAlignment.center
-        name.layer.borderWidth = 1
+        name.font = UIFont.systemFont(ofSize: 12)
+        //name.layer.borderWidth = 1
         name.layer.borderColor = UIColor.black.cgColor
+        
+        //name.lineBreakMode = NSLineBreakMode.byCharWrapping
+        //name.numberOfLines = 6
         return name
     }()
     let itemCount: UILabel = {
         let count = UILabel()
         count.text = "99"
         count.textAlignment = NSTextAlignment.center
+        count.layer.borderWidth = 1
+        count.layer.borderColor = UIColor.white.cgColor
+        count.layer.backgroundColor = UIColor.white.cgColor
+        count.layer.cornerRadius = 14
+        count.layer.masksToBounds = true
         return count
     }()
     func setupView(){
         addSubview(itemImage)
-        addConstraintWithFormat(format: "H:|-0-[v0]-0-|", views: itemImage)
-        addConstraintWithFormat(format: "V:|-0-[v0(\(frame.width))]", views: itemImage)
+        addConstraintWithFormat(format: "H:|-\(frame.width/8)-[v0]-\(frame.width/8)-|", views: itemImage)
+        addConstraintWithFormat(format: "V:|-\(frame.width/10)-[v0]-\(frame.width/4)-|", views: itemImage)
         addSubview(itemName)
-        addConstraintWithFormat(format: "H:|-0-[v0]-0-|", views: itemName)
-        addConstraintWithFormat(format: "V:|-\(frame.width)-[v0(35)]", views: itemName)
+        addConstraintWithFormat(format: "H:|-\(frame.width/8)-[v0]-\(frame.width/8)-|", views: itemName)
+        addConstraintWithFormat(format: "V:[v0(\(frame.width/8))]-\(frame.width/10)-|", views: itemName)
         addSubview(itemCount)
-        addConstraintWithFormat(format: "H:|-\(frame.width/2)-[v0]-\(frame.width/12)-|", views: itemCount)
-        addConstraintWithFormat(format: "V:|-\(frame.width/7*5)-[v0(\(frame.width/4))]", views: itemCount)
+        addConstraintWithFormat(format: "H:[v0(\(frame.width/4))]-\(frame.width/40)-|", views: itemCount)
+        addConstraintWithFormat(format: "V:|-\(frame.width/40)-[v0(\(frame.width/4))]", views: itemCount)
         
     }
     required init?(coder aDecoder: NSCoder) {
