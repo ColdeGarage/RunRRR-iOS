@@ -92,7 +92,7 @@ class LoginViewController: UIViewController {
         var isLogin : Bool = false
         let loginInfo : [String:Any] = ["email":account, "password":password]
         let LocalUserDefault = UserDefaults.standard
-        Alamofire.request("http://coldegarage.tech:8081/api/v1.1/member/login", method: .post, parameters: loginInfo).responseJSON{ response in
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/login", method: .post, parameters: loginInfo).responseJSON{ response in
             if ((response.result.value) != nil) {
                 let userInfoJson = JSON(response.result.value!)
                 if(!userInfoJson["payload"]["correct"].boolValue){

@@ -386,6 +386,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         count.layer.backgroundColor = UIColor.white.cgColor
         count.layer.cornerRadius = 14
         count.layer.masksToBounds = true
+        count.adjustsFontSizeToFitWidth = true
         return count
     }()
     func setupView(){

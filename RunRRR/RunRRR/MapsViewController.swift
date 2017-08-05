@@ -133,6 +133,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
             case .success(let value):
                 let boundaryXML = SWXMLHash.parse(value)
                 let boundaryArray = boundaryXML["kml"]["Document"]["Folder"]["Placemark"]["Polygon"]["outerBoundaryIs"]["LinearRing"]["coordinates"].element?.text
+                
                 var trimmingBoundaryArray = boundaryArray?.replacingOccurrences(of: "\n", with: "")
                 trimmingBoundaryArray = trimmingBoundaryArray?.trimmingCharacters(in: .whitespacesAndNewlines)
                 trimmingBoundaryArray = trimmingBoundaryArray?.replacingOccurrences(of: " ", with: "")
@@ -141,7 +142,6 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                 //print(boundaryForGoogleMaps)
                 
                 let path = GMSMutablePath()     //Create an path obj and braw a polygon
-                
                 for item in boundaryForGoogleMaps!{
                     if !item.isEmpty{
                         let boundaryLocation = item.components(separatedBy: ",")
@@ -242,6 +242,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                 let missionsJson = JSON(value)
                 let missions = missionsJson["payload"]["objects"].arrayValue
                 for mission in missions{
+                    print(mission)
                     let mid = mission["mid"].intValue
                     let title = mission["title"].stringValue
                     let content = mission["content"].stringValue
@@ -265,6 +266,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
             }
             self.missionShowList.sort(by: {$0.type < $1.type})
             
+            
             let reportReadParameter = ["operator_uid":self.userID,"token":self.token, "uid":self.userID] as [String : Any]
             Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/report/read",parameters:reportReadParameter).responseJSON{ response in
                 switch response.result{
@@ -276,7 +278,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                     let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
                     let serverHour = 7
                     let serverMin = 0
-
+                
                     //print(missionReport.description)
 
                     //let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
@@ -288,6 +290,10 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                         let status = missionStatus["status"].intValue
                         //let imageURL = missionStatus["url"].stringValue
                         let index = self.missionShowList.index(where:{$0.mid == mid})
+                        if index == nil{
+                            print(mid)
+                            print("null")
+                        }
                         
                         //0:審核失敗 1:審核中 2:審核成功 3.未解任務
                         //if mission complete
@@ -354,7 +360,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
         uploadCurrentLocationTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(MapsViewController.uploadCurrentLocation), userInfo: self.manager, repeats: true)
     }
     func scheduledNotInAreaWarning(){
-        uploadCurrentLocationTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(MapsViewController.notInAreaWarning), userInfo: self.manager, repeats: true)
+        uploadCurrentLocationTimer = Timer.scheduledTimer(timeInterval: 20, target: self, selector: #selector(MapsViewController.notInAreaWarning), userInfo: self.manager, repeats: true)
     }
     
     func uploadCurrentLocation(){
@@ -366,6 +372,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
         
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/update", method: .put, parameters: currentLocationPara).responseJSON{ response in
             //print(response.timeline)
+            print(response)
             switch response.result{
                 
             case .success(let value):

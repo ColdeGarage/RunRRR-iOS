@@ -112,7 +112,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
             cell.missionStatus.image = UIImage(named: "state_failed")
         case 1: //審核中
             //cell.missionStatus.backgroundColor = UIColor.blue
-            cell.missionStatus.image = UIImage(named: "state_loading")
+            cell.missionStatus.image = UIImage(named: "state_waiting")
         case 2:
             //cell.missionStatus.backgroundColor = UIColor.darkGray
             cell.missionStatus.image = UIImage(named: "state_passed")

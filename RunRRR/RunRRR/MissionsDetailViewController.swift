@@ -43,6 +43,9 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+    override func viewWillAppear(_ animated: Bool) {
+        
+    }
     
     func isCameraButton(){
         
@@ -78,28 +81,36 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                 if let mid = self?.mission?.mid{
                     var urlReport:URLConvertible
                     var methodReport:HTTPMethod
-                    
+                    var reportImagePara : Parameters
                     if self?.mission?.check == 0 {  //失敗任務
                         urlReport = "\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/report/edit"
                         methodReport = Alamofire.HTTPMethod.put
+                        reportImagePara = ["operator_uid":self!.userID,"token":self!.token,"rid" : self!.mission!.rid!, "image":imageBase64!]
+                        
                         //print("fail")
                     }
                     else{  //未解任務
                         urlReport = "\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/report/create"
                         methodReport = Alamofire.HTTPMethod.post
+                        reportImagePara = ["operator_uid":self!.userID,"token":self!.token,"mid" : mid, "image":imageBase64!]
                     }
                     
                     
-                    let reportImagePara : [String:Any] = ["operator_uid":self!.userID,"token":self!.token,"mid" : mid, "image":imageBase64!]
+//                    let reportImagePara : [String:Any] = ["operator_uid":self!.userID,"token":self!.token,"mid" : mid, "image":imageBase64!]
                     
                     Alamofire.request(urlReport,method: methodReport, parameters:reportImagePara).validate().responseJSON{ response in
+                        print("watch here")
                         print(response)
                         switch response.result{
                             
                         case .success(let value):
                             self?.mission?.check = 1 //審核中
-                            self?.missionReportImage?.image = image!
-                            //let photoUpdateInfo = JSON(value)
+                            DispatchQueue.main.async() {
+                                self?.missionReportImage?.image = image!
+                            }
+                            let ac = UIAlertController(title: "Just Press OK", message: "Your photo is uploaded. And please refresh the table to see your photo.", preferredStyle: .alert)
+                            ac.addAction(UIAlertAction(title: "OK", style: .default))
+                            self?.present(ac, animated: true)
                         //print(photoUpdateInfo.description)
                         case .failure(let error):
                             print(error)
@@ -122,7 +133,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
         }
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+    /*func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
         let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
         
         UIImageWriteToSavedPhotosAlbum(chosenImage, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
@@ -147,12 +158,13 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
             present(ac, animated: true)
         }
     }
+    */
     
     func dismissDetail(){
         self.dismiss(animated: true, completion: nil)
     }
     
-    
+ 
     
     
     
@@ -243,7 +255,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                 case 0:
                     status.image = UIImage(named: "state_failed")
                 case 1: //審核中
-                    status.image = UIImage(named: "state_loading")
+                    status.image = UIImage(named: "state_waiting")
                 case 2:
                     status.image = UIImage(named: "state_passed")
                 default: //未解任務
