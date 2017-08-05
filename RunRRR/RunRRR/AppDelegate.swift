@@ -13,12 +13,17 @@ import CoreData
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    var currentInternetStatusTimer = Timer()
     var window: UIWindow?
     let googleMapsApiKey = "AIzaSyBQm2DRa2pvl38adM3A8jkSRvG-0nsJT_8"
     
     let localUserDefault = UserDefaults.standard
     
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        //Test
+       
         
         GMSServices.provideAPIKey(googleMapsApiKey)
         // get your storyboard
@@ -40,6 +45,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         return true
     }
+    func checkInternetStatus(){
+        if currentReachabilityStatus == .reachableViaWiFi{
+            //print("WiFi")
+        }else if currentReachabilityStatus == .reachableViaWWAN{
+            //print("WWAN")
+        }else{
+            print("No Internet")
+            let alertController = UIAlertController(title: "No Internet", message: "趕快恢復網路！", preferredStyle: .alert)
+            alertController.addAction(UIAlertAction(title: "Ok", style: .default))
+            self.window?.rootViewController?.present(alertController, animated: true, completion: nil)
+        }
+    }
+    
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -53,10 +71,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+        currentInternetStatusTimer = Timer.scheduledTimer(timeInterval: 10, target: self, selector: #selector(AppDelegate.checkInternetStatus), userInfo: self, repeats: true)
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

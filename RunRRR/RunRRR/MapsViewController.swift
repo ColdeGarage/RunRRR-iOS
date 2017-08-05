@@ -14,9 +14,9 @@ import SWXMLHash
 import CoreLocation
 
 
-class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenViewController{
+class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewController{
 
-    @IBOutlet weak var mainMaps: GMSMapView!
+    let mainMaps = GMSMapView()
     @IBOutlet weak var pointSqr: UILabel!
     var missionShowList = [MissionsData]()
     var completeMissionList = [MissionsData]()
@@ -24,17 +24,32 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
     var validArea:Bool = true
     let manager = CLLocationManager()
+    
     var currentLocatoin : CLLocation!
     var uploadCurrentLocationTimer = Timer()
     var notInAreaWarningTimer = Timer()
+    let menuBar : MenuBarBelow = {
+        let menubar = MenuBarBelow()
+        menubar.currentPage = "Maps"
+        return menubar
+    }()
+    let shadowView = UIView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
     //let networkQuality = Reach()
+    let pointSquare : UILabel = {
+        let label = UILabel()
+        label.text = "0"
+        label.textAlignment = .left
+        label.layer.borderWidth = 0
+        label.textColor = UIColor.black
+        label.font = UIFont.systemFont(ofSize: 48)
+        return label
+    }()
     
     override func viewWillAppear(_ animated: Bool) {
         self.mainMaps.clear()
         getMapsBountry(map: mainMaps)
         getMissionLocations(map: mainMaps)
-        getPoints(pointSqr: pointSqr)
-        
+        getPoints(pointSqr: self.pointSquare)
     }
     
     
@@ -51,11 +66,40 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
         
         // Enable the myLocationButton
         mainMaps.settings.zoomGestures = true
-        pointSqr.text! = "10"
-        pointSqr.backgroundColor = UIColor(red:250/255, green:250/255, blue:250/255, alpha:1.0)
-        pointSqr.layer.masksToBounds = true
-        pointSqr.layer.cornerRadius = 8.0
+        mainMaps.layer.cornerRadius = 10
+        mainMaps.layer.masksToBounds = true
         
+//        shadowView.backgroundColor = UIColor.black
+        shadowView.layer.shadowColor = UIColor.darkGray.cgColor
+        shadowView.layer.shadowOpacity = 1
+        shadowView.layer.shadowOffset = CGSize.zero
+        shadowView.layer.shadowRadius = 5
+        
+        shadowView.addSubview(mainMaps)
+        
+        self.view.addSubview(shadowView)
+        
+        view.backgroundColor = UIColor(red: 230/255, green: 230/255, blue:230/255, alpha: 1)
+        self.view.addConstraintWithFormat(format: "H:|-8-[v0]-8-|", views: shadowView)
+        self.view.addConstraintWithFormat(format: "V:[v0(\(self.view.frame.height*19/30))]-\(self.view.frame.height/6+20)-|", views: shadowView)
+        shadowView.addConstraintWithFormat(format: "H:|[v0]|", views: mainMaps)
+        shadowView.addConstraintWithFormat(format: "V:|[v0]|", views: mainMaps)
+        let pointLabel : UILabel = {
+            let label = UILabel()
+            label.text = "POINT"
+            label.textColor = UIColor.gray
+            return label
+        }()
+        self.view.addSubview(pointLabel)
+        
+        
+        
+        self.view.addSubview(pointSquare)
+        self.view.addConstraintWithFormat(format: "H:|-\(self.view.frame.width/3.5)-[v0(60)]-[v1]-\(self.view.frame.width/8)-|", views: pointLabel,pointSquare)
+        self.view.addConstraintWithFormat(format: "V:|-40-[v0(30)]", views: pointLabel)
+        self.view.addConstraintWithFormat(format: "V:|-40-[v0(50)]", views: pointSquare)
+
+                
         //current location
         manager.delegate = self as? CLLocationManagerDelegate
         manager.desiredAccuracy = kCLLocationAccuracyBest
@@ -63,7 +107,13 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
         manager.startUpdatingLocation()
         scheduledUploadCurrentLocationTimer()
         scheduledNotInAreaWarning()
+        menuBar.delegate = self
+        menuBar.dataSource = self
+        self.view.addSubview(menuBar)
+        self.view.addConstraintWithFormat(format: "H:|[v0]|", views: menuBar)
+        self.view.addConstraintWithFormat(format: "V:[v0(\(self.view.frame.height/6))]-0-|", views: menuBar)
         
+
     }
 
     override func didReceiveMemoryWarning() {
@@ -104,6 +154,8 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
                 
                 let polygon = GMSPolyline(path: path)
                 polygon.map = map   //Put the polygon on the map
+                polygon.strokeColor = UIColor(red: 243/255, green: 88/255, blue: 82/255, alpha: 1)
+                polygon.strokeWidth = 5
                 
             case .failure(let error):
                 print(error)
@@ -116,12 +168,13 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
         let getPointsPara = ["operator_uid":self.userID,"token":self.token,"uid":self.userID] as [String : Any]
         
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/read", method: .get, parameters: getPointsPara).responseJSON{ response in
-
+            print(response)
             switch response.result{
                 case .success(let value):
                     let jsonData = JSON(value)
-                    let score = jsonData["payload"]["objects"]["score"].intValue.description
-                    pointSqr.text = score
+                    let score = jsonData["payload"]["objects"][0]["score"].intValue
+                    pointSqr.text = "\(score)"
+                   // self.pointSquare.text = "\(score)"
                 case .failure(let error):
                     print(error)
             }
@@ -255,9 +308,9 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
                     
                     //filter out the fail mission
 
-                    var idxToRemove = Set<Int>()
+                /*     var idxToRemove = Set<Int>()
 
-                    for idx in 0...self.missionShowList.count-1{
+                   for idx in 0...self.missionShowList.count-1{
                         let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
                         let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
                         //if self.missionShowList[idx].check != 0 { //if reviewing and expired, still need to show
@@ -274,7 +327,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
                     self.missionShowList = self.missionShowList
                         .enumerated()
                         .filter {!idxToRemove.contains($0.offset)}
-                        .map {$0.element}
+                        .map {$0.element}*/
 
                 case .failure(let error):
                     print(error)
@@ -320,6 +373,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
                 //print(memberUpdateInfo)
                 self.validArea = memberUpdateInfo["payload"]["valid_area"].boolValue
                 //print(self.validArea)
+                //print(self.validArea)
             case .failure(let error):
                 print(error)
             }
@@ -335,7 +389,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     
     }
     
-    @IBAction func missionButtonTapped(_ sender: Any) {
+ /*   @IBAction func missionButtonTapped(_ sender: Any) {
         let vc = UIStoryboard(name: "Missions", bundle: nil).instantiateViewController(withIdentifier: "MissionsViewController") as! MissionsViewController
         vc.delegate = self
         self.present(vc, animated: false, completion: nil)
@@ -344,24 +398,28 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
         let vc = UIStoryboard(name: "Bag", bundle: nil).instantiateViewController(withIdentifier: "BagCollectionViewController") as! BagCollectionViewController
         vc.delegate = self
         self.present(vc, animated: false, completion: nil)
+    }*/
+    
+    
+    @IBAction func moreButtonTapped(_ sender: Any){
+        let vc = UIStoryboard(name: "More", bundle: nil).instantiateViewController(withIdentifier: "MoreViewController") as! MoreViewController
+        self.present(vc, animated: false, completion: nil)
     }
-    func segueToBag(){
-        self.dismiss(animated: false, completion: nil)
+    func segueToBags(){
         let vc = UIStoryboard(name: "Bag", bundle: nil).instantiateViewController(withIdentifier: "BagCollectionViewController") as! BagCollectionViewController
-        vc.delegate = self
         self.present(vc, animated: false, completion: nil)
     }
     func segueToMore(){
-        self.dismiss(animated: false, completion: nil)
-        let vc = UIStoryboard(name: "More", bundle: nil).instantiateViewController(withIdentifier: "MoreNavigator") as! UINavigationController
+        let vc = UIStoryboard(name: "More", bundle: nil).instantiateViewController(withIdentifier: "MoreViewController") as! MoreViewController
         //print(vc.description)
         self.present(vc, animated: false, completion: nil)
     }
-    func segueToMission(){
-        self.dismiss(animated: false, completion: nil)
+    func segueToMissions(){
         let vc = UIStoryboard(name: "Missions", bundle: nil).instantiateViewController(withIdentifier: "MissionsViewController") as! MissionsViewController
-        vc.delegate = self
         self.present(vc, animated: false, completion: nil)
+    }
+    func segueToMaps() {
+        
     }
     // MARK: - Navigation
 
@@ -372,11 +430,4 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueBetweenView
     //}
 
 }
-
-protocol segueBetweenViewController {
-    func segueToBag()
-    func segueToMore()
-    func segueToMission()
-}
-
 
