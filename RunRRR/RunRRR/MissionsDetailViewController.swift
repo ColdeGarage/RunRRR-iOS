@@ -14,12 +14,13 @@ import SwiftyCam
 
 class MissionsDetailViewController: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    var imagePicker: UIImagePickerController!
+    //var imagePicker: UIImagePickerController!
     let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
     let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
     var mission : MissionsData?
-    var missionReportImage: UIImageView?
-    var missionImage: UIImageView?
+    var missionReportImage2Show : UIImage?
+    //var missionReportImage: UIImageView?
+    //var missionImage: UIImageView?
 
     
     let cameraButton : UIButton = {
@@ -98,19 +99,15 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                     
 //                    let reportImagePara : [String:Any] = ["operator_uid":self!.userID,"token":self!.token,"mid" : mid, "image":imageBase64!]
                     
-                    Alamofire.request(urlReport,method: methodReport, parameters:reportImagePara).validate().responseJSON{ response in
-                        print("watch here")
-                        print(response)
+                    Alamofire.request(urlReport,method: methodReport, parameters:reportImagePara).validate().responseData{ response in
+                        //print("watch here")
+                        //print(response)
                         switch response.result{
                             
                         case .success(let value):
+                            self?.missionReportImage2Show = image
                             self?.mission?.check = 1 //審核中
-                            DispatchQueue.main.async() {
-                                self?.missionReportImage?.image = image!
-                            }
-                            let ac = UIAlertController(title: "Just Press OK", message: "Your photo is uploaded. And please refresh the table to see your photo.", preferredStyle: .alert)
-                            ac.addAction(UIAlertAction(title: "OK", style: .default))
-                            self?.present(ac, animated: true)
+                            self?.setupMissionDetail()
                         //print(photoUpdateInfo.description)
                         case .failure(let error):
                             print(error)
@@ -324,6 +321,8 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
             }else{
                 print("No photo mission")
             }
+ 
+            
             image.contentMode = .scaleAspectFit
             image.layer.borderWidth = CGFloat(2)
             image.layer.borderColor = UIColor.white.cgColor
@@ -337,21 +336,25 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
         
         let missionReportImage: UIImageView = {
             let image = UIImageView()
-            if let remoteImage = mission?.imageURL{
-                let imageURL:URLConvertible = "\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/download/img/" + remoteImage
-                Alamofire.request(imageURL).validate().responseData{ response in
-                    switch response.result{
-                    case .success(let value):
-                        let image2Show = UIImage(data:value)!
-                        image.image = image2Show
-                    case .failure(let error):
-                        print(error)
+            if self.missionReportImage2Show == nil{
+                if let remoteImage = mission?.imageURL{
+                    let imageURL:URLConvertible = "\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/download/img/" + remoteImage
+                    Alamofire.request(imageURL).validate().responseData{ response in
+                        switch response.result{
+                        case .success(let value):
+                            let image2Show = UIImage(data:value)!
+                            image.image = image2Show
+                        case .failure(let error):
+                            print(error)
+                        }
                     }
+                }else{
+                    print("no photo")
                 }
             }else{
-                print("no photo")
-            }
+                image.image = self.missionReportImage2Show
             
+            }
             image.contentMode = .scaleAspectFit
             image.layer.borderWidth = CGFloat(2)
             image.layer.borderColor = UIColor.white.cgColor

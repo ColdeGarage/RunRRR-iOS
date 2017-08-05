@@ -91,7 +91,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! BagItemCell
-        
+    
         // Configure the cell
         if(indexPath.item == 0){  // the first block displays money
             cell.itemImage.image = UIImage(named: "money")
