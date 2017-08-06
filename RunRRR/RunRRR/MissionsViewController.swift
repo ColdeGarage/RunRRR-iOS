@@ -179,11 +179,11 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     //print(missionReportJson.description)
                     let missionReport = missionReportJson["payload"]["objects"].arrayValue
                     let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
-                    let serverHour = 7
-                    let serverMin = 0
+                    //let serverHour = 7
+                    //let serverMin = 0
                     //print(missionReport.description)
-                    //let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
-                    //let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
+                    let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
+                    let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
                     //filter the complete mission to the button
                     for missionStatus in missionReport{
                         let rid = missionStatus["rid"].intValue
@@ -212,9 +212,9 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     }
                     
                     //filter out the fail mission
-                    /*var idxToRemove = Set<Int>()
+                    var idxToRemove = Set<Int>()
                     
-                   /*for idx in 0...self.missionShowList.count-1{
+                   for idx in 0...self.missionShowList.count-1{
                         let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
                         let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
                         if self.missionShowList[idx].check != 0 { //if reviewing and expired, still need to show
@@ -227,11 +227,11 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                                 }
                             }
                         }
-                    }*/
+                    }
                     self.missionShowList = self.missionShowList
                         .enumerated()
                         .filter {!idxToRemove.contains($0.offset)}
-                        .map {$0.element}*/
+                        .map {$0.element}
                 case .failure(let error):
                     print(error)
                 }

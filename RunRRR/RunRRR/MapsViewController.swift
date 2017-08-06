@@ -183,7 +183,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
     
     func getMissionLocations(map:GMSMapView){
 
-        /*let missionPara = ["operator_uid":self.userID]
+        let missionPara = ["operator_uid":self.userID]
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read", method: .get, parameters:missionPara
             ).responseJSON{ response in
 
@@ -192,11 +192,11 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
             case .success(let value):
                 let missionJson = JSON(value)
                 let missionObjects = missionJson["payload"]["objects"].arrayValue
-                //let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
-                let serverHour = 7
-                let serverMin = 0
-                //let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
-                //let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
+                let serverTime = missionJson["server_time"].stringValue.components(separatedBy: "T")[1]
+                //let serverHour = 7
+                //let serverMin = 0
+                let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
+                let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
                 
                 for item in missionObjects{
 
@@ -228,7 +228,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
             case .failure(let error):
                 print(error)
             }
-        }*/
+        }
         map.clear()
         missionShowList.removeAll()
         completeMissionList.removeAll()
@@ -276,13 +276,13 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                     //print(missionReportJson.description)
                     let missionReport = missionReportJson["payload"]["objects"].arrayValue
                     let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
-                    let serverHour = 7
-                    let serverMin = 0
+                    //let serverHour = 7
+                    //let serverMin = 0
                 
                     //print(missionReport.description)
 
-                    //let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
-                    //let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
+                    let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
+                    let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
                     //filter the complete mission to the button
                     for missionStatus in missionReport{
                         //let rid = missionStatus["rid"].intValue
@@ -314,12 +314,12 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                     
                     //filter out the fail mission
 
-                /*     var idxToRemove = Set<Int>()
+                     var idxToRemove = Set<Int>()
 
                    for idx in 0...self.missionShowList.count-1{
                         let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
                         let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
-                        //if self.missionShowList[idx].check != 0 { //if reviewing and expired, still need to show
+                        if self.missionShowList[idx].check != 0 { //if reviewing and expired, still need to show
                             if timeHour < serverHour{
                                 idxToRemove.insert(idx)
                             }
@@ -328,12 +328,12 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                                     idxToRemove.insert(idx)
                                 }
                             }
-                        //}
+                        }
                     }
                     self.missionShowList = self.missionShowList
                         .enumerated()
                         .filter {!idxToRemove.contains($0.offset)}
-                        .map {$0.element}*/
+                        .map {$0.element}
 
                 case .failure(let error):
                     print(error)

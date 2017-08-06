@@ -17,18 +17,18 @@ class LogoutTableViewCell: UITableViewCell {
     
     let logoutButton : UIButton = {
         let bt = UIButton(type: UIButtonType.system)
-        bt.setTitle("SOS", for: .normal)
-        bt.setTitleColor(UIColor(red: 80/255, green: 88/255, blue:103/255, alpha: 1), for: .normal)
+        bt.setTitle("Logout", for: .normal)
+        bt.setTitleColor(UIColor(red: 249/255, green: 51/255, blue:30/255, alpha: 1), for: .normal)
         bt.isEnabled = true
         bt.layer.borderWidth = 5
         bt.layer.cornerRadius = 5
-        bt.layer.borderColor = UIColor(red: 80/255, green: 88/255, blue:103/255, alpha: 1).cgColor
+        bt.layer.borderColor = UIColor(red: 249/255, green: 51/255, blue:30/255, alpha: 1).cgColor
         return bt
     }()
     let logoutLabel : UILabel = {
         let bt = UILabel()
         bt.text = "Sure to Logout?"
-        bt.textColor = UIColor(red: 80/255, green: 88/255, blue:103/255, alpha: 1)
+        bt.textColor = UIColor(red: 249/255, green: 51/255, blue:30/255, alpha: 1)
         bt.textAlignment = .center
         return bt
     }()
@@ -66,11 +66,11 @@ class LogoutTableViewCell: UITableViewCell {
 //        contentView.addConstraint(NSLayoutConstraint(item: logoutButton, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
 //        contentView.addConstraint(NSLayoutConstraint(item: logoutButton, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
         logoutButton.setTitle("Logout", for: .normal)
-        logoutButton.setTitleColor(.black, for: .normal)
+        
         self.logoutButton.addTarget(self, action: #selector(userLogout), for: .touchUpInside)
     }
     func setupTitleBarView(){
-        titleBarView.backgroundColor = UIColor(red: 80/255, green: 88/255, blue:103/255, alpha: 1)
+        titleBarView.backgroundColor = UIColor(red: 249/255, green: 51/255, blue:30/255, alpha: 1)
         titleBarView.addSubview(smallCircle)
         titleBarView.addSubview(titleLabel)
         
