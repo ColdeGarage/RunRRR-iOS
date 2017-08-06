@@ -105,6 +105,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                         switch response.result{
                             
                         case .success(let value):
+                            
                             self?.missionReportImage2Show = image
                             self?.mission?.check = 1 //審核中
                             self?.setupMissionDetail()
@@ -343,6 +344,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                         switch response.result{
                         case .success(let value):
                             let image2Show = UIImage(data:value)!
+                            
                             image.image = image2Show
                         case .failure(let error):
                             print(error)
@@ -366,7 +368,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
         
         
         
-        
+        view.subviews.forEach({$0.removeFromSuperview()})
         view.addSubview(missionTopView)
         view.addSubview(missionReportImage)
         view.addSubview(missionPriorityLabel)

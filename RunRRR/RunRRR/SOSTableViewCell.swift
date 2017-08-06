@@ -42,11 +42,11 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
     let emergencyButton : UIButton = {
         let bt = UIButton(type: UIButtonType.system)
         bt.setTitle("SOS", for: .normal)
-        bt.setTitleColor(UIColor(red: 27/255, green: 109/255, blue: 144/255, alpha: 1), for: .normal)
+        bt.setTitleColor(UIColor(red: 250/255, green: 105/255, blue: 89/255, alpha: 1), for: .normal)
         bt.isEnabled = true
         bt.layer.borderWidth = 5
         bt.layer.cornerRadius = 5
-        bt.layer.borderColor = UIColor(red: 27/255, green: 109/255, blue: 144/255, alpha: 1).cgColor
+        bt.layer.borderColor = UIColor(red: 250/255, green: 105/255, blue: 89/255, alpha: 1).cgColor
         return bt
     }()
     
@@ -154,7 +154,7 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
     }
     
     func setupTitleBarView(){
-        titleBarView.backgroundColor = UIColor(red: 27/255, green: 109/255, blue: 144/255, alpha: 1)
+        titleBarView.backgroundColor = UIColor(red: 250/255, green: 105/255, blue: 89/255, alpha: 1)
         emergencyInfoCollectionView.backgroundColor = .white
         titleBarView.addSubview(smallCircle)
         titleBarView.addSubview(titleLabel)
@@ -185,21 +185,21 @@ class emergencyInfoCollectionViewCell : UICollectionViewCell {
     let squadNumberLabel : UILabel = {
         let label = UILabel()
             label.text = "1小"
-            label.textColor = UIColor(red: 27/255, green: 109/255, blue: 144/255, alpha: 1)
+            label.textColor = UIColor(red: 250/255, green: 105/255, blue: 89/255, alpha: 1)
         return label
     }()
     
     let nameLabel : UILabel = {
         let label = UILabel()
             label.text = "黃宣傑"
-            label.textColor = UIColor(red: 27/255, green: 109/255, blue: 144/255, alpha: 1)
+            label.textColor = UIColor(red: 250/255, green: 105/255, blue: 89/255, alpha: 1)
 //            label.backgroundColor = .black
         return label
     }()
     let nicknameLabel : UILabel = {
         let label = UILabel()
             label.text = "圖歐"
-            label.textColor = UIColor(red: 27/255, green: 109/255, blue: 144/255, alpha: 1)
+            label.textColor = UIColor(red: 250/255, green: 105/255, blue: 89/255, alpha: 1)
 //        label.backgroundColor = .black
         return label
     }()

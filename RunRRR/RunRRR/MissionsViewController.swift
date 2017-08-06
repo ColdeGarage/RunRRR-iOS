@@ -176,14 +176,14 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     
                 case .success(let value):
                     let missionReportJson = JSON(value)
-                    //print(missionReportJson.description)
                     let missionReport = missionReportJson["payload"]["objects"].arrayValue
                     let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
-                    let serverHour = 7
-                    let serverMin = 0
-                    //print(missionReport.description)
-                    //let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
-                    //let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
+                    //let serverHour = 7
+                    //let serverMin = 0
+                    print("time",serverTime)
+                    let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
+                    let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
+                    print("Hour:",serverHour,"Min",serverMin)
                     //filter the complete mission to the button
                     for missionStatus in missionReport{
                         let rid = missionStatus["rid"].intValue
@@ -212,7 +212,8 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     }
                     
                     //filter out the fail mission
-                   var idxToRemove = Set<Int>()
+
+                    var idxToRemove = Set<Int>()
                     
                    for idx in 0...self.missionShowList.count-1{
                         let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!

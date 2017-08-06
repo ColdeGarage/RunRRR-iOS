@@ -37,7 +37,7 @@ class DieTableViewCell: UITableViewCell {
     }
     
     func setupTitleBarView(){
-        titleBarView.backgroundColor = UIColor(red: 109/255, green: 206/255, blue:237/255, alpha: 1)
+        titleBarView.backgroundColor = UIColor(red: 244/255, green: 159/255, blue:54/255, alpha: 1)
         titleBarView.addSubview(smallCircle)
         titleBarView.addSubview(titleLabel)
         titleLabel.text = "Die"
@@ -80,7 +80,7 @@ class DieTableViewCell: UITableViewCell {
     let hunterIDLabel : UILabel = {
         let label = UILabel()
         label.text = "Hunter's ID"
-        label.textColor = UIColor(red: 109/255, green: 206/255, blue:237/255, alpha: 1)
+        label.textColor = UIColor(red: 244/255, green: 159/255, blue:54/255, alpha: 1)
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16)
         return label
@@ -88,7 +88,7 @@ class DieTableViewCell: UITableViewCell {
     let hunterPWLabel : UILabel = {
         let label = UILabel()
         label.text = "Hunter's Password"
-        label.textColor = UIColor(red: 109/255, green: 206/255, blue:237/255, alpha: 1)
+        label.textColor = UIColor(red: 244/255, green: 159/255, blue:54/255, alpha: 1)
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 16)
         return label
@@ -96,11 +96,11 @@ class DieTableViewCell: UITableViewCell {
     let dieButton : UIButton = {
         let bt = UIButton(type: UIButtonType.system)
         bt.setTitle("BANG!", for: .normal)
-        bt.setTitleColor(UIColor(red: 109/255, green: 206/255, blue:237/255, alpha: 1), for: .normal)
+        bt.setTitleColor(UIColor(red: 244/255, green: 159/255, blue:54/255, alpha: 1), for: .normal)
         bt.isEnabled = true
         bt.layer.borderWidth = 5
         bt.layer.cornerRadius = 5
-        bt.layer.borderColor = UIColor(red: 109/255, green: 206/255, blue:237/255, alpha: 1).cgColor
+        bt.layer.borderColor = UIColor(red: 244/255, green: 159/255, blue:54/255, alpha: 1).cgColor
         return bt
     }()
     
