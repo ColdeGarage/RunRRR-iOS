@@ -212,9 +212,9 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     }
                     
                     //filter out the fail mission
-                    /*var idxToRemove = Set<Int>()
+                   var idxToRemove = Set<Int>()
                     
-                   /*for idx in 0...self.missionShowList.count-1{
+                   for idx in 0...self.missionShowList.count-1{
                         let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
                         let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
                         if self.missionShowList[idx].check != 0 { //if reviewing and expired, still need to show
@@ -227,11 +227,11 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                                 }
                             }
                         }
-                    }*/
+                    }
                     self.missionShowList = self.missionShowList
                         .enumerated()
                         .filter {!idxToRemove.contains($0.offset)}
-                        .map {$0.element}*/
+                        .map {$0.element}
                 case .failure(let error):
                     print(error)
                 }
