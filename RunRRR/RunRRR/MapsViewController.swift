@@ -242,6 +242,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
             case .success(let value):
                 let missionsJson = JSON(value)
                 let missions = missionsJson["payload"]["objects"].arrayValue
+                print("missions:",missions)
                 for mission in missions{
                     print(mission)
                     let mid = mission["mid"].intValue
@@ -280,8 +281,8 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                     //let serverHour = 7
                     //let serverMin = 0
                 
-                    //print(missionReport.description)
-
+                    print("missionReport:",missionReport.description)
+                    
                     let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
                     let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
                     //filter the complete mission to the button
@@ -317,7 +318,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
 
                      var idxToRemove = Set<Int>()
 
-                   for idx in 0...self.missionShowList.count-1{
+                   for idx in 0..<self.missionShowList.count{
                         let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
                         let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
                         if self.missionShowList[idx].check != 0 { //if reviewing and expired, still need to show
