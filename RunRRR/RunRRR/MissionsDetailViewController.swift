@@ -26,9 +26,9 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
     let cameraButton : UIButton = {
         let button = UIButton()
         button.isEnabled = true
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.setTitleColor(UIColor.red, for: .normal)
-        button.setTitle("CAMERA", for: .normal)
+        button.setTitle("UPLOAD", for: .normal)
         button.titleLabel?.textAlignment = NSTextAlignment.center
         return button
     }()
@@ -209,7 +209,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
             let button = UIButton()
             button.isEnabled = true
             button.addTarget(self, action: #selector(dismissDetail), for: .touchUpInside)
-            button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+            button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
             button.setTitleColor(UIColor.black, for: .normal)
             button.setTitle("CANCEL", for: .normal)
             button.titleLabel?.textAlignment = NSTextAlignment.center
@@ -402,10 +402,10 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
 
         
         
-        view.addConstraintWithFormat(format: "H:[v0(70)]-\(view.frame.width/10)-|", views: cameraButton)
+        view.addConstraintWithFormat(format: "H:[v0(100)]-\(view.frame.width/10)-|", views: cameraButton)
 
         
-        view.addConstraintWithFormat(format: "H:|-\(view.frame.width/10)-[v0(70)]", views: cancelButton)
+        view.addConstraintWithFormat(format: "H:|-\(view.frame.width/10)-[v0(100)]", views: cancelButton)
         
         
         
