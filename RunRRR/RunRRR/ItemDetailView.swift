@@ -102,7 +102,7 @@ class ItemDetailWindow : UIView{
         label.font = UIFont.systemFont(ofSize: 18)
         label.textColor = UIColor.white
         label.backgroundColor = UIColor(red: 255/255, green: 41/255, blue:41/255, alpha: 1)
-        label.layer.cornerRadius = 10
+        label.layer.cornerRadius = 15
         label.layer.masksToBounds = true
         label.textAlignment = .center
         return label
@@ -110,7 +110,7 @@ class ItemDetailWindow : UIView{
     let itemUseButton: UIButton = {
         let button = UIButton()
         button.isEnabled = true
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.setTitleColor(UIColor(red: 255/255, green: 41/255, blue:41/255, alpha: 1), for: .normal)
         button.setTitle("USE", for: .normal)
         button.titleLabel?.textAlignment = NSTextAlignment.center
@@ -119,7 +119,7 @@ class ItemDetailWindow : UIView{
     let itemCancelButton: UIButton = {
         let button = UIButton()
         button.isEnabled = true
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
         button.setTitleColor(UIColor.black, for: .normal)
         button.setTitle("CANCEL", for: .normal)
         button.titleLabel?.textAlignment = NSTextAlignment.center
@@ -151,12 +151,12 @@ class ItemDetailWindow : UIView{
         addConstraintWithFormat(format: "H:|-20-[v0]-20-|", views: itemNameLabel)
         addConstraintWithFormat(format: "V:|-8-[v0(50)]-8-[v1]-10-|", views: itemNameLabel, itemContentTextView)
         
-        addConstraintWithFormat(format: "V:[v0(20)]-15-|", views: itemCountLabel)
-        addConstraintWithFormat(format: "V:[v0(20)]-15-|", views: itemUseButton)
-        addConstraintWithFormat(format: "V:[v0(20)]-15-|", views: itemCancelButton)
+        addConstraintWithFormat(format: "V:[v0(30)]-15-|", views: itemCountLabel)
+        addConstraintWithFormat(format: "V:[v0(30)]-15-|", views: itemUseButton)
+        addConstraintWithFormat(format: "V:[v0(30)]-15-|", views: itemCancelButton)
         
-        addConstraintWithFormat(format: "H:|-20-[v0(60)]", views: itemCancelButton)
-        addConstraintWithFormat(format: "H:[v0(40)]-0-[v1(30)]-20-|", views: itemUseButton,itemCountLabel)
+        addConstraintWithFormat(format: "H:|-20-[v0(100)]", views: itemCancelButton)
+        addConstraintWithFormat(format: "H:[v0(50)]-0-[v1(30)]-20-|", views: itemUseButton,itemCountLabel)
         addConstraintWithFormat(format: "H:|-10-[v0]-10-|", views: itemContentTextView)
     }
     func hideUseButton(_ isHidden: Bool){
