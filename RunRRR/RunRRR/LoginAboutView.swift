@@ -67,8 +67,8 @@ class LoginAboutWindow : UIView{
         let itemCancelButton: UIButton = {
         let button = UIButton()
         button.isEnabled = true
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        button.setTitleColor(UIColor.black, for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 20)
+        button.setTitleColor(UIColor(red: 255/255, green: 41/255, blue:41/255, alpha: 1), for: .normal)
         button.setTitle("CANCEL", for: .normal)
         button.titleLabel?.textAlignment = NSTextAlignment.center
         return button
@@ -89,9 +89,9 @@ class LoginAboutWindow : UIView{
         addSubview(itemCancelButton)
         
         addConstraintWithFormat(format: "H:|-20-[v0]-20-|", views: itemNameLabel)
-        addConstraintWithFormat(format: "V:|-8-[v0(50)]-8-[v1]-25-[v2(20)]-15-|", views: itemNameLabel, itemContentTextView,itemCancelButton)
+        addConstraintWithFormat(format: "V:|-15-[v0(30)]-15-[v1]-15-[v2(30)]-15-|", views: itemNameLabel, itemContentTextView,itemCancelButton)
         
-        addConstraintWithFormat(format: "H:|-20-[v0(60)]", views: itemCancelButton)
+        addConstraintWithFormat(format: "H:|-20-[v0]-20-|", views: itemCancelButton)
         addConstraintWithFormat(format: "H:|-10-[v0]-10-|", views: itemContentTextView)
     }
     
