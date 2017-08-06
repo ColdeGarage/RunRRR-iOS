@@ -218,7 +218,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                    for idx in 0...self.missionShowList.count-1{
                         let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
                         let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
-                        if self.missionShowList[idx].check != 0 { //if reviewing and expired, still need to show
+                        if self.missionShowList[idx].check != 1 { //if reviewing and expired, still need to show
                             if timeHour < serverHour{
                                 idxToRemove.insert(idx)
                             }

@@ -74,14 +74,13 @@ class ItemDetailView: NSObject{
             
             switch(response.result){
             case .success:
-                _ = self.delegateViewController?.packs.popLast()
+                self.delegateViewController?.refreshData()
             case .failure:
                 print("Error!")
             }
         }
         DispatchQueue.main.async{
             self.dismissDetail()
-            self.delegateViewController?.fetchPacks()
         }
     }
 }
