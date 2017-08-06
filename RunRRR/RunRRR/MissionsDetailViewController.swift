@@ -28,7 +28,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
         button.isEnabled = true
         button.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         button.setTitleColor(UIColor.red, for: .normal)
-        button.setTitle("CAMERA", for: .normal)
+        button.setTitle("UPLOAD", for: .normal)
         button.titleLabel?.textAlignment = NSTextAlignment.center
         return button
     }()
@@ -51,8 +51,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
     func isCameraButton(){
         
         let parameterSent : Parameters = ["operator_uid":self.userID, "token":self.token, "uid":self.userID]
-            Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/read", parameters: parameterSent).responseJSON{ response in
-                print(response)
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/read",method: .get, parameters: parameterSent).validate().responseJSON{ response in
                 if response.result.isSuccess {
                     let statusJson = JSON(response.result.value!)
                     let statusArray = statusJson["payload"]["objects"].arrayValue
@@ -295,7 +294,9 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
         
         let missionContentTextView : UITextView = {
             let textView = UITextView()
-            textView.text = mission?.content
+            let price = mission?.price.description
+            let score = mission?.score.description
+            textView.text = (mission?.content)! + "\n\n任務獎勵金錢 : " + price! + "\n任務獎勵分數 : " + score!
             textView.backgroundColor = UIColor(red: 230/255, green: 230/255, blue:230/255, alpha: 1)
             textView.isScrollEnabled = true
             textView.isEditable = false
@@ -308,7 +309,6 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
         let missionImage: UIImageView = {
             let image = UIImageView()
             if let remoteMissionImage = mission?.missionImageURL{
-                print(remoteMissionImage)
                 let missionImageURL:URLConvertible = "\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/download/img/" + remoteMissionImage
                 Alamofire.request(missionImageURL).validate().responseData{ response in
                     switch response.result{

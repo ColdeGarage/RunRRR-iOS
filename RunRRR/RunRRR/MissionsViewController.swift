@@ -140,12 +140,11 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
         completeMissionList.removeAll()
         let missionReadParameter:[String:Any] = ["operator_uid":self.userID,"token":self.token]
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read",parameters:missionReadParameter).responseJSON{ response in
-
+            
             switch response.result{
             case .success(let value):
                 let missionsJson = JSON(value)
                 let missions = missionsJson["payload"]["objects"].arrayValue
-                
                 for mission in missions{
                     let mid = mission["mid"].intValue
                     let title = mission["title"].stringValue
@@ -178,13 +177,9 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     let missionReportJson = JSON(value)
                     let missionReport = missionReportJson["payload"]["objects"].arrayValue
                     let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
-                    //let serverHour = 7
-                    //let serverMin = 0
-                    print("time",serverTime)
                     let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
                     let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
-                    print("Hour:",serverHour,"Min",serverMin)
-                    //filter the complete mission to the button
+                    
                     for missionStatus in missionReport{
                         let rid = missionStatus["rid"].intValue
                         let mid = missionStatus["mid"].intValue
