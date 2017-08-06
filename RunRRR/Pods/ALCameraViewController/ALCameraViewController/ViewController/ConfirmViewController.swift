@@ -244,6 +244,7 @@ public class ConfirmViewController: UIViewController, UIScrollViewDelegate {
         }
         
         fetcher = fetcher.fetch()
+        // something here.
     }
     
     public func viewForZooming(in scrollView: UIScrollView) -> UIView? {

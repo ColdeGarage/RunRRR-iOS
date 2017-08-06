@@ -16,11 +16,17 @@ import UIKit
     }
     let missionPriorityThumbnail: UILabel = {
         let priorityLabel = UILabel()
+        
         priorityLabel.text = "主"
+        priorityLabel.font = UIFont.systemFont(ofSize: 36)
+        priorityLabel.textColor = UIColor.white
         priorityLabel.textAlignment = NSTextAlignment(rawValue: 1)!
-        priorityLabel.layer.borderWidth = CGFloat(2)
-        priorityLabel.layer.borderColor = UIColor.black.cgColor
-        priorityLabel.layer.cornerRadius = 0
+        priorityLabel.backgroundColor = UIColor.white
+        priorityLabel.layer.borderWidth = CGFloat(0)
+        priorityLabel.layer.borderColor = UIColor.white.cgColor
+        priorityLabel.layer.cornerRadius = 35
+        priorityLabel.layer.masksToBounds = true
+        
         return priorityLabel
     }()
     let seperateCell: UIView = {
@@ -31,38 +37,49 @@ import UIKit
     let missionName: UILabel = {
         let name = UILabel()
         name.text = "Example Mission"
-        name.layer.borderColor = UIColor.black.cgColor
-        name.layer.borderWidth = CGFloat(1)
+        name.textColor = UIColor.white
+        name.layer.borderColor = UIColor.white.cgColor
+        name.layer.borderWidth = CGFloat(0)
         name.textAlignment = NSTextAlignment(rawValue: 1)!
         return name
     }()
     let missionTiming: UILabel = {
         let time = UILabel()
         time.text = "23:59"
-        time.layer.borderWidth = CGFloat(1)
+        time.textAlignment = NSTextAlignment.center
+        time.textColor = UIColor.darkGray
+        time.layer.borderWidth = CGFloat(0)
+        time.layer.borderColor = UIColor.white.cgColor
+        time.layer.cornerRadius = 5
+        time.layer.masksToBounds = true
         return time
     }()
     let missionStatus: UIImageView = {
         let status = UIImageView()
-        status.backgroundColor = UIColor.green
-        status.layer.borderWidth = CGFloat(1)
+        
+        status.layer.borderWidth = CGFloat(0)
+        status.layer.borderColor = UIColor.white.cgColor
+        status.layer.cornerRadius = 15
+        status.layer.masksToBounds = true
+        
         return status
     }()
     func setupView(){
         addSubview(missionPriorityThumbnail)
-        //addSubview(seperateCell)
         addSubview(missionName)
         addSubview(missionTiming)
         addSubview(missionStatus)
+        
         //Vertical
-        addConstraintWithFormat(format: "V:|[v0]|", views: missionPriorityThumbnail)
+        addConstraintWithFormat(format: "V:[v0(70)]", views: missionPriorityThumbnail)
+        addConstraint(NSLayoutConstraint(item: missionPriorityThumbnail, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
         addConstraintWithFormat(format: "V:|[v0]|", views: missionName)
-        addConstraintWithFormat(format: "V:|[v0]-0-[v1(50)]|", views: missionTiming, missionStatus)
+        addConstraintWithFormat(format: "V:[v0(30)]-5-|", views: missionTiming)
+        addConstraintWithFormat(format: "V:[v0(30)]-5-|", views: missionStatus)
+        
         //Horizonal
-        addConstraintWithFormat(format: "H:|[v0(80)]-0-[v1]-0-[v2(50)]|", views: missionPriorityThumbnail, missionName, missionTiming)
-        //addConstraintWithFormat(format: "H:|[v0]|", views: seperateCell)
-        addConstraint(NSLayoutConstraint(item: missionStatus, attribute: .left, relatedBy: .equal, toItem: missionName, attribute: .right, multiplier: 1, constant: 0))
-        addConstraintWithFormat(format: "H:[v0(50)]", views: missionStatus)
+        addConstraintWithFormat(format: "H:|-5-[v0(70)]-5-[v1]-5-[v2(50)]-5-|", views: missionPriorityThumbnail, missionName, missionTiming)
+        addConstraintWithFormat(format: "H:|-50-[v0(30)]", views: missionStatus)
         
     }
     

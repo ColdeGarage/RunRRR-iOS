@@ -1,0 +1,11 @@
+background #e6e6e6
+tab_bg #e4e4e4
+tab_map #e8411a
+tab_mission #58f88c
+tab_bag #3d8aff
+tab_more #f7d63b
+
+text_white #ffffff
+text_grey #939393
+text_black #000000
+text_red #ff2929
