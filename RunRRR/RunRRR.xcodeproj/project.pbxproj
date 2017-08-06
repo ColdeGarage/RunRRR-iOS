@@ -248,7 +248,7 @@
 				TargetAttributes = {
 					7F3E9CBB1E6920AB00A17814 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 64MJ2M9HET;
+						DevelopmentTeam = NZQD5E4ZVD;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -496,10 +496,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 64MJ2M9HET;
+				DEVELOPMENT_TEAM = NZQD5E4ZVD;
 				INFOPLIST_FILE = RunRRR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = EEECamp777.RunRRR;
+				PRODUCT_BUNDLE_IDENTIFIER = EEECamp6.RunRRR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};
@@ -511,10 +511,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 64MJ2M9HET;
+				DEVELOPMENT_TEAM = NZQD5E4ZVD;
 				INFOPLIST_FILE = RunRRR/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = EEECamp777.RunRRR;
+				PRODUCT_BUNDLE_IDENTIFIER = EEECamp6.RunRRR;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 			};

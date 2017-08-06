@@ -58,7 +58,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         self.collectionView?.reloadData()
     }
     func refreshData(){
-        self.collectionView?.reloadData()
+        fetchMoney()
         fetchPacks()
     }
     override func didReceiveMemoryWarning() {
@@ -91,7 +91,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! BagItemCell
-    
+        print("number : ",indexPath)
         // Configure the cell
         if(indexPath.item == 0){  // the first block displays money
             cell.itemImage.image = UIImage(named: "money")
@@ -174,6 +174,8 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                 let memberReadJSON = JSON(value)
                 let memberReadArray = memberReadJSON["payload"]["objects"].arrayValue
                 self.memberMoney = memberReadArray[0]["money"].intValue
+                print("Money : ",self.memberMoney!)
+                self.collectionView?.reloadData()
             case .failure:
                 print("error")
             }
@@ -189,12 +191,14 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
         let packParameter : Parameters = ["operator_uid":UID,"token":self.token, "uid":UID]
         Alamofire.request("\(API_URL)/pack/read", parameters: packParameter).responseJSON{ response in
+            
             switch response.result{
             case .success(let value):
                 
                 //Parse the "packs" into array
                 let packJSON = JSON(value)
                 let packsArray = packJSON["payload"]["objects"].arrayValue
+                
                 for eachPack in packsArray{
                     let pack: Pack = {
                         let item = Pack()
@@ -213,6 +217,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             case .failure:
                 print("error")
             }
+            print("fetchItem")
             self.fetchItem()
 //            self.packs.sort(by: {($0.itemClass?.hashValue)! > ($1.itemClass?.hashValue)!})
 //            for i in self.packs{
@@ -226,7 +231,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                 let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
                 let toolsParameter : Parameters = ["operator_uid":UID,"token":self.token, "tid":itemToFetch.id as Any]
                 Alamofire.request("\(API_URL)/tool/read", parameters:toolsParameter).responseJSON{ response in
-//                    print(response)
+                    print(response)
                     switch(response.result){
                     case .success(let value):
                         let toolsJSON = JSON(value)
@@ -281,6 +286,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             }
         }
         self.collectionView?.reloadData()
+        self.refreshControl.endRefreshing()
     }
     
     private func putIntoBag(_ itemPutInto: Item){

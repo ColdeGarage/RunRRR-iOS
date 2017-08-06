@@ -54,6 +54,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
     
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         let camera = GMSCameraPosition.camera(withLatitude: 24.794589, longitude: 120.993393, zoom: 15.0)
         //let mapView = GMSMapView.map(withFrame: CGRect.zero, camera: camera)
@@ -372,7 +373,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
         
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/member/update", method: .put, parameters: currentLocationPara).responseJSON{ response in
             //print(response.timeline)
-            print(response)
+            //print(response)
             switch response.result{
                 
             case .success(let value):
