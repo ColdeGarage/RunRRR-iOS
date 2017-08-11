@@ -172,8 +172,16 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             switch response.result{
             case .success(let value):
                 let memberReadJSON = JSON(value)
+                guard memberReadJSON["brea"].intValue == 0 else{
+                    print("memberReadJSON error!")
+                    return
+                }
                 let memberReadArray = memberReadJSON["payload"]["objects"].arrayValue
-                self.memberMoney = memberReadArray[0]["money"].intValue
+                guard let money = memberReadArray[0]["money"].intValue as Int? else {
+                    //nil
+                    return
+                }
+                self.memberMoney = money
                 print("Money : ",self.memberMoney!)
                 self.collectionView?.reloadData()
             case .failure:
