@@ -95,7 +95,7 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
         let sosParameter : Parameters = ["operator_uid":self.userID,"token":self.token, "uid":self.userID, "position_e":currentLocationLongitude, "position_n":currentLocationLatitude, "help_status": 1 as Int]
         Alamofire.request("\(API_URL)/member/callhelp", method: .put, parameters: sosParameter).responseJSON{ response in
             switch(response.result){
-            case .success(let value):
+            case .success( _):
                 self.sosAlert(titleText: "Received Message", messageText: "Help is on the way, please wait.")
                 print("ya")
             case .failure:

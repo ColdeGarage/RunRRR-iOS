@@ -103,7 +103,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                         //print(response)
                         switch response.result{
                             
-                        case .success(let value):
+                        case .success( _):
                             
                             self?.missionReportImage2Show = image
                             self?.mission?.check = 1 //審核中
@@ -158,7 +158,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
     */
     
     func dismissDetail(){
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: false, completion: nil)
     }
     
  

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0820"
+   LastUpgradeVersion = "0700"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "7F221F31AF663AEB19F9408570DC7037"
+               BlueprintIdentifier = "778FE9FA06A680C064826C3596B6EFE2"
                BuildableName = "Pods_RunRRR.framework"
                BlueprintName = "Pods-RunRRR"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7F221F31AF663AEB19F9408570DC7037"
+            BlueprintIdentifier = "778FE9FA06A680C064826C3596B6EFE2"
             BuildableName = "Pods_RunRRR.framework"
             BlueprintName = "Pods-RunRRR"
             ReferencedContainer = "container:Pods.xcodeproj">
@@ -60,15 +60,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "7F221F31AF663AEB19F9408570DC7037"
-            BuildableName = "Pods_RunRRR.framework"
-            BlueprintName = "Pods-RunRRR"
-            ReferencedContainer = "container:Pods.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">

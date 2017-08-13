@@ -173,7 +173,10 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
             switch response.result{
                 case .success(let value):
                     let jsonData = JSON(value)
-                    let score = jsonData["payload"]["objects"][0]["score"].intValue
+                    guard let score = jsonData["payload"]["objects"][0]["score"].intValue as Int? else{
+                        print("getPoints Error!")
+                        return
+                    }
                     pointSqr.text = "\(score)"
                    // self.pointSquare.text = "\(score)"
                 case .failure(let error):
@@ -183,7 +186,8 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
     }
     
     func getMissionLocations(map:GMSMapView){
-
+        var missionListTemp = [MissionsData]()
+        var completeMissionListTemp = [MissionsData]()
         let missionPara = ["operator_uid":self.userID]
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read", method: .get, parameters:missionPara
             ).responseJSON{ response in
@@ -193,23 +197,32 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
             case .success(let value):
                 let missionJson = JSON(value)
                 let missionObjects = missionJson["payload"]["objects"].arrayValue
-                let serverTime = missionJson["server_time"].stringValue.components(separatedBy: "T")[1]
+                guard let serverTime = missionJson["server_time"].stringValue.components(separatedBy: "T")[1] as String? else{
+                    return
+                }
                 //let serverHour = 7
                 //let serverMin = 0
-                let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
-                let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
+                guard let serverHour = Int(serverTime.components(separatedBy: ":")[0]) else {
+                    return
+                }
+                guard let serverMin = Int(serverTime.components(separatedBy: ":")[1]) else {
+                    return
+                }
                 
                 for item in missionObjects{
 
                     print(item)
-                    let timeEnd = item["time_end"].stringValue
-                    let timeWithoutDate = timeEnd.components(separatedBy: "T")[1]
-                    let timeHour = Int(timeWithoutDate.components(separatedBy: ":")[0])!
-                    let timeMin = Int(timeWithoutDate.components(separatedBy: ":")[1])!
+                    guard let timeEnd = item["time_end"].stringValue as String?,
+                        let timeWithoutDate = timeEnd.components(separatedBy: "T")[1] as String?,
+                        let timeHour = Int(timeWithoutDate.components(separatedBy: ":")[0]),
+                        let timeMin = Int(timeWithoutDate.components(separatedBy: ":")[1]),
                     
-                    let locationE = item["location_e"].doubleValue
-                    let locationN = item["location_n"].doubleValue
-                    let title = item["title"].stringValue
+                        let locationE = item["location_e"].doubleValue as Double?,
+                        let locationN = item["location_n"].doubleValue as Double?,
+                        let title = item["title"].stringValue as String? else{
+                            //nil
+                            return
+                    }
                     
                     
                     if locationE != 0 && locationN != 0 {
@@ -231,8 +244,8 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
             }
         }
         map.clear()
-        missionShowList.removeAll()
-        completeMissionList.removeAll()
+//        missionShowList.removeAll()
+//        completeMissionList.removeAll()
 
         let missionReadParameter = ["operator_uid":self.userID,"token":self.token] as [String : Any]
 
@@ -245,28 +258,35 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                 print("missions:",missions)
                 for mission in missions{
                     print(mission)
-                    let mid = mission["mid"].intValue
-                    let title = mission["title"].stringValue
-                    let content = mission["content"].stringValue
-                    let timeStart = mission["time_start"].stringValue
-                    let timeEnd = mission["time_end"].stringValue
-                    let price = mission["price"].intValue
-                    let clue = mission["clue"].intValue
-                    let type = mission["class"].stringValue
-                    let score = mission["score"].intValue
-                    let locationE = mission["location_e"].doubleValue
-                    let locationN = mission["location_n"].doubleValue
-                    let missionImageURL = mission["url"].stringValue
+                    guard let mid = mission["mid"].intValue as Int?,
+                        let title = mission["title"].stringValue as String?,
+                        let content = mission["content"].stringValue as String?,
+                        let timeStart = mission["time_start"].stringValue as String?,
+                        let timeEnd = mission["time_end"].stringValue as String?,
+                        let price = mission["price"].intValue as Int?,
+                        let clue = mission["clue"].intValue as Int?,
+                        let type = mission["class"].stringValue as String?,
+                        let score = mission["score"].intValue as Int?,
+                        let locationE = mission["location_e"].doubleValue as Double?,
+                        let locationN = mission["location_n"].doubleValue as Double?,
+                        let missionImageURL = mission["url"].stringValue as String? else{
+                            //nil
+                            return
+                    }
                     
                     guard let missionItem = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,price:price,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN,missionImageURL:missionImageURL) else{
-                        fatalError("Unable to load missionItem")
+                        //nil
+                        print("mission error")
+                        return
                     }
-                    self.missionShowList += [missionItem]
+                    missionListTemp += [missionItem]
+                    //self.missionShowList += [missionItem]
                 }
             case .failure(let error):
                 print(error)
             }
-            self.missionShowList.sort(by: {$0.type < $1.type})
+            missionListTemp.sort(by: {$0.type < $1.type})
+//            self.missionShowList.sort(by: {$0.type < $1.type})
             
             
             let reportReadParameter = ["operator_uid":self.userID,"token":self.token, "uid":self.userID] as [String : Any]
@@ -276,22 +296,29 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                 case .success(let value):
                     let missionReportJson = JSON(value)
                     //print(missionReportJson.description)
-                    let missionReport = missionReportJson["payload"]["objects"].arrayValue
-                    let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
+                    guard let missionReport = missionReportJson["payload"]["objects"].arrayValue as Array?,
+                        let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1] as String? else {
+                            print("missionReport error!")
+                            return
+                    }
                     //let serverHour = 7
                     //let serverMin = 0
                 
                     print("missionReport:",missionReport.description)
                     
-                    let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
-                    let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
+                    guard let serverHour = Int(serverTime.components(separatedBy: ":")[0]),
+                        let serverMin = Int(serverTime.components(separatedBy: ":")[1]) else {
+                            print("serverTime error!")
+                            return
+                    }
                     //filter the complete mission to the button
                     for missionStatus in missionReport{
                         //let rid = missionStatus["rid"].intValue
                         let mid = missionStatus["mid"].intValue
                         let status = missionStatus["status"].intValue
                         //let imageURL = missionStatus["url"].stringValue
-                        let index = self.missionShowList.index(where:{$0.mid == mid})
+//                        let index = self.missionShowList.index(where:{$0.mid == mid})
+                        let index = missionListTemp.index(where:{$0.mid == mid})
                         if index == nil{
                             print(mid)
                             print("null")
@@ -300,17 +327,23 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                         //0:審核失敗 1:審核中 2:審核成功 3.未解任務
                         //if mission complete
                         if status == 1 {
-                            self.missionShowList[index!].check = 2
-                            let missionComplete = self.missionShowList[index!]
-                            self.missionShowList.remove(at: index!)
-                            self.completeMissionList += [missionComplete]
+                            missionListTemp[index!].check = 2
+                            let missionComplete = missionListTemp[index!]
+                            missionListTemp.remove(at: index!)
+                            completeMissionListTemp += [missionComplete]
+//                            self.missionShowList[index!].check = 2
+//                            let missionComplete = self.missionShowList[index!]
+//                            self.missionShowList.remove(at: index!)
+//                            self.completeMissionList += [missionComplete]
                         }
                             //if mission is reviewing
                         else if status == 0 {
-                            self.missionShowList[index!].check = 1
+                            missionListTemp[index!].check = 1
+//                            self.missionShowList[index!].check = 1
                         }
                         else { //mission fail
-                            self.missionShowList[index!].check = 0
+                            missionListTemp[index!].check = 0
+//                            self.missionShowList[index!].check = 0
                         }
                     }
                     
@@ -318,10 +351,11 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
 
                      var idxToRemove = Set<Int>()
 
-                   for idx in 0..<self.missionShowList.count{
-                        let timeHour = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[0])!
-                        let timeMin = Int(self.missionShowList[idx].timeEnd.components(separatedBy: ":")[1])!
-                        if self.missionShowList[idx].check != 0 { //if reviewing and expired, still need to show
+//                   for idx in 0..<self.missionShowList.count{
+                    for idx in 0..<missionListTemp.count{
+                        let timeHour = Int(missionListTemp[idx].timeEnd.components(separatedBy: ":")[0])!
+                        let timeMin = Int(missionListTemp[idx].timeEnd.components(separatedBy: ":")[1])!
+                        if missionListTemp[idx].check != 0 { //if reviewing and expired, still need to show
                             if timeHour < serverHour{
                                 idxToRemove.insert(idx)
                             }
@@ -332,7 +366,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                             }
                         }
                     }
-                    self.missionShowList = self.missionShowList
+                    missionListTemp = missionListTemp
                         .enumerated()
                         .filter {!idxToRemove.contains($0.offset)}
                         .map {$0.element}
@@ -341,7 +375,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                     print(error)
                 }
                 
-                for mission in self.missionShowList{
+                for mission in missionListTemp{
                     let locationE = mission.locationE
                     let locationN = mission.locationN
                     let position = CLLocationCoordinate2D(latitude: locationN, longitude: locationE)
@@ -349,6 +383,8 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                     marker.title = mission.title
                     marker.map = map
                 }
+                self.missionShowList = missionListTemp
+                self.completeMissionList = completeMissionListTemp
             }
             
         }
@@ -380,7 +416,10 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
             case .success(let value):
                 let memberUpdateInfo = JSON(value)
                 //print(memberUpdateInfo)
-                self.validArea = memberUpdateInfo["payload"]["valid_area"].boolValue
+                guard let memberValidArea = memberUpdateInfo["payload"]["valid_area"].bool else{
+                    return
+                }
+                self.validArea = memberValidArea
                 //print(self.validArea)
                 //print(self.validArea)
             case .failure(let error):
