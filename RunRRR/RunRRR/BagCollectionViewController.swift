@@ -172,8 +172,16 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             switch response.result{
             case .success(let value):
                 let memberReadJSON = JSON(value)
+                guard memberReadJSON["brea"].intValue == 0 else{
+                    print("memberReadJSON error!")
+                    return
+                }
                 let memberReadArray = memberReadJSON["payload"]["objects"].arrayValue
-                self.memberMoney = memberReadArray[0]["money"].intValue
+                guard let money = memberReadArray[0]["money"].intValue as Int? else {
+                    //nil
+                    return
+                }
+                self.memberMoney = money
                 print("Money : ",self.memberMoney!)
                 self.collectionView?.reloadData()
             case .failure:
@@ -181,11 +189,14 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             }
         }
     }
-    
+    var bagTemp = [[Item]]()
+    var packTemp = [Pack]()
     func fetchPacks(){
         // Remove history items
-        packs.removeAll()
-        bag.removeAll()
+//        packs.removeAll()
+//        bag.removeAll()
+        bagTemp.removeAll()
+        packTemp.removeAll()
         
         //Start calling API
         let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
@@ -197,7 +208,9 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                 
                 //Parse the "packs" into array
                 let packJSON = JSON(value)
-                let packsArray = packJSON["payload"]["objects"].arrayValue
+                guard let packsArray = packJSON["payload"]["objects"].arrayValue as Array? else{
+                    return
+                }
                 
                 for eachPack in packsArray{
                     let pack: Pack = {
@@ -211,13 +224,15 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                         item.id = eachPack["id"].intValue
                         return item
                     }()
-                    self.packs += [pack]
+                    self.packTemp += [pack]
+//                    self.packs += [pack]
                 }
                 
             case .failure:
                 print("error")
             }
             print("fetchItem")
+            self.packs = self.packTemp
             self.fetchItem()
 //            self.packs.sort(by: {($0.itemClass?.hashValue)! > ($1.itemClass?.hashValue)!})
 //            for i in self.packs{
@@ -226,7 +241,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         }
     }
     private func fetchItem(){
-        for itemToFetch in packs{
+        for itemToFetch in packTemp{
             if(itemToFetch.itemClass == .tool){
                 let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
                 let toolsParameter : Parameters = ["operator_uid":UID,"token":self.token, "tid":itemToFetch.id as Any]
@@ -235,7 +250,10 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                     switch(response.result){
                     case .success(let value):
                         let toolsJSON = JSON(value)
-                        let toolsArray = toolsJSON["payload"]["objects"].arrayValue
+                        guard let toolsArray = toolsJSON["payload"]["objects"].arrayValue as Array?
+                            else{
+                                return
+                        }
                         let tool : Item = {
                             let item = Item()
                             item.itemClass = .tool
@@ -265,7 +283,10 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                     switch(response.result){
                     case .success(let value):
                         let cluesJSON = JSON(value)
-                        let clueArray = cluesJSON["payload"]["objects"].arrayValue
+                        guard let clueArray = cluesJSON["payload"]["objects"].arrayValue as Array?
+                            else{
+                                return
+                        }
                         let clue : Item = {
                             let item = Item()
                             item.itemClass = .clue
@@ -285,6 +306,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                 }
             }
         }
+        self.bag = self.bagTemp
         self.collectionView?.reloadData()
         self.refreshControl.endRefreshing()
     }
@@ -292,7 +314,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
     private func putIntoBag(_ itemPutInto: Item){
         var itemIsExist: Bool = false
         var index = 0
-        for item in bag{
+        for item in bagTemp{
             
             if(item[0].name == itemPutInto.name){
                 itemIsExist = true
@@ -303,7 +325,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             index += 1
         }
         if(itemIsExist == false){
-            bag.append([itemPutInto])
+            bagTemp.append([itemPutInto])
         }
     }
     
@@ -311,12 +333,12 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         var sortTool = [[Item]]()
         var sortClue = [Item]()
         var total = 0
-        for item in bag {
+        for item in bagTemp {
             total += item.count
         }
-        if(total == packs.count){
+        if(total == packTemp.count){
 //          self.items.sort(by: {$0.itemClass!.hashValue < $1.itemClass!.hashValue})
-            for item in bag{
+            for item in bagTemp{
                 if item.last?.itemClass == .clue{
                     for clue in item{
                         sortClue.append(clue)
@@ -327,10 +349,11 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
             }
             sortTool.sort(by: {$0[0].tid! < $1[0].tid!})
             sortClue.sort(by: {$0.pid! < $1.pid!})
-            self.bag = sortTool
+            self.bagTemp = sortTool
             for clue in sortClue{
-                self.bag.append([clue])
+                self.bagTemp.append([clue])
             }
+            self.bag = self.bagTemp
             self.collectionView?.reloadData()
             self.refreshControl.endRefreshing()
         }
