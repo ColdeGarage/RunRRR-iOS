@@ -294,7 +294,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
         
         let missionContentTextView : UITextView = {
             let textView = UITextView()
-            let price = mission?.price.description
+            let price = mission?.prize.description
             let score = mission?.score.description
             textView.text = (mission?.content)! + "\n\n任務獎勵金錢 : " + price! + "\n任務獎勵分數 : " + score!
             textView.backgroundColor = UIColor(red: 230/255, green: 230/255, blue:230/255, alpha: 1)

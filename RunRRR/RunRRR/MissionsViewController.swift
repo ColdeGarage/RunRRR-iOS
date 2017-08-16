@@ -14,6 +14,8 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
     @IBOutlet weak var missionStatus: UIImageView!
     var missionShowList = [MissionsData]()
     var completeMissionList = [MissionsData]()
+    var missionShowListTemp = [MissionsData]()
+    var completeMissionListTemp = [MissionsData]()
     private let refreshControl = UIRefreshControl()
     let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
     let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
@@ -127,11 +129,8 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
         return CGSize(width: view.frame.width, height: 80)
     }
     func loadMissions(){
-//        missionShowList.removeAll()
-//        completeMissionList.removeAll()
-        var missionShowListTemp = [MissionsData]()
-        var completeMissionListTemp = [MissionsData]()
-        self.missionCollectionView.reloadData()
+
+        self.missionShowListTemp.removeAll()
         let missionReadParameter:[String:Any] = ["operator_uid":self.userID,"token":self.token]
         Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/mission/read",parameters:missionReadParameter).responseJSON{ response in
             
@@ -139,123 +138,119 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
             case .success(let value):
                 let missionsJson = JSON(value)
                 let missions = missionsJson["payload"]["objects"].arrayValue
+                
                 for mission in missions{
                     guard let mid = mission["mid"].intValue as Int?,
                         let title = mission["title"].stringValue as String?,
                         let content = mission["content"].stringValue as String?,
                         let timeStart = mission["time_start"].stringValue as String?,
                         let timeEnd = mission["time_end"].stringValue as String?,
-                        let price = mission["price"].intValue as Int?,
+                        let prize = mission["prize"].intValue as Int?,
                         let clue = mission["clue"].intValue as Int?,
                         let type = mission["class"].stringValue as String?,
                         let score = mission["score"].intValue as Int?,
                         let locationE = mission["location_e"].doubleValue as Double?,
-                        let locationN = mission["location_n"].doubleValue as Double?
-                        else {
+                        let locationN = mission["location_n"].doubleValue as Double?,
+                        let missionImageURL = mission["url"].stringValue as String? else {
                             print("parsing mission erreo")
                             return
                     }
-                    let missionImageURL = mission["url"].stringValue
                     
-                    guard let missionItem = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,price:price,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN,missionImageURL:missionImageURL) else{
+                    guard let missionItem = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,prize:prize,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN,missionImageURL:missionImageURL) else{
                         print("missionItem error!")
-                        print(response)
                         return
                     }
-                    missionShowListTemp += [missionItem]
-                    //self.missionShowList += [missionItem]
+                    self.missionShowListTemp += [missionItem]
                 }
             case .failure(let error):
                 print(error)
             }
-            missionShowListTemp.sort(by: {$0.type < $1.type})
-            //self.missionShowList.sort(by: {$0.type < $1.type})
-            
-            let reportReadParameter = ["operator_uid":self.userID,"token":self.token, "uid":self.userID] as [String : Any]
-            Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/report/read",parameters:reportReadParameter).responseJSON{ response in
-                switch response.result{
-                    
-                case .success(let value):
-                    let missionReportJson = JSON(value)
-                    let missionReport = missionReportJson["payload"]["objects"].arrayValue
-                    let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
-                    let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
-                    let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
-                    
-                    for missionStatus in missionReport{
-                        let rid = missionStatus["rid"].intValue
-                        let mid = missionStatus["mid"].intValue
-                        let status = missionStatus["status"].intValue
-                        let imageURL = missionStatus["url"].stringValue
-                        let index = self.missionShowList.index(where:{$0.mid == mid})
-                        missionShowListTemp[index!].imageURL = imageURL
-                        missionShowListTemp[index!].rid = rid
-//                        self.missionShowList[index!].imageURL = imageURL
-//                        self.missionShowList[index!].rid = rid
-//                        //0:審核失敗 1:審核中 2:審核成功 3.未解任務
+
+            self.checkMissionStatus()
+        }
+    }
+    func checkMissionStatus(){
+        let reportReadParameter = ["operator_uid":self.userID,"token":self.token, "uid":self.userID] as [String : Any]
+        Alamofire.request("\(Config.HOST):\(Config.PORT)/\(Config.API_PATH)/report/read",parameters:reportReadParameter).responseJSON{ response in
+            switch response.result{
+                
+            case .success(let value):
+                let missionReportJson = JSON(value)
+                let missionReport = missionReportJson["payload"]["objects"].arrayValue
+                let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1]
+                let serverHour = Int(serverTime.components(separatedBy: ":")[0])!
+                let serverMin = Int(serverTime.components(separatedBy: ":")[1])!
+                
+                for missionStatus in missionReport{
+                    let rid = missionStatus["rid"].intValue
+                    let mid = missionStatus["mid"].intValue
+                    let status = missionStatus["status"].intValue
+                    let imageURL = missionStatus["url"].stringValue
+                    if let index = self.missionShowList.index(where:{$0.mid == mid}){
+                        self.missionShowListTemp[index].imageURL = imageURL
+                        self.missionShowListTemp[index].rid = rid
+                        //0:審核失敗 1:審核中 2:審核成功 3.未解任務
                         //if mission complete
                         if status == 1 {
-//                            self.missionShowList[index!].check = 2
-                            missionShowListTemp[index!].check = 2
-//                            let missionComplete = self.missionShowList[index!]
-                            let missionComplete = missionShowListTemp[index!]
-//                            self.missionShowList.remove(at: index!)
-                            missionShowListTemp.remove(at: index!)
-//                            self.completeMissionList += [missionComplete]
-                            completeMissionListTemp += [missionComplete]
+                            //                            self.missionShowList[index!].check = 2
+                            self.missionShowListTemp[index].check = 2
+                            //                            let missionComplete = self.missionShowList[index!]
+//                            let missionComplete = self.missionShowListTemp[index]
+                            //                            self.missionShowList.remove(at: index!)
+//                            self.missionShowListTemp.remove(at: index)
+                            //                            self.completeMissionList += [missionComplete]
+//                            self.completeMissionListTemp += [missionComplete]
                         }
                         //if mission is reviewing
                         else if status == 0 {
-//                            self.missionShowList[index!].check = 1
-                            missionShowListTemp[index!].check = 1
+                            //                            self.missionShowList[index!].check = 1
+                            self.missionShowListTemp[index].check = 1
                         }
                         else { //mission fail
-//                            self.missionShowList[index!].check = 0
-                            missionShowListTemp[index!].check = 0
+                            //                            self.missionShowList[index!].check = 0
+                            self.missionShowListTemp[index].check = 0
                         }
                     }
-                    
-                    //filter out the fail mission
+                }
+                
+                var idxToRemove = Set<Int>()
 
-                    var idxToRemove = Set<Int>()
-                    
-//                   for idx in 0..<self.missionShowList.count{
-                    for idx in 0..<missionShowListTemp.count{
-                        let timeHour = Int(missionShowListTemp[idx].timeEnd.components(separatedBy: ":")[0])!
-                        let timeMin = Int(missionShowListTemp[idx].timeEnd.components(separatedBy: ":")[1])!
-                        if missionShowListTemp[idx].check != 1 { //if reviewing and expired, still need to show
-                            if timeHour < serverHour{
+                for idx in 0..<self.missionShowListTemp.count{
+                    let timeHour = Int(self.missionShowListTemp[idx].timeEnd.components(separatedBy: ":")[0])!
+                    let timeMin = Int(self.missionShowListTemp[idx].timeEnd.components(separatedBy: ":")[1])!
+                    if (self.missionShowListTemp[idx].check == 0)||(self.missionShowListTemp[idx].check == 3) { //if reviewing and expired, still need to show
+                        if timeHour < serverHour{
+                            idxToRemove.insert(idx)
+                        }
+                        else if timeHour == serverHour{
+                            if timeMin < serverMin{
                                 idxToRemove.insert(idx)
                             }
-                            else if timeHour == serverHour{
-                                if timeMin < serverMin{
-                                    idxToRemove.insert(idx)
-                                }
-                            }
                         }
                     }
-                    missionShowListTemp = missionShowListTemp
-                        .enumerated()
-                        .filter {!idxToRemove.contains($0.offset)}
-                        .map {$0.element}
-//                    self.missionShowList = self.missionShowList
-//                        .enumerated()
-//                        .filter {!idxToRemove.contains($0.offset)}
-//                        .map {$0.element}
-                case .failure(let error):
-                    print(error)
                 }
-//                self.missionShowList.sort(by: {$0.check < $1.check})
-                missionShowListTemp.sort(by: {$0.check < $1.check})
-//                self.missionShowList += self.completeMissionList
-                missionShowListTemp += completeMissionListTemp
-                self.missionShowList = missionShowListTemp
-                self.completeMissionList = completeMissionListTemp
-                self.missionCollectionView.reloadData()
+                
+                self.missionShowListTemp = self.missionShowListTemp
+                    .enumerated()
+                    .filter {!idxToRemove.contains($0.offset)}
+                    .map {$0.element}
+                
+            case .failure(let error):
+                print(error)
             }
+                //                self.missionShowList.sort(by: {$0.check < $1.check})
+            self.missionShowListTemp.sort(by: {$0.type < $1.type})
+            self.missionShowListTemp.sort(by: {$0.check < $1.check})
             
+                // self.missionShowList += self.completeMissionList
+            self.missionShowList = self.missionShowListTemp
+            self.missionCollectionView.reloadData()
+            
+            if self.refreshControl.isRefreshing {
+                self.refreshControl.endRefreshing()
+            }
         }
-        
+            
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
@@ -279,7 +274,6 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
     }
     func refreshData(){
         self.loadMissions()
-        refreshControl.endRefreshing()
     }
     
     func segueToMaps() {
