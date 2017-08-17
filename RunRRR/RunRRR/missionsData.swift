@@ -89,7 +89,7 @@ class MissionsData{
         self.score = score
         self.locationE = locationE
         self.locationN = locationN
-        self.check = 3 // not solved
+        self.check = 2 // not solved
         
         if !missionImageURL.isEmpty{
             self.missionImageURL = missionImageURL

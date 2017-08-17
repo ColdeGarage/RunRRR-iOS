@@ -106,7 +106,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
         case 1: //審核中
             //cell.missionStatus.backgroundColor = UIColor.blue
             cell.missionStatus.image = UIImage(named: "state_waiting")
-        case 2:
+        case 3:
             //cell.missionStatus.backgroundColor = UIColor.darkGray
             cell.missionStatus.image = UIImage(named: "state_passed")
         default: //未解任務
@@ -186,14 +186,14 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                     let mid = missionStatus["mid"].intValue
                     let status = missionStatus["status"].intValue
                     let imageURL = missionStatus["url"].stringValue
-                    if let index = self.missionShowList.index(where:{$0.mid == mid}){
+                    if let index = self.missionShowListTemp.index(where:{$0.mid == mid}){
                         self.missionShowListTemp[index].imageURL = imageURL
                         self.missionShowListTemp[index].rid = rid
                         //0:審核失敗 1:審核中 2:審核成功 3.未解任務
                         //if mission complete
                         if status == 1 {
                             //                            self.missionShowList[index!].check = 2
-                            self.missionShowListTemp[index].check = 2
+                            self.missionShowListTemp[index].check = 3
                             //                            let missionComplete = self.missionShowList[index!]
 //                            let missionComplete = self.missionShowListTemp[index]
                             //                            self.missionShowList.remove(at: index!)
@@ -218,7 +218,7 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
                 for idx in 0..<self.missionShowListTemp.count{
                     let timeHour = Int(self.missionShowListTemp[idx].timeEnd.components(separatedBy: ":")[0])!
                     let timeMin = Int(self.missionShowListTemp[idx].timeEnd.components(separatedBy: ":")[1])!
-                    if (self.missionShowListTemp[idx].check == 0)||(self.missionShowListTemp[idx].check == 3) { //if reviewing and expired, still need to show
+                    if (self.missionShowListTemp[idx].check == 0)||(self.missionShowListTemp[idx].check == 2) { //if reviewing and expired, still need to show
                         if timeHour < serverHour{
                             idxToRemove.insert(idx)
                         }
