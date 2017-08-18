@@ -15,7 +15,7 @@ class MissionsData{
     var content:String
     var timeStart:String
     var timeEnd:String
-    var price:Int
+    var prize:Int
     var clue:Int
     var type:String            //主，支，緊急
     var score:Int
@@ -43,7 +43,7 @@ class MissionsData{
         
     }
     
-    init?(mid:Int,title:String,content:String,timeStart:String,timeEnd:String,price:Int,
+    init?(mid:Int,title:String,content:String,timeStart:String,timeEnd:String,prize:Int,
           clue:Int,type:String,score:Int,locationE:Double,locationN:Double,missionImageURL:String){
         
         guard !title.isEmpty else{
@@ -72,7 +72,7 @@ class MissionsData{
         let timeMin = timeEnd.components(separatedBy: ":")[1]
         self.timeEnd = timeHour + ":" + timeMin
         
-        self.price = price
+        self.prize = prize
         self.clue = clue
         switch type{
         case "URG":
@@ -89,7 +89,7 @@ class MissionsData{
         self.score = score
         self.locationE = locationE
         self.locationN = locationN
-        self.check = 3 // not solved
+        self.check = 2 // not solved
         
         if !missionImageURL.isEmpty{
             self.missionImageURL = missionImageURL

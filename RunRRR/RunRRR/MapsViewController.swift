@@ -268,14 +268,17 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                         let type = mission["class"].stringValue as String?,
                         let score = mission["score"].intValue as Int?,
                         let locationE = mission["location_e"].doubleValue as Double?,
-                        let locationN = mission["location_n"].doubleValue as Double?
-                         else{
+                        let locationN = mission["location_n"].doubleValue as Double?,
+                        let missionImageURL = mission["url"].stringValue as String? else{
                             //nil
                             return
                     }
-                    let missionImageURL = mission["url"].stringValue
-                    let missionItem : MissionsData = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,price:price,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN,missionImageURL:missionImageURL)!
-                    print(missionItem)
+                    
+                    guard let missionItem = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,prize:price,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN,missionImageURL:missionImageURL) else{
+                        //nil
+                        print("mission error")
+                        return
+                    }
                     missionListTemp += [missionItem]
                     //self.missionShowList += [missionItem]
                 }

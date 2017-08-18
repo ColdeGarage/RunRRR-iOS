@@ -23,6 +23,7 @@
 		437636EC1F19112E00398BE9 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437636EB1F19112E00398BE9 /* Extensions.swift */; };
 		437636EE1F19158600398BE9 /* MenuBarBelow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 437636ED1F19158600398BE9 /* MenuBarBelow.swift */; };
 		4382F5E21EB098990085F563 /* MissionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4382F5E11EB098990085F563 /* MissionsViewController.swift */; };
+		439C2B7B1F447D870015C3EC /* Mission.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439C2B7A1F447D870015C3EC /* Mission.swift */; };
 		439E956E1E8CEE1A0070B3CB /* Login.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 439E956D1E8CEE1A0070B3CB /* Login.storyboard */; };
 		439E95701E8CEE260070B3CB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439E956F1E8CEE260070B3CB /* LoginViewController.swift */; };
 		439E95721E8CEE2C0070B3CB /* MapsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 439E95711E8CEE2C0070B3CB /* MapsViewController.swift */; };
@@ -66,6 +67,7 @@
 		437636EB1F19112E00398BE9 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		437636ED1F19158600398BE9 /* MenuBarBelow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarBelow.swift; sourceTree = "<group>"; };
 		4382F5E11EB098990085F563 /* MissionsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MissionsViewController.swift; sourceTree = "<group>"; };
+		439C2B7A1F447D870015C3EC /* Mission.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Mission.swift; sourceTree = "<group>"; };
 		439E956D1E8CEE1A0070B3CB /* Login.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Login.storyboard; sourceTree = "<group>"; };
 		439E956F1E8CEE260070B3CB /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		439E95711E8CEE2C0070B3CB /* MapsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapsViewController.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 				437636EB1F19112E00398BE9 /* Extensions.swift */,
 				43738C851E93A63600C696CE /* MissionsCell.swift */,
 				436862861E98F32600965A44 /* Items_Clues.swift */,
+				439C2B7A1F447D870015C3EC /* Mission.swift */,
 				435E24851E9B33430097D8EC /* missionsData.swift */,
 			);
 			name = Data;
@@ -248,7 +251,7 @@
 				TargetAttributes = {
 					7F3E9CBB1E6920AB00A17814 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = 6LMY56JLRC;
+						DevelopmentTeam = YLR5HJUHQZ;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -359,6 +362,7 @@
 				7F3E9CC01E6920AB00A17814 /* AppDelegate.swift in Sources */,
 				4341C77A1F338B16007A2A9A /* DieTableViewCell.swift in Sources */,
 				431830131EB9BE1B0057683B /* PhotoViewController.swift in Sources */,
+				439C2B7B1F447D870015C3EC /* Mission.swift in Sources */,
 				431D4D3F1E94C6FA00D5EDE0 /* BagCollectionViewController.swift in Sources */,
 				43738C861E93A63600C696CE /* MissionsCell.swift in Sources */,
 				439E95721E8CEE2C0070B3CB /* MapsViewController.swift in Sources */,
@@ -496,11 +500,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 6LMY56JLRC;
+				DEVELOPMENT_TEAM = YLR5HJUHQZ;
 				INFOPLIST_FILE = RunRRR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = nthu.coldegarage.RunRRR118;
+				PRODUCT_BUNDLE_IDENTIFIER = nthu.coldegarage.RunRRR204;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -513,11 +517,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				DEVELOPMENT_TEAM = 6LMY56JLRC;
+				DEVELOPMENT_TEAM = YLR5HJUHQZ;
 				INFOPLIST_FILE = RunRRR/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = nthu.coldegarage.RunRRR118;
+				PRODUCT_BUNDLE_IDENTIFIER = nthu.coldegarage.RunRRR204;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = 1;
