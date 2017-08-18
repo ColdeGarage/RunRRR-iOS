@@ -316,9 +316,9 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         var index = 0
         for item in bagTemp{
             
-            if(item[0].name == itemPutInto.name){
+            if(item[0].tid == itemPutInto.tid){
                 itemIsExist = true
-                bag[index].append(itemPutInto)
+                bagTemp[index].append(itemPutInto)
 //                let indexOfItem = bag.index(of: item)
 //                bag[indexOfItem].append(itemPutInto)
             }
