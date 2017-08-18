@@ -306,9 +306,9 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
                 }
             }
         }
-        self.bag = self.bagTemp
-        self.collectionView?.reloadData()
-        self.refreshControl.endRefreshing()
+        //self.bag = self.bagTemp
+        //self.collectionView?.reloadData()
+        //self.refreshControl.endRefreshing()
     }
     
     private func putIntoBag(_ itemPutInto: Item){
@@ -316,7 +316,7 @@ class BagCollectionViewController: UICollectionViewController, UICollectionViewD
         var index = 0
         for item in bagTemp{
             
-            if(item[0].tid == itemPutInto.tid){
+            if(item[0].name == itemPutInto.name){
                 itemIsExist = true
                 bagTemp[index].append(itemPutInto)
 //                let indexOfItem = bag.index(of: item)
