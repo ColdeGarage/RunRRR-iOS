@@ -52,7 +52,6 @@ class MenuBarBelow : UIView, UICollectionViewDelegate, UICollectionViewDataSourc
         }else{
             cell.imageView.image = UIImage(named: icons[indexPath.item])
         }
-        cell.imageView2.image = UIImage(named: iconsSel[indexPath.item])
         
         
         cell.backgroundColor = UIColor(red: 183/255, green: 183/255, blue:183/255, alpha: 1)

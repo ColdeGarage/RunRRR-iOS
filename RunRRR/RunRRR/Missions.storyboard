@@ -23,7 +23,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <segue destination="nnn-Vv-WIW" kind="showDetail" identifier="ShowMissionDetail" id="j6B-yb-ewf"/>
+                        <segue destination="nnn-Vv-WIW" kind="showDetail" identifier="ShowMissionDetail" customClass="SegueFromLeft" customModule="RunRRR" customModuleProvider="target" id="j6B-yb-ewf"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="8P5-BH-Fvp" userLabel="First Responder" sceneMemberID="firstResponder"/>

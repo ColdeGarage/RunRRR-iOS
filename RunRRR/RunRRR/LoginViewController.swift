@@ -10,6 +10,7 @@ import SwiftyJSON
 import UIKit
 import Foundation
 
+@available(iOS 9.0, *)
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var loginStack: UIStackView!
@@ -23,6 +24,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         initLoginAppearance()
+        aboutUsButton.addTarget(self, action: #selector(showAboutUs), for: .touchUpInside)
         self.hideKeyboardWhenTappedAround()
     }
     
@@ -30,6 +32,14 @@ class LoginViewController: UIViewController {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    let loginAboutView = LoginAboutView()
+    
+    func showAboutUs(){
+        loginAboutView.delegateViewController = self
+        loginAboutView.showDetail()
+    }
+    
     
     // MARK: Action-LoginButtonTapped
     @IBAction func LoginButtonTapped(_ sender: Any) {
