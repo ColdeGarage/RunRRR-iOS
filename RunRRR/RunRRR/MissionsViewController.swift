@@ -98,7 +98,6 @@ class MissionsViewController: UIViewController, UICollectionViewDataSource, UICo
             cell.missionPriorityThumbnail.text = "?"
         }
         //cell.missionPriorityThumbnail.text = missionShow[indexPath.row].type
-        
         switch self.missionShowList[indexPath.row].check {
         case 0:
             //cell.missionStatus.backgroundColor = UIColor.green
