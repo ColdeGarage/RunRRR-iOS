@@ -10,6 +10,7 @@ import SwiftyJSON
 import UIKit
 import Foundation
 
+@available(iOS 9.0, *)
 class LoginViewController: UIViewController {
 
     @IBOutlet weak var loginStack: UIStackView!

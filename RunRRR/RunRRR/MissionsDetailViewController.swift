@@ -71,7 +71,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
     
     
     func choosePhoto() {
-        if (mission?.check != 1) && (mission?.check != 2){
+        if (mission?.check != 1) && (mission?.check != 3){
             let croppingEnabled = false
             let cameraViewController = ALCameraViewController.CameraViewController(croppingEnabled: croppingEnabled) { [weak self] image, asset in
                 // Do something with your image here.
@@ -119,7 +119,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                 self?.dismiss(animated: true, completion: nil)
             }
             self.present(cameraViewController, animated: true, completion: nil)
-        }else if (mission?.check != 2) {
+        }else if (mission?.check == 1) {
             let checkingAlert = UIAlertController(title: "Please wait", message:"Backend is still checking your photo, be patient.",preferredStyle: .alert)
             checkingAlert.addAction(UIAlertAction(title: "OK", style: .default))
             present(checkingAlert,animated: true)
@@ -248,12 +248,13 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
             status.layer.masksToBounds = true
             status.layer.backgroundColor = UIColor(red: 230/255, green: 230/255, blue:230/255, alpha: 0).cgColor
             if let missionStatus = mission?.check{
+                
                 switch (missionStatus) {
                 case 0:
                     status.image = UIImage(named: "state_failed")
                 case 1: //審核中
                     status.image = UIImage(named: "state_waiting")
-                case 2:
+                case 3:
                     status.image = UIImage(named: "state_passed")
                 default: //未解任務
                     status.backgroundColor = UIColor(red: 230/255, green: 230/255, blue:230/255, alpha: 0)
@@ -294,7 +295,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
         
         let missionContentTextView : UITextView = {
             let textView = UITextView()
-            let price = mission?.price.description
+            let price = mission?.prize.description
             let score = mission?.score.description
             textView.text = (mission?.content)! + "\n\n任務獎勵金錢 : " + price! + "\n任務獎勵分數 : " + score!
             textView.backgroundColor = UIColor(red: 230/255, green: 230/255, blue:230/255, alpha: 1)

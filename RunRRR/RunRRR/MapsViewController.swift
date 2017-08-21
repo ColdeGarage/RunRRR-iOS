@@ -255,15 +255,13 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
             case .success(let value):
                 let missionsJson = JSON(value)
                 let missions = missionsJson["payload"]["objects"].arrayValue
-                print("missions:",missions)
                 for mission in missions{
-                    print(mission)
                     guard let mid = mission["mid"].intValue as Int?,
                         let title = mission["title"].stringValue as String?,
                         let content = mission["content"].stringValue as String?,
                         let timeStart = mission["time_start"].stringValue as String?,
                         let timeEnd = mission["time_end"].stringValue as String?,
-                        let price = mission["price"].intValue as Int?,
+                        let prize = mission["prize"].intValue as Int?,
                         let clue = mission["clue"].intValue as Int?,
                         let type = mission["class"].stringValue as String?,
                         let score = mission["score"].intValue as Int?,
@@ -274,7 +272,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                             return
                     }
                     
-                    guard let missionItem = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,price:price,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN,missionImageURL:missionImageURL) else{
+                    guard let missionItem = MissionsData(mid:mid,title:title,content:content,timeStart:timeStart,timeEnd:timeEnd,prize:prize,clue:clue,type:type,score:score,locationE:locationE,locationN:locationN,missionImageURL:missionImageURL) else{
                         //nil
                         print("mission error")
                         return
@@ -285,7 +283,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
             case .failure(let error):
                 print(error)
             }
-            missionListTemp.sort(by: {$0.type < $1.type})
+            
 //            self.missionShowList.sort(by: {$0.type < $1.type})
             
             
@@ -303,9 +301,6 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                     }
                     //let serverHour = 7
                     //let serverMin = 0
-                
-                    print("missionReport:",missionReport.description)
-                    
                     guard let serverHour = Int(serverTime.components(separatedBy: ":")[0]),
                         let serverMin = Int(serverTime.components(separatedBy: ":")[1]) else {
                             print("serverTime error!")
@@ -316,34 +311,22 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                         //let rid = missionStatus["rid"].intValue
                         let mid = missionStatus["mid"].intValue
                         let status = missionStatus["status"].intValue
-                        //let imageURL = missionStatus["url"].stringValue
-//                        let index = self.missionShowList.index(where:{$0.mid == mid})
-                        let index = missionListTemp.index(where:{$0.mid == mid})
-                        if index == nil{
-                            print(mid)
-                            print("null")
-                        }
+
+                        if let index = missionListTemp.index(where:{$0.mid == mid}){
                         
                         //0:審核失敗 1:審核中 2:審核成功 3.未解任務
                         //if mission complete
-                        if status == 1 {
-                            missionListTemp[index!].check = 2
-                            let missionComplete = missionListTemp[index!]
-                            missionListTemp.remove(at: index!)
-                            completeMissionListTemp += [missionComplete]
-//                            self.missionShowList[index!].check = 2
-//                            let missionComplete = self.missionShowList[index!]
-//                            self.missionShowList.remove(at: index!)
-//                            self.completeMissionList += [missionComplete]
-                        }
+                            if status == 1 {
+                                missionListTemp[index].check = 3
+                            }
                             //if mission is reviewing
-                        else if status == 0 {
-                            missionListTemp[index!].check = 1
-//                            self.missionShowList[index!].check = 1
-                        }
-                        else { //mission fail
-                            missionListTemp[index!].check = 0
-//                            self.missionShowList[index!].check = 0
+                            else if status == 0 {
+                                missionListTemp[index].check = 1
+                            }
+                            else { //mission fail
+                                missionListTemp[index].check = 0
+
+                            }
                         }
                     }
                     
@@ -355,7 +338,7 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                     for idx in 0..<missionListTemp.count{
                         let timeHour = Int(missionListTemp[idx].timeEnd.components(separatedBy: ":")[0])!
                         let timeMin = Int(missionListTemp[idx].timeEnd.components(separatedBy: ":")[1])!
-                        if missionListTemp[idx].check != 0 { //if reviewing and expired, still need to show
+                        if (missionListTemp[idx].check != 1) { //if reviewing and expired, still need to show
                             if timeHour < serverHour{
                                 idxToRemove.insert(idx)
                             }
@@ -384,7 +367,6 @@ class MapsViewController: UIViewController, GMSMapViewDelegate, segueViewControl
                     marker.map = map
                 }
                 self.missionShowList = missionListTemp
-                self.completeMissionList = completeMissionListTemp
             }
             
         }
