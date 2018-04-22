@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 
 internal func radians(_ degrees: Double) -> Double {
-    return degrees / 180 * M_PI
+    return degrees / 180 * Double.pi
 }
 
 internal func localizedString(_ key: String) -> String {
@@ -84,7 +84,7 @@ internal func normalizedRect(_ rect: CGRect, orientation: UIImageOrientation) ->
     return normalizedRect
 }
 
-internal func flashImage(_ mode: AVCaptureFlashMode) -> String {
+internal func flashImage(_ mode: AVCaptureDevice.FlashMode) -> String {
     let image: String
     switch mode {
     case .auto:
