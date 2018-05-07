@@ -26,7 +26,15 @@ class MainViewController: UIViewController, LoginButtonDelegate {
     func viewInit() {
         let loginUIView = LoginUIView()
         loginUIView.loginButtonDelegate = self
+        
+        let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.hideKeyboard))
+        
+        tap.cancelsTouchesInView = false
+        loginUIView.addGestureRecognizer(tap)
         view.addSubview(loginUIView)
+        
+        
+        
         loginUIView.snp.makeConstraints{ (make) in
             make.bottom.equalTo(view)
             make.left.equalTo(view)
@@ -41,6 +49,7 @@ class MainViewController: UIViewController, LoginButtonDelegate {
         }
     }
     internal func buttonOnTouch() {
+        print("Login Button Tapped")
         // present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
     }
 }
