@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		05841D88C86C379575B6B952 /* Pods_RunRRR_2_0.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E4014F372C24FE7AA2BC935 /* Pods_RunRRR_2_0.framework */; };
 		3F6167DAAFE05128CF4B3111 /* Pods_RunRRR_2_0Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554D34598B566130ABFA5088 /* Pods_RunRRR_2_0Tests.framework */; };
+		4388A41E209F083700E72B41 /* LoginUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388A41D209F083700E72B41 /* LoginUIView.swift */; };
 		43EAB1BE208C888B00A3A1A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EAB1BD208C888B00A3A1A2 /* AppDelegate.swift */; };
 		43EAB1C0208C888B00A3A1A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EAB1BF208C888B00A3A1A2 /* ViewController.swift */; };
 		43EAB1C3208C888B00A3A1A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43EAB1C1208C888B00A3A1A2 /* Main.storyboard */; };
@@ -39,6 +40,7 @@
 /* Begin PBXFileReference section */
 		118AC38F7B3C722C559F6A4A /* Pods-RunRRR 2.0UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunRRR 2.0UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RunRRR 2.0UITests/Pods-RunRRR 2.0UITests.release.xcconfig"; sourceTree = "<group>"; };
 		401F9CA93258E39EFD3B6FF1 /* Pods-RunRRR 2.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunRRR 2.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunRRR 2.0/Pods-RunRRR 2.0.debug.xcconfig"; sourceTree = "<group>"; };
+		4388A41D209F083700E72B41 /* LoginUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIView.swift; sourceTree = "<group>"; };
 		43EAB1BA208C888B00A3A1A2 /* RunRRR 2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RunRRR 2.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43EAB1BD208C888B00A3A1A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		43EAB1BF208C888B00A3A1A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				43EAB1C4208C888B00A3A1A2 /* Assets.xcassets */,
 				43EAB1C6208C888B00A3A1A2 /* LaunchScreen.storyboard */,
 				43EAB1C9208C888B00A3A1A2 /* Info.plist */,
+				4388A41D209F083700E72B41 /* LoginUIView.swift */,
 			);
 			path = "RunRRR 2.0";
 			sourceTree = "<group>";
@@ -307,15 +310,11 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-RunRRR 2.0/Pods-RunRRR 2.0-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -401,6 +400,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4388A41E209F083700E72B41 /* LoginUIView.swift in Sources */,
 				43EAB1C0208C888B00A3A1A2 /* ViewController.swift in Sources */,
 				43EAB1BE208C888B00A3A1A2 /* AppDelegate.swift in Sources */,
 			);

@@ -7,20 +7,44 @@
 //
 
 import UIKit
+import SnapKit
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, LoginButtonDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-        view.backgroundColor = UIColor.red
+        view.backgroundColor = UIColor.blue
+        viewInit()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-
-
+    
+    func viewInit() {
+        let loginUIView = LoginUIView()
+        loginUIView.loginButtonDelegate = self
+        view.addSubview(loginUIView)
+        loginUIView.snp.makeConstraints{ (make) in
+            make.bottom.equalTo(view)
+            make.left.equalTo(view)
+            make.right.equalTo(view)
+            
+            if #available(iOS 11, *) {
+                make.top.equalTo(view.safeAreaLayoutGuide.snp.topMargin)
+            }
+            else {
+                make.top.equalTo(view.snp.topMargin)
+            }
+        }
+    }
+    internal func buttonOnTouch() {
+        // present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+    }
 }
 
+protocol LoginButtonDelegate {
+    func buttonOnTouch()
+}
