@@ -10,18 +10,23 @@ import UIKit
 import SnapKit
 
 class LoginUIView: UIView {
-    var loginButtonDelegate: LoginButtonDelegate?
+    var loginViewDelegate: LoginViewDelegate?
+    
+    var userEmailTextField: UITextField?
+    var userPwdTextField: UITextField?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         
         self.backgroundColor = UIColor(hexString: "#FAFBFC")
         
         let RunRRRLogoView = UIImageView()
         let userEmailTextField = UITextField()
+        self.userEmailTextField = userEmailTextField
         let userPwdTextField = UITextField()
+        self.userPwdTextField = userPwdTextField
         let loginButton = UIButton(type: .system)
+        
         
         loginButton.backgroundColor = UIColor.black
         loginButton.setTitleColor(UIColor.white, for: .normal)
@@ -31,14 +36,13 @@ class LoginUIView: UIView {
         
         userEmailTextField.keyboardType = .emailAddress
         userEmailTextField.layer.borderColor = UIColor(hexString: "#E2E4E8").cgColor
-        userEmailTextField.layer.borderWidth = CGFloat(0.5)
+        userEmailTextField.layer.borderWidth = CGFloat(1)
         userEmailTextField.autocapitalizationType = .none
-        userEmailTextField.autocorrectionType = .
+        
         userPwdTextField.keyboardType = .default
         userPwdTextField.isSecureTextEntry = true
         userPwdTextField.layer.borderColor = UIColor(hexString: "#E2E4E8").cgColor
-        userPwdTextField.layer.borderWidth = CGFloat(0.5)
-        
+        userPwdTextField.layer.borderWidth = CGFloat(1)
         
         self.addSubview(RunRRRLogoView)
         self.addSubview(userEmailTextField)
@@ -75,7 +79,7 @@ class LoginUIView: UIView {
     }
     
     @objc private func loginButtonTapped(_ sender: UIButton!) {
-        self.loginButtonDelegate?.buttonOnTouch()
+        self.loginViewDelegate?.didLoginButtonTapped(self.userEmailTextField!, self.userPwdTextField!)
     }
     
     required init?(coder aDecoder: NSCoder) {
