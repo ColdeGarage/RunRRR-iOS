@@ -8,8 +8,6 @@
 
 import UIKit
 import SnapKit
-import Alamofire
-import SwiftyJSON
 
 class LoginViewController: UIViewController, LoginViewDelegate {
 
@@ -30,9 +28,9 @@ class LoginViewController: UIViewController, LoginViewDelegate {
         loginUIView.loginViewDelegate = self
         
         let tap: UIGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.hideKeyboard))
-        
         tap.cancelsTouchesInView = false
         loginUIView.addGestureRecognizer(tap)
+        
         view.addSubview(loginUIView)
         
         loginUIView.snp.makeConstraints{ (make) in
@@ -57,20 +55,24 @@ class LoginViewController: UIViewController, LoginViewDelegate {
         
         loginHelper.checkAndLogin({ result in
             switch (result){
-            case .succeed: break
+            case .succeed:
+                print("Login Successfully")
                 
             case .emptyPwd:
-                break
+                print("Password is Empty!")
+                self.showAlertWindow(title: "Login Failed", message: "Please enter your password.")
             case .emptyEmail:
-                break
+                print("Email is Empty!")
+                self.showAlertWindow(title: "Login Failed", message: "Please enter your email.")
             case .wrongEmailOrPwd:
-                break
+                print("Wrong Email or Password")
+                self.showAlertWindow(title: "Login Failed", message: "The email or password is incorrect.")
             case .error:
-                break
+                print("Error")
+                self.showAlertWindow(title: "Login Failed", message: "Oops, something went wrong.\nWait for two minutes!")
             }
         })
-        print("Login Button Tapped")
-        // present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+        print("Login Button Tapped")// present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
     }
 }
 

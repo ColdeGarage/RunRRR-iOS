@@ -24,11 +24,12 @@ class LoginAPI{
         if (self.userID?.isEmpty)! {
             resultHandler(.emptyEmail)
         }
-        if (self.userPwd?.isEmpty)! {
+        else if (self.userPwd?.isEmpty)! {
             resultHandler(.emptyPwd)
         }
-        
-        self.callAPI(resultHandler)
+        else {
+            self.callAPI(resultHandler)
+        }
     }
     
     private func callAPI(_ resultHandler: @escaping (_ result: LoginResult) -> ()){
@@ -39,10 +40,11 @@ class LoginAPI{
                 return
             }
             let json = JSON(response.result.value!)
+            print(json)
             if (!json["payload"]["correct"].boolValue){
                 let uid = json["uid"].int
                 let token = json["token"].stringValue
-                print(uid)
+                print(uid!)
                 print(token)
                 resultHandler(.succeed)
             }

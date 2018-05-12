@@ -12,38 +12,43 @@ import SnapKit
 class LoginUIView: UIView {
     var loginViewDelegate: LoginViewDelegate?
     
-    var userEmailTextField: UITextField?
-    var userPwdTextField: UITextField?
+    let RunRRRLogoView = UIImageView()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
-        self.backgroundColor = UIColor(hexString: "#FAFBFC")
-        
-        let RunRRRLogoView = UIImageView()
+    let userEmailTextField: UITextField = {
         let userEmailTextField = UITextField()
-        self.userEmailTextField = userEmailTextField
+        userEmailTextField.keyboardType = .emailAddress
+        userEmailTextField.layer.borderColor = UIColor(hexString: "#E2E4E8").cgColor
+        userEmailTextField.layer.borderWidth = CGFloat(1)
+        userEmailTextField.autocapitalizationType = .none
+        userEmailTextField.placeholder = "Email Address"
+        return userEmailTextField
+    }()
+    
+    let userPwdTextField: UITextField = {
         let userPwdTextField = UITextField()
-        self.userPwdTextField = userPwdTextField
+        userPwdTextField.keyboardType = .default
+        userPwdTextField.isSecureTextEntry = true
+        userPwdTextField.layer.borderColor = UIColor(hexString: "#E2E4E8").cgColor
+        userPwdTextField.layer.borderWidth = CGFloat(1)
+        userPwdTextField.placeholder = "Password"
+        return userPwdTextField
+    }()
+    
+    let loginButton: UIButton = {
         let loginButton = UIButton(type: .system)
-        
-        
         loginButton.backgroundColor = UIColor.black
         loginButton.setTitleColor(UIColor.white, for: .normal)
         loginButton.layer.cornerRadius = 4
         loginButton.setTitle("Login", for: .normal)
         loginButton.addTarget(self, action: #selector(loginButtonTapped(_:)), for: .touchUpInside)
+        return loginButton
+    }()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        userEmailTextField.keyboardType = .emailAddress
-        userEmailTextField.layer.borderColor = UIColor(hexString: "#E2E4E8").cgColor
-        userEmailTextField.layer.borderWidth = CGFloat(1)
-        userEmailTextField.autocapitalizationType = .none
-        
-        userPwdTextField.keyboardType = .default
-        userPwdTextField.isSecureTextEntry = true
-        userPwdTextField.layer.borderColor = UIColor(hexString: "#E2E4E8").cgColor
-        userPwdTextField.layer.borderWidth = CGFloat(1)
-        
+        self.backgroundColor = UIColor(hexString: "#FAFBFC")
+
         self.addSubview(RunRRRLogoView)
         self.addSubview(userEmailTextField)
         self.addSubview(userPwdTextField)
@@ -79,7 +84,7 @@ class LoginUIView: UIView {
     }
     
     @objc private func loginButtonTapped(_ sender: UIButton!) {
-        self.loginViewDelegate?.didLoginButtonTapped(self.userEmailTextField!, self.userPwdTextField!)
+        self.loginViewDelegate?.didLoginButtonTapped(self.userEmailTextField, self.userPwdTextField)
     }
     
     required init?(coder aDecoder: NSCoder) {
