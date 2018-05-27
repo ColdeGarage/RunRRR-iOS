@@ -34,6 +34,18 @@ class LoginUIView: UIView {
         return userPwdTextField
     }()
     
+    let showPasswordCheckBox : Checkbox = {
+        let cb = Checkbox()
+        cb.checkedBorderColor = .black
+        cb.checkboxBackgroundColor = .black
+        cb.borderStyle = .square
+        cb.checkmarkColor = .white
+        cb.checkmarkStyle = .cross
+        cb.useHapticFeedback = true
+        cb.addTarget(self, action: #selector(isShowPasswordCheckboxTapped(_:)), for: .valueChanged)
+        return cb
+    }()
+    
     let loginButton: UIButton = {
         let loginButton = UIButton(type: .system)
         loginButton.backgroundColor = UIColor.black
@@ -48,11 +60,12 @@ class LoginUIView: UIView {
         super.init(frame: frame)
         
         self.backgroundColor = UIColor(hexString: "#FAFBFC")
-
+        
         self.addSubview(RunRRRLogoView)
         self.addSubview(userEmailTextField)
         self.addSubview(userPwdTextField)
         self.addSubview(loginButton)
+        self.addSubview(showPasswordCheckBox)
         
         RunRRRLogoView.snp.makeConstraints{ make in
             make.centerX.equalTo(self)
@@ -79,12 +92,22 @@ class LoginUIView: UIView {
             make.centerX.equalTo(self)
             make.height.equalTo(40)
             make.width.equalTo(self.snp.width).multipliedBy(0.7)
-            make.top.equalTo(userPwdTextField.snp.bottom).offset(20)
+            make.top.equalTo(showPasswordCheckBox.snp.bottom).offset(20)
+        }
+        showPasswordCheckBox.snp.makeConstraints{(make) in
+            make.left.equalTo(loginButton)
+            make.top.equalTo(userPwdTextField.snp.bottom).offset(10)
+            make.height.equalTo(24)
+            make.width.equalTo(24)
         }
     }
     
     @objc private func loginButtonTapped(_ sender: UIButton!) {
         self.loginViewDelegate?.didLoginButtonTapped(self.userEmailTextField, self.userPwdTextField)
+    }
+    
+    @objc private func isShowPasswordCheckboxTapped(_ sender: Checkbox) {
+        self.userPwdTextField.isSecureTextEntry = !sender.isChecked
     }
     
     required init?(coder aDecoder: NSCoder) {

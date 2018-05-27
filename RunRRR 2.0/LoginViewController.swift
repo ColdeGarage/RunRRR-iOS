@@ -57,7 +57,7 @@ class LoginViewController: UIViewController, LoginViewDelegate {
             switch (result){
             case .succeed:
                 print("Login Successfully")
-                
+                self.dismiss(animated: false, completion: nil)
             case .emptyPwd:
                 print("Password is Empty!")
                 self.showAlertWindow(title: "Login Failed", message: "Please enter your password.")
