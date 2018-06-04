@@ -10,26 +10,23 @@ import GoogleMaps
 import UIKit
 import SnapKit
 
-class MainViewController: UIViewController {
-    
+class MainViewController: UIViewController, segueViewController {
     // Attribute
-    let menuBar = UIView()
-    var mainContextView = ContextView()
-    let contextViews: [String: ContextView] = {
-        let cvs: [String: ContextView] = [
-            "Map": MapContextView(),
-            "Bag": BagContextView(),
-            "Mission": MissionContextView(),
-            "More": MoreContextView()
-        ]
-        return cvs
+    let menuBar = MenuBarBelow()
+    let mainContextView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        return cv
     }()
+    let mainContextWorker = MainContextWorker()
     
     
     // Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if let flowLayout = mainContextView.collectionViewLayout as? UICollectionViewFlowLayout {
+            flowLayout.scrollDirection = .horizontal
+        }
         initView()
         initLayout()
         
@@ -39,11 +36,9 @@ class MainViewController: UIViewController {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
     private func initLayout() {
-        self.menuBar.backgroundColor = UIColor.red
         self.view.addSubview(menuBar)
         self.view.addSubview(mainContextView)
         
@@ -51,7 +46,14 @@ class MainViewController: UIViewController {
     }
     
     private func initView() {
-        mainContextView = contextViews["Map"]!
+        mainContextView.delegate = self.mainContextWorker
+        mainContextView.dataSource = self.mainContextWorker
+        mainContextView.register(MainContextViewCell.self, forCellWithReuseIdentifier: self.mainContextWorker.cellId)
+        //        mainContextView = contextViews["Map"]!
+        
+        
+        self.menuBar.delegate = self
+        self.menuBar.dataSource = self
     }
     
     private func updateConstraints() {
@@ -73,4 +75,31 @@ class MainViewController: UIViewController {
             make.bottom.equalTo(menuBar.snp.top)
         }
     }
+    
+    internal func segueToMaps() {
+//        self.mainContextView.removeFromSuperview()
+//        self.mainContextView = contextViews["Map"]!
+        updateConstraints()
+    }
+    
+    internal func segueToBags() {
+//        self.mainContextView.removeFromSuperview()
+//        self.mainContextView = contextViews["Bag"]!
+        updateConstraints()
+    }
+    
+    internal func segueToMissions() {
+//        self.mainContextView.removeFromSuperview()
+//        self.mainContextView = contextViews["Mission"]!
+        updateConstraints()
+    }
+    
+    internal func segueToMore() {
+//        self.mainContextView.removeFromSuperview()
+//        self.mainContextView = contextViews["More"]!
+        updateConstraints()
+    }
+    
 }
+
+

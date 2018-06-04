@@ -25,7 +25,7 @@ class MapContextView: ContextView {
         super.init(frame: frame)
         self.frame = frame
         self.worker = MapWorker()
-        self.backgroundColor = UIColor.white
+        self.backgroundColor = UIColor(hexString: "#FAFBFC")
         
         self.addSubview(map)
         map.snp.makeConstraints{(make) in

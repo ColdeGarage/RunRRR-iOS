@@ -18,10 +18,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         GMSServices.provideAPIKey("AIzaSyDSClxYw2JwFHITWL9vLSALbeC3p8VGYzA")
         window?.makeKeyAndVisible()
-        window?.rootViewController = LoginViewController()
+//        window?.rootViewController = LoginViewController()
         // Override point for customization after application launch.
         
-//        window?.rootViewController = MainViewController()
+        window?.rootViewController = MainViewController()
         return true
     }
 
