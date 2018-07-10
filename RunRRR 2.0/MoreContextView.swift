@@ -12,6 +12,7 @@ class MoreContextView: ContextView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.worker = MoreWorker()
+        self.backgroundColor = .yellow
     }
     
     required init?(coder aDecoder: NSCoder) {

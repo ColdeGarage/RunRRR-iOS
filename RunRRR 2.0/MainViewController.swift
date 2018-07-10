@@ -26,7 +26,10 @@ class MainViewController: UIViewController, segueViewController {
         super.viewDidLoad()
         if let flowLayout = mainContextView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
+            flowLayout.minimumLineSpacing = 0
         }
+        self.view.backgroundColor = .white
+        mainContextView.isPagingEnabled = true
         initView()
         initLayout()
         
@@ -49,9 +52,7 @@ class MainViewController: UIViewController, segueViewController {
         mainContextView.delegate = self.mainContextWorker
         mainContextView.dataSource = self.mainContextWorker
         mainContextView.register(MainContextViewCell.self, forCellWithReuseIdentifier: self.mainContextWorker.cellId)
-        //        mainContextView = contextViews["Map"]!
-        
-        
+
         self.menuBar.delegate = self
         self.menuBar.dataSource = self
     }
@@ -76,30 +77,50 @@ class MainViewController: UIViewController, segueViewController {
         }
     }
     
-    internal func segueToMaps() {
-//        self.mainContextView.removeFromSuperview()
-//        self.mainContextView = contextViews["Map"]!
+    /* MenuBar Button Delegation   */
+    /* When clicking on buttons... */
+    
+    internal func mapButtonIsTapped() {
+        self.scrollToMap()
         updateConstraints()
     }
     
-    internal func segueToBags() {
-//        self.mainContextView.removeFromSuperview()
-//        self.mainContextView = contextViews["Bag"]!
+    internal func bagButtonIsTapped() {
+        self.scrollToBag()
         updateConstraints()
     }
     
-    internal func segueToMissions() {
-//        self.mainContextView.removeFromSuperview()
-//        self.mainContextView = contextViews["Mission"]!
+    internal func missionButtonIsTapped() {
+        self.scrollToMission()
         updateConstraints()
     }
     
-    internal func segueToMore() {
-//        self.mainContextView.removeFromSuperview()
-//        self.mainContextView = contextViews["More"]!
+    internal func moreButtonIsTapped() {
+        self.scrollToMore()
         updateConstraints()
     }
     
+    
+    
+    private func scrollToMap() {
+        let index = IndexPath(item: 0, section: 0)
+        self.mainContextView.scrollToItem(at: index, at: .left, animated: true)
+    }
+    
+    private func scrollToMission() {
+        let index = IndexPath(item: 1, section: 0)
+        self.mainContextView.scrollToItem(at: index, at: .left, animated: true)
+    }
+    
+    private func scrollToBag() {
+        let index = IndexPath(item: 2, section: 0)
+        self.mainContextView.scrollToItem(at: index, at: .left, animated: true)
+    }
+    
+    private func scrollToMore() {
+        let index = IndexPath(item: 3, section: 0)
+        self.mainContextView.scrollToItem(at: index, at: .left, animated: true)
+    }
 }
 
 

@@ -23,12 +23,11 @@ class MapContextView: ContextView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.frame = frame
         self.worker = MapWorker()
         self.backgroundColor = UIColor(hexString: "#FAFBFC")
         
         self.addSubview(map)
-        map.snp.makeConstraints{(make) in
+        map.snp.makeConstraints {(make) in
             make.center.equalTo(self.snp.center)
             make.width.equalTo(self.snp.width).multipliedBy(0.8)
             make.height.equalTo(self.snp.height).multipliedBy(0.6)
