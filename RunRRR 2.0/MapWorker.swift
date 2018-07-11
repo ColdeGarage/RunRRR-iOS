@@ -7,7 +7,27 @@
 //
 
 import UIKit
+import GoogleMaps
 
 class MapWorker: Worker {
+    var map: GMSMapView
+    var view: MapContextView
+
+    init(map: GMSMapView, target: MapContextView) {
+        self.map = map
+        self.view = target
+    }
     
+    func loadMapData() {
+        self.map.clear()
+        self.getMapsBoundary()
+        self.getMissionLocations()
+    }
+    
+    private func getMapsBoundary() {
+        
+    }
+    private func getMissionLocations() {
+        
+    }
 }

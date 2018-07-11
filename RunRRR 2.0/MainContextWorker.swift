@@ -35,7 +35,11 @@ class MainContextWorker: NSObject, Worker, UICollectionViewDelegate, UICollectio
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
     }
-    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        let mainCell = cell as! MainContextViewCell
+        
+        mainCell.cellWillBeDisplayed()
+    }
 //    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
 //        let mainCell = cell as! MainContextViewCell
 ////        mainCell.mainView = self.contextViews[contextViewName[indexPath.item]]!.init()
@@ -82,4 +86,13 @@ class MainContextViewCell: UICollectionViewCell {
         self.backgroundColor = .black
         super.prepareForReuse()
     }
+    
+    func cellWillBeDisplayed() {
+        guard let mv = self.mainView else {
+            fatalError("No mainView exists!")
+        }
+        mv.viewWillBeDisplayed()
+    }
 }
+
+

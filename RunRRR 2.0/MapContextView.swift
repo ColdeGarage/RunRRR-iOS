@@ -23,7 +23,7 @@ class MapContextView: ContextView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.worker = MapWorker()
+        self.worker = MapWorker(map: map, target: self) as MapWorker
         self.backgroundColor = UIColor(hexString: "#FAFBFC")
         
         self.addSubview(map)
@@ -37,4 +37,10 @@ class MapContextView: ContextView {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func viewWillBeDisplayed() {
+        let mapWorker = self.worker as! MapWorker
+        mapWorker.loadMapData()
+    }
+
 }
