@@ -22,6 +22,7 @@ class MapWorker: Worker {
         self.map.clear()
         self.getMapsBoundary()
         self.getMissionLocations()
+        print("Loading Map Data")
     }
     
     private func getMapsBoundary() {
