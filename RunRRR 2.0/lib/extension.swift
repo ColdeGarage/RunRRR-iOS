@@ -59,4 +59,14 @@ extension UIViewController {
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alertController, animated: true, completion: nil)
     }
+    
+    func topMostController () -> UIViewController {
+        var topController: UIViewController = (UIApplication.shared.keyWindow?.rootViewController)!
+        
+        while ((topController.presentedViewController) != nil) {
+            topController = topController.presentedViewController!;
+        }
+        
+        return topController
+    }
 }

@@ -44,8 +44,13 @@ class LoginAPI{
             if (!json["payload"]["correct"].boolValue){
                 let uid = json["uid"].int
                 let token = json["token"].stringValue
-                print(uid!)
-                print(token)
+                let localUserDefault = UserDefaults.standard
+
+                localUserDefault.set(true, forKey: "RunRRR_Login")
+                localUserDefault.set(uid, forKey: "RunRRR_UID")
+                localUserDefault.set(token, forKey: "RunRRR_Token")
+                localUserDefault.synchronize()
+                
                 resultHandler(.succeed)
             }
             else {

@@ -13,6 +13,6 @@ struct CONFIG{
     static let PORT = 8081
     static let VERSION = "api/v1.1"
     struct API_PREFIX {
-        static let ROOT = "http://\(HOSTNAME):\(PORT)/\(VERSION)/"
+        static let ROOT = "http://\(HOSTNAME):\(PORT)/\(VERSION)"
     }
 }

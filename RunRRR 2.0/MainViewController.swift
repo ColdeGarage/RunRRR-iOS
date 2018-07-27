@@ -11,6 +11,7 @@ import UIKit
 import SnapKit
 
 class MainViewController: UIViewController, segueViewController {
+    
     // Attribute
     let menuBar = MenuBarBelow()
     let mainContextView: UICollectionView = {
@@ -19,11 +20,14 @@ class MainViewController: UIViewController, segueViewController {
         return cv
     }()
     let mainContextWorker = MainContextWorker()
-    
+    var router: MainViewControllerOutput?
     
     // Methods
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.router = MainViewRouter(vc: self)
+        
         if let flowLayout = mainContextView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.scrollDirection = .horizontal
             flowLayout.minimumLineSpacing = 0
@@ -32,11 +36,18 @@ class MainViewController: UIViewController, segueViewController {
         mainContextView.isPagingEnabled = true
         initView()
         initLayout()
-        
-//        self.mainContextView.removeFromSuperview()
-        updateConstraints()
-    }
 
+        updateConstraints()
+        
+//        self.router!.checkIsLogin()             // If not login, will segue to LoginViewController
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if (self.router!.checkIsLogin()){
+            
+        }
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -51,7 +62,8 @@ class MainViewController: UIViewController, segueViewController {
     private func initView() {
         mainContextView.delegate = self.mainContextWorker
         mainContextView.dataSource = self.mainContextWorker
-        mainContextView.register(MainContextViewCell.self, forCellWithReuseIdentifier: self.mainContextWorker.cellId)
+        mainContextView.register(MainContextViewCell.self,
+                                 forCellWithReuseIdentifier: self.mainContextWorker.cellId)
 
         self.menuBar.delegate = self
         self.menuBar.dataSource = self

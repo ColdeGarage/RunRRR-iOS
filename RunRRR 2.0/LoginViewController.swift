@@ -10,7 +10,6 @@ import UIKit
 import SnapKit
 
 class LoginViewController: UIViewController, LoginViewDelegate {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -72,7 +71,7 @@ class LoginViewController: UIViewController, LoginViewDelegate {
                 self.showAlertWindow(title: "Login Failed", message: "Oops, something went wrong.\nWait for two minutes!")
             }
         })
-        print("Login Button Tapped")// present(<#T##viewControllerToPresent: UIViewController##UIViewController#>, animated: <#T##Bool#>, completion: <#T##(() -> Void)?##(() -> Void)?##() -> Void#>)
+        print("Login Button Tapped")
     }
 }
 
