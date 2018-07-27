@@ -9,8 +9,26 @@
 /* Begin PBXBuildFile section */
 		05841D88C86C379575B6B952 /* Pods_RunRRR_2_0.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4E4014F372C24FE7AA2BC935 /* Pods_RunRRR_2_0.framework */; };
 		3F6167DAAFE05128CF4B3111 /* Pods_RunRRR_2_0Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554D34598B566130ABFA5088 /* Pods_RunRRR_2_0Tests.framework */; };
+		431BE02A20C5B917004353B8 /* MainContextWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 431BE02920C5B917004353B8 /* MainContextWorker.swift */; };
+		43201D9D20A5ECF200F954A8 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43201D9C20A5ECF200F954A8 /* config.swift */; };
+		43201D9F20A5ED3A00F954A8 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43201D9E20A5ED3A00F954A8 /* extension.swift */; };
+		43201DA120A5F7EA00F954A8 /* LoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43201DA020A5F7EA00F954A8 /* LoginAPI.swift */; };
+		4330098F20B9DC7F0076FDB9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330098E20B9DC7F0076FDB9 /* MainViewController.swift */; };
+		4330099320BAEAD50076FDB9 /* MapContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330099220BAEAD50076FDB9 /* MapContextView.swift */; };
+		4330099520BAEAE80076FDB9 /* BagContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330099420BAEAE80076FDB9 /* BagContextView.swift */; };
+		4330099720BAEB110076FDB9 /* MissionContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330099620BAEB110076FDB9 /* MissionContextView.swift */; };
+		4330099920BAEB6A0076FDB9 /* MoreContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330099820BAEB6A0076FDB9 /* MoreContextView.swift */; };
+		4330099B20BAEC5C0076FDB9 /* MapWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330099A20BAEC5C0076FDB9 /* MapWorker.swift */; };
+		4330099D20BAEC730076FDB9 /* BagWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330099C20BAEC730076FDB9 /* BagWorker.swift */; };
+		4330099F20BAEC7F0076FDB9 /* MissionWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330099E20BAEC7F0076FDB9 /* MissionWorker.swift */; };
+		433009A120BAEC8E0076FDB9 /* MoreWorker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433009A020BAEC8E0076FDB9 /* MoreWorker.swift */; };
+		433009A320BAF4550076FDB9 /* ContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433009A220BAF4550076FDB9 /* ContextView.swift */; };
+		433009A720BB1CA00076FDB9 /* Checkbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433009A620BB1CA00076FDB9 /* Checkbox.swift */; };
+		433009A920BC40780076FDB9 /* MenuBarBelow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 433009A820BC40770076FDB9 /* MenuBarBelow.swift */; };
+		4366293720EA0DE400398DD8 /* MissionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4366293620EA0DE400398DD8 /* MissionModel.swift */; };
+		4388A41E209F083700E72B41 /* LoginUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388A41D209F083700E72B41 /* LoginUIView.swift */; };
 		43EAB1BE208C888B00A3A1A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EAB1BD208C888B00A3A1A2 /* AppDelegate.swift */; };
-		43EAB1C0208C888B00A3A1A2 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EAB1BF208C888B00A3A1A2 /* ViewController.swift */; };
+		43EAB1C0208C888B00A3A1A2 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EAB1BF208C888B00A3A1A2 /* LoginViewController.swift */; };
 		43EAB1C3208C888B00A3A1A2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43EAB1C1208C888B00A3A1A2 /* Main.storyboard */; };
 		43EAB1C5208C888B00A3A1A2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 43EAB1C4208C888B00A3A1A2 /* Assets.xcassets */; };
 		43EAB1C8208C888B00A3A1A2 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 43EAB1C6208C888B00A3A1A2 /* LaunchScreen.storyboard */; };
@@ -39,9 +57,27 @@
 /* Begin PBXFileReference section */
 		118AC38F7B3C722C559F6A4A /* Pods-RunRRR 2.0UITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunRRR 2.0UITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-RunRRR 2.0UITests/Pods-RunRRR 2.0UITests.release.xcconfig"; sourceTree = "<group>"; };
 		401F9CA93258E39EFD3B6FF1 /* Pods-RunRRR 2.0.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RunRRR 2.0.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RunRRR 2.0/Pods-RunRRR 2.0.debug.xcconfig"; sourceTree = "<group>"; };
+		431BE02920C5B917004353B8 /* MainContextWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContextWorker.swift; sourceTree = "<group>"; };
+		43201D9C20A5ECF200F954A8 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = config.swift; path = "RunRRR 2.0/lib/config.swift"; sourceTree = SOURCE_ROOT; };
+		43201D9E20A5ED3A00F954A8 /* extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = extension.swift; path = "RunRRR 2.0/lib/extension.swift"; sourceTree = SOURCE_ROOT; };
+		43201DA020A5F7EA00F954A8 /* LoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPI.swift; sourceTree = "<group>"; };
+		4330098E20B9DC7F0076FDB9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		4330099220BAEAD50076FDB9 /* MapContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapContextView.swift; sourceTree = "<group>"; };
+		4330099420BAEAE80076FDB9 /* BagContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagContextView.swift; sourceTree = "<group>"; };
+		4330099620BAEB110076FDB9 /* MissionContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionContextView.swift; sourceTree = "<group>"; };
+		4330099820BAEB6A0076FDB9 /* MoreContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreContextView.swift; sourceTree = "<group>"; };
+		4330099A20BAEC5C0076FDB9 /* MapWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapWorker.swift; sourceTree = "<group>"; };
+		4330099C20BAEC730076FDB9 /* BagWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagWorker.swift; sourceTree = "<group>"; };
+		4330099E20BAEC7F0076FDB9 /* MissionWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionWorker.swift; sourceTree = "<group>"; };
+		433009A020BAEC8E0076FDB9 /* MoreWorker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoreWorker.swift; sourceTree = "<group>"; };
+		433009A220BAF4550076FDB9 /* ContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContextView.swift; sourceTree = "<group>"; };
+		433009A620BB1CA00076FDB9 /* Checkbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Checkbox.swift; path = "RunRRR 2.0/lib/Checkbox.swift"; sourceTree = SOURCE_ROOT; };
+		433009A820BC40770076FDB9 /* MenuBarBelow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MenuBarBelow.swift; sourceTree = "<group>"; };
+		4366293620EA0DE400398DD8 /* MissionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionModel.swift; sourceTree = "<group>"; };
+		4388A41D209F083700E72B41 /* LoginUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIView.swift; sourceTree = "<group>"; };
 		43EAB1BA208C888B00A3A1A2 /* RunRRR 2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RunRRR 2.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		43EAB1BD208C888B00A3A1A2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		43EAB1BF208C888B00A3A1A2 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		43EAB1BF208C888B00A3A1A2 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		43EAB1C2208C888B00A3A1A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		43EAB1C4208C888B00A3A1A2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		43EAB1C7208C888B00A3A1A2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -89,6 +125,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4366293820F3BD5C00398DD8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4366293620EA0DE400398DD8 /* MissionModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		4388A42120A09D1900E72B41 /* lib */ = {
+			isa = PBXGroup;
+			children = (
+				433009A620BB1CA00076FDB9 /* Checkbox.swift */,
+				43201D9E20A5ED3A00F954A8 /* extension.swift */,
+				43201D9C20A5ECF200F954A8 /* config.swift */,
+			);
+			name = lib;
+			path = "New Group";
+			sourceTree = "<group>";
+		};
 		43EAB1B1208C888B00A3A1A2 = {
 			isa = PBXGroup;
 			children = (
@@ -114,12 +169,28 @@
 		43EAB1BC208C888B00A3A1A2 /* RunRRR 2.0 */ = {
 			isa = PBXGroup;
 			children = (
+				433009A820BC40770076FDB9 /* MenuBarBelow.swift */,
 				43EAB1BD208C888B00A3A1A2 /* AppDelegate.swift */,
-				43EAB1BF208C888B00A3A1A2 /* ViewController.swift */,
-				43EAB1C1208C888B00A3A1A2 /* Main.storyboard */,
+				43EAB1BF208C888B00A3A1A2 /* LoginViewController.swift */,
+				4388A41D209F083700E72B41 /* LoginUIView.swift */,
+				43201DA020A5F7EA00F954A8 /* LoginAPI.swift */,
+				4388A42120A09D1900E72B41 /* lib */,
 				43EAB1C4208C888B00A3A1A2 /* Assets.xcassets */,
-				43EAB1C6208C888B00A3A1A2 /* LaunchScreen.storyboard */,
 				43EAB1C9208C888B00A3A1A2 /* Info.plist */,
+				43EAB1C1208C888B00A3A1A2 /* Main.storyboard */,
+				43EAB1C6208C888B00A3A1A2 /* LaunchScreen.storyboard */,
+				4330098E20B9DC7F0076FDB9 /* MainViewController.swift */,
+				431BE02920C5B917004353B8 /* MainContextWorker.swift */,
+				433009A220BAF4550076FDB9 /* ContextView.swift */,
+				4330099220BAEAD50076FDB9 /* MapContextView.swift */,
+				4330099A20BAEC5C0076FDB9 /* MapWorker.swift */,
+				4330099420BAEAE80076FDB9 /* BagContextView.swift */,
+				4330099C20BAEC730076FDB9 /* BagWorker.swift */,
+				4330099E20BAEC7F0076FDB9 /* MissionWorker.swift */,
+				4330099620BAEB110076FDB9 /* MissionContextView.swift */,
+				4330099820BAEB6A0076FDB9 /* MoreContextView.swift */,
+				433009A020BAEC8E0076FDB9 /* MoreWorker.swift */,
+				4366293820F3BD5C00398DD8 /* Model */,
 			);
 			path = "RunRRR 2.0";
 			sourceTree = "<group>";
@@ -401,8 +472,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				43EAB1C0208C888B00A3A1A2 /* ViewController.swift in Sources */,
+				4330098F20B9DC7F0076FDB9 /* MainViewController.swift in Sources */,
+				4388A41E209F083700E72B41 /* LoginUIView.swift in Sources */,
+				43EAB1C0208C888B00A3A1A2 /* LoginViewController.swift in Sources */,
 				43EAB1BE208C888B00A3A1A2 /* AppDelegate.swift in Sources */,
+				433009A920BC40780076FDB9 /* MenuBarBelow.swift in Sources */,
+				43201D9F20A5ED3A00F954A8 /* extension.swift in Sources */,
+				4330099720BAEB110076FDB9 /* MissionContextView.swift in Sources */,
+				4330099D20BAEC730076FDB9 /* BagWorker.swift in Sources */,
+				4330099520BAEAE80076FDB9 /* BagContextView.swift in Sources */,
+				433009A120BAEC8E0076FDB9 /* MoreWorker.swift in Sources */,
+				433009A320BAF4550076FDB9 /* ContextView.swift in Sources */,
+				43201DA120A5F7EA00F954A8 /* LoginAPI.swift in Sources */,
+				4330099F20BAEC7F0076FDB9 /* MissionWorker.swift in Sources */,
+				43201D9D20A5ECF200F954A8 /* config.swift in Sources */,
+				431BE02A20C5B917004353B8 /* MainContextWorker.swift in Sources */,
+				4330099320BAEAD50076FDB9 /* MapContextView.swift in Sources */,
+				4366293720EA0DE400398DD8 /* MissionModel.swift in Sources */,
+				4330099920BAEB6A0076FDB9 /* MoreContextView.swift in Sources */,
+				4330099B20BAEC5C0076FDB9 /* MapWorker.swift in Sources */,
+				433009A720BB1CA00076FDB9 /* Checkbox.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

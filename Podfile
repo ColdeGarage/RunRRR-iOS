@@ -8,7 +8,7 @@ target 'RunRRR 2.0' do
   pod 'SnapKit'
   pod 'Alamofire', '~> 4.7'
   pod 'SwiftyJSON', '~> 4.0'  
-# Pods for RunRRR 2.0
+  pod 'SWXMLHash', '~> 4.0.0'
 
   target 'RunRRR 2.0Tests' do
     inherit! :search_paths
