@@ -14,7 +14,7 @@ class MissionContextView: ContextView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.worker = MissionWorker()
+        self.worker = MissionWorker(self.missionQueue)
         
         missionQueue.delegate = (worker as! UITableViewDelegate)
         missionQueue.dataSource = (worker as! UITableViewDataSource)
@@ -39,6 +39,7 @@ class MissionContextView: ContextView {
     }
     
     override func viewWillBeDisplayed() {
-        
+        let worker = self.worker as! MissionWorker
+        worker.loadMissions()
     }
 }
