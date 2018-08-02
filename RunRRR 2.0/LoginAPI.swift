@@ -34,9 +34,10 @@ class LoginAPI{
     
     private func callAPI(_ resultHandler: @escaping (_ result: LoginResult) -> ()){
         let data: [String : Any] = ["email": self.userID!, "password": self.userPwd!]
-        Alamofire.request((CONFIG.API_PREFIX.ROOT + "member/login"), method: .post, parameters: data).responseJSON{ response in
+        Alamofire.request((CONFIG.API_PREFIX.ROOT + "/member/login"), method: .post, parameters: data).responseJSON{ response in
             if (response.result.value == nil){
                 resultHandler(.error)
+                print(response)
                 return
             }
             let json = JSON(response.result.value!)

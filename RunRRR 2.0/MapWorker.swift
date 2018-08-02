@@ -50,9 +50,9 @@ class MapWorker: Worker {
     
     func loadPointData() {
         let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
-        let token = UserDefaults.standard.integer(forKey: "RunRRR_Token")
+        let token = UserDefaults.standard.string(forKey: "RunRRR_Token")
         
-        let getPointsPara = ["operator_uid":userID,"token":token,"uid":userID] as [String : Any]
+        let getPointsPara = ["operator_uid":userID,"token":token!,"uid":userID] as [String : Any]
         
         Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/member/read", method: .get, parameters: getPointsPara).responseJSON{ response in
             print(response)
@@ -113,8 +113,8 @@ class MapWorker: Worker {
         var missionListTemp = [MissionsData]()
         var completeMissionListTemp = [MissionsData]()
         let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
-        let token = UserDefaults.standard.integer(forKey: "RunRRR_Token")
-        let missionPara = ["operator_uid": userID, "token": token]
+        let token = UserDefaults.standard.string(forKey: "RunRRR_Token")
+        let missionPara = ["operator_uid": userID, "token": token!] as [String : Any]
         Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/mission/read", method: .get, parameters:missionPara
             ).responseJSON{ response in
                 
@@ -172,7 +172,7 @@ class MapWorker: Worker {
         }
         map.clear()
 
-        let missionReadParameter = ["operator_uid":userID,"token":token] as [String : Any]
+        let missionReadParameter = ["operator_uid":userID,"token":token!] as [String : Any]
         
         Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/mission/read",parameters:missionReadParameter).responseJSON{ response in
             
@@ -212,7 +212,7 @@ class MapWorker: Worker {
             //            self.missionShowList.sort(by: {$0.type < $1.type})
             
             
-            let reportReadParameter = ["operator_uid":userID,"token":token, "uid":userID] as [String : Any]
+            let reportReadParameter = ["operator_uid":userID,"token":token!, "uid":userID] as [String : Any]
             Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/report/read",parameters:reportReadParameter).responseJSON{ response in
                 switch response.result{
                     
@@ -338,6 +338,6 @@ class MapWorker: Worker {
             ac.addAction(UIAlertAction(title: "Behave", style: .default))
             UIApplication.shared.keyWindow?.rootViewController?.present(ac, animated: true, completion: nil)
         }
-        
     }
+    
 }
