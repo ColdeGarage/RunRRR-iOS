@@ -12,12 +12,12 @@ import SnapKit
 class MainContextWorker: NSObject, Worker, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     let cellId: String = "mainContextViewCell"
     let contextViewName: [String] = ["Map", "Mission", "Bag", "More"]
-    let contextViews: [String: ContextView.Type] = {
-        let cvs: [String: ContextView.Type] = [
-            "Map": MapContextView.self,
-            "Mission": MissionContextView.self,
-            "Bag": BagContextView.self,
-            "More": MoreContextView.self
+    let contextViews: [String: ContextView] = {
+        let cvs: [String: ContextView] = [
+            "Map": MapContextView(),
+            "Mission": MissionContextView(),
+            "Bag": BagContextView(),
+            "More": MoreContextView()
         ]
         return cvs
     }()
@@ -28,7 +28,7 @@ class MainContextWorker: NSObject, Worker, UICollectionViewDelegate, UICollectio
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! MainContextViewCell
-        cell.mainView = self.contextViews[contextViewName[indexPath.item]]!.init()
+        cell.mainView = self.contextViews[contextViewName[indexPath.item]]!
         return cell
     }
     
@@ -40,13 +40,6 @@ class MainContextWorker: NSObject, Worker, UICollectionViewDelegate, UICollectio
         
         mainCell.cellWillBeDisplayed()
     }
-//    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-//        let mainCell = cell as! MainContextViewCell
-////        mainCell.mainView = self.contextViews[contextViewName[indexPath.item]]!.init()
-//        print(indexPath.item)
-////        mainCell.updateMainViewConstraints()
-//        print(mainCell.mainView)
-//    }
 }
 
 class MainContextViewCell: UICollectionViewCell {
@@ -82,9 +75,10 @@ class MainContextViewCell: UICollectionViewCell {
     }
     
     override func prepareForReuse() {
-        self.mainView?.removeFromSuperview()
-        self.backgroundColor = .black
         super.prepareForReuse()
+//        self.mainView?.removeFromSuperview()
+        self.backgroundColor = .black
+        
     }
     
     func cellWillBeDisplayed() {
@@ -94,5 +88,3 @@ class MainContextViewCell: UICollectionViewCell {
         mv.viewWillBeDisplayed()
     }
 }
-
-

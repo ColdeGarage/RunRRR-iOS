@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 class BarcodeTableViewCell: UITableViewCell {
     let smallCircle = UIImageView()
@@ -37,10 +38,20 @@ class BarcodeTableViewCell: UITableViewCell {
     func setupView(){
         contentView.addSubview(titleBarView)
         contentView.addSubview(barcodeImageView)
-        contentView.addConstraintWithFormat(format: "H:|[v0]|", views: titleBarView)
-        contentView.addConstraintWithFormat(format: "V:|[v0(50)]", views: titleBarView)
-        contentView.addConstraintWithFormat(format: "H:|-20-[v0]-20-|", views: barcodeImageView)
-        contentView.addConstraintWithFormat(format: "V:[v0]-100-[v1(100)]", views: titleBarView,barcodeImageView)
+        
+        titleBarView.snp.makeConstraints{(make) in
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.top.equalToSuperview()
+            make.height.equalTo(50)
+        }
+        
+        barcodeImageView.snp.makeConstraints{(make) in
+            make.left.equalTo(contentView).offset(20)
+            make.right.equalTo(contentView).offset(-20)
+            make.top.equalTo(titleLabel.snp.bottom).offset(100)
+            make.height.equalTo(100)
+        }
         
         barcodeImageView.image = encodeImageFromUID(userID)
     }
@@ -54,9 +65,20 @@ class BarcodeTableViewCell: UITableViewCell {
         smallCircle.contentMode = .scaleAspectFill
         
         let smallCircleSize = titleBarView.frame.height - 4
-        titleBarView.addConstraintWithFormat(format: "H:|-10-[v0(\(smallCircleSize))]-10-[v1]-5-|", views: smallCircle, titleLabel)
-        titleBarView.addConstraintWithFormat(format: "V:|-2-[v0(\(smallCircleSize))]-2-|", views: smallCircle)
-        titleBarView.addConstraintWithFormat(format: "V:|-2-[v0(\(smallCircleSize))]-2-|", views: titleLabel)
+        
+        smallCircle.snp.makeConstraints{(make) in
+            make.left.equalTo(titleBarView).offset(10)
+            make.width.equalTo(Int(smallCircleSize))
+            make.top.equalTo(titleBarView).offset(2)
+            make.height.equalTo(Int(smallCircleSize))
+        }
+        
+        titleLabel.snp.makeConstraints{(make) in
+            make.left.equalTo(smallCircle.snp.right).offset(10)
+            make.right.equalTo(titleBarView).offset(-5)
+            make.top.equalTo(titleBarView).offset(2)
+            make.bottom.equalTo(titleBarView).offset(-2)
+        }
     }
     func encodeImageFromUID(_ uid: Int) -> UIImage? {
         let uidString = String(uid)

@@ -10,6 +10,7 @@ import UIKit
 import Alamofire
 import CoreLocation
 import SwiftyJSON
+import SnapKit
 
 class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout{
     
@@ -87,13 +88,13 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
         return cell
     }
     
-    func getHelp(_ sender: UIButton) {
+    @objc func getHelp(_ sender: UIButton) {
         let currentLocation = self.manager.location!
         let currentLocationLatitude = currentLocation.coordinate.latitude
         let currentLocationLongitude = currentLocation.coordinate.longitude
         
         let sosParameter : Parameters = ["operator_uid":self.userID,"token":self.token, "uid":self.userID, "position_e":currentLocationLongitude, "position_n":currentLocationLatitude, "help_status": 1 as Int]
-        Alamofire.request("\(API_URL)/member/callhelp", method: .put, parameters: sosParameter).responseJSON{ response in
+        Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/member/callhelp", method: .put, parameters: sosParameter).responseJSON{ response in
             switch(response.result){
             case .success( _):
                 self.sosAlert(titleText: "Received Message", messageText: "Help is on the way, please wait.")
@@ -107,7 +108,7 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
     
     func getEmergencyInfo(){
         let emergencyInfoParameter : Parameters = ["operator_uid":self.userID,"token":self.token]
-        Alamofire.request("\(API_URL)/utility/squadnumber", method: .get, parameters: emergencyInfoParameter).responseJSON{ response in
+        Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/utility/squadnumber", method: .get, parameters: emergencyInfoParameter).responseJSON{ response in
             
             switch(response.result){
             case .success(let value):
@@ -131,24 +132,34 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
         let alert = UIAlertController(title: titleText, message: messageText, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {(action) in
             alert.dismiss(animated: true, completion: nil)}))
-        vc?.present(alert, animated: true, completion: nil)
+        UIApplication.shared.keyWindow?.rootViewController?.present(alert, animated: true, completion: nil)
     }
 
     func setupView(){
         contentView.addSubview(titleBarView)
-       // contentView.addSubview(emergencyInfoTextView)
         contentView.addSubview(emergencyButton)
         contentView.addSubview(emergencyInfoCollectionView)
        
+        titleBarView.snp.makeConstraints{(make) in
+            make.left.right.equalTo(contentView)
+            make.top.equalTo(contentView)
+            make.height.equalTo(50)
+        }
         
-        contentView.addConstraintWithFormat(format: "H:|[v0]|", views: titleBarView)
-        contentView.addConstraintWithFormat(format: "V:|[v0(50)]", views: titleBarView)
-       // contentView.addConstraintWithFormat(format: "H:|-20-[v0]-20-|", views: emergencyInfoTextView)
-        contentView.addConstraintWithFormat(format: "V:[v0]-10-[v1(40)]-10-[v2]-10-|", views: titleBarView,emergencyButton,emergencyInfoCollectionView)
-        contentView.addConstraintWithFormat(format: "H:|-20-[v0]-20-|", views: emergencyInfoCollectionView)
-        contentView.addConstraintWithFormat(format: "H:[v0(100)]", views: emergencyButton)
-        addConstraint(NSLayoutConstraint(item: emergencyButton, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
-    
+        emergencyButton.snp.makeConstraints{(make) in
+            make.width.equalTo(100)
+            make.centerX.equalTo(contentView)
+            make.top.equalTo(titleBarView.snp.bottom).offset(10)
+            make.height.equalTo(40)
+        }
+        
+        emergencyInfoCollectionView.snp.makeConstraints{(make) in
+            make.left.equalTo(contentView).offset(20)
+            make.right.equalTo(contentView).offset(-20)
+            make.top.equalTo(emergencyButton).offset(10)
+            make.bottom.equalTo(contentView).offset(-10)
+        }
+        
         getEmergencyInfo()
         self.emergencyButton.addTarget(self, action: #selector(getHelp(_:)), for: .touchUpInside)
     }
@@ -160,15 +171,24 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
         titleBarView.addSubview(titleLabel)
         titleLabel.text = "SOS"
         titleLabel.textColor = .white
-        
-      
-        
         smallCircle.image = UIImage(named: "bar_circle_icon")
         smallCircle.contentMode = .scaleAspectFill
+        
         let smallCircleSize = titleBarView.frame.height - 4
-        titleBarView.addConstraintWithFormat(format: "H:|-10-[v0(\(smallCircleSize))]-10-[v1]-5-|", views: smallCircle, titleLabel)
-        titleBarView.addConstraintWithFormat(format: "V:|-2-[v0(\(smallCircleSize))]-2-|", views: smallCircle)
-        titleBarView.addConstraintWithFormat(format: "V:|-2-[v0(\(smallCircleSize))]-2-|", views: titleLabel)
+        
+        smallCircle.snp.makeConstraints{(make) in
+            make.left.equalTo(titleBarView).offset(10)
+            make.width.equalTo(Int(smallCircleSize))
+            make.top.equalTo(titleBarView).offset(2)
+            make.height.equalTo(Int(smallCircleSize))
+        }
+        
+        titleLabel.snp.makeConstraints{(make) in
+            make.left.equalTo(smallCircle.snp.right).offset(10)
+            make.right.equalTo(contentView).offset(-5)
+            make.top.equalTo(contentView).offset(2)
+            make.bottom.equalTo(contentView).offset(-2)
+        }
     }
     func hideContent(_ isHidden:Bool){
         self.emergencyButton.isHidden = isHidden
@@ -222,20 +242,33 @@ class emergencyInfoCollectionViewCell : UICollectionViewCell {
         addSubview(phoneLabel)
         
         //Vertical
-        addConstraintWithFormat(format: "V:[v0(30)]", views: squadNumberLabel)
-        addConstraint(NSLayoutConstraint(item: squadNumberLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
-        addConstraintWithFormat(format: "V:[v0(30)]", views: nameLabel)
-        addConstraint(NSLayoutConstraint(item: nameLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
-        addConstraintWithFormat(format: "V:[v0(30)]", views: nicknameLabel)
-        addConstraint(NSLayoutConstraint(item: nicknameLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
-        addConstraintWithFormat(format: "V:[v0(30)]", views: phoneLabel)
-        addConstraint(NSLayoutConstraint(item: phoneLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
+        squadNumberLabel.snp.makeConstraints{(make) in
+            make.centerY.equalTo(self)
+            make.height.equalTo(30)
+            make.left.equalTo(self).offset(5)
+            make.width.equalTo(30)
+        }
         
+        nameLabel.snp.makeConstraints{(make) in
+            make.centerY.equalTo(self)
+            make.height.equalTo(30)
+            make.left.equalTo(squadNumberLabel.snp.right).offset(5)
+            make.width.equalTo(60)
+        }
         
-        //Horizonal
-        addConstraintWithFormat(format: "H:|-5-[v0(30)]-5-[v1(60)]-5-[v2]-5-[v3(120)]|", views: squadNumberLabel, nameLabel, nicknameLabel, phoneLabel)
+        nicknameLabel.snp.makeConstraints{(make) in
+            make.centerY.equalTo(self)
+            make.height.equalTo(30)
+            make.left.equalTo(nameLabel.snp.right).offset(5)
+            make.right.equalTo(phoneLabel.snp.left).offset(-5)
+        }
         
-        
+        phoneLabel.snp.makeConstraints{(make) in
+            make.centerY.equalTo(self)
+            make.height.equalTo(30)
+            make.width.equalTo(120)
+            make.right.equalTo(self)
+        }
     }
     
     

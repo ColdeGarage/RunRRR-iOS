@@ -13,6 +13,11 @@
 		43201D9D20A5ECF200F954A8 /* config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43201D9C20A5ECF200F954A8 /* config.swift */; };
 		43201D9F20A5ED3A00F954A8 /* extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43201D9E20A5ED3A00F954A8 /* extension.swift */; };
 		43201DA120A5F7EA00F954A8 /* LoginAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43201DA020A5F7EA00F954A8 /* LoginAPI.swift */; };
+		432DDE2721133D930054D2D0 /* SOSTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432DDE2221133D920054D2D0 /* SOSTableViewCell.swift */; };
+		432DDE2821133D930054D2D0 /* AboutUsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432DDE2321133D920054D2D0 /* AboutUsTableViewCell.swift */; };
+		432DDE2921133D930054D2D0 /* BarcodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432DDE2421133D920054D2D0 /* BarcodeTableViewCell.swift */; };
+		432DDE2A21133D930054D2D0 /* LogoutTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432DDE2521133D920054D2D0 /* LogoutTableViewCell.swift */; };
+		432DDE2B21133D930054D2D0 /* DieTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 432DDE2621133D920054D2D0 /* DieTableViewCell.swift */; };
 		4330098F20B9DC7F0076FDB9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330098E20B9DC7F0076FDB9 /* MainViewController.swift */; };
 		4330099320BAEAD50076FDB9 /* MapContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330099220BAEAD50076FDB9 /* MapContextView.swift */; };
 		4330099520BAEAE80076FDB9 /* BagContextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4330099420BAEAE80076FDB9 /* BagContextView.swift */; };
@@ -62,6 +67,11 @@
 		43201D9C20A5ECF200F954A8 /* config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = config.swift; path = "RunRRR 2.0/lib/config.swift"; sourceTree = SOURCE_ROOT; };
 		43201D9E20A5ED3A00F954A8 /* extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = extension.swift; path = "RunRRR 2.0/lib/extension.swift"; sourceTree = SOURCE_ROOT; };
 		43201DA020A5F7EA00F954A8 /* LoginAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginAPI.swift; sourceTree = "<group>"; };
+		432DDE2221133D920054D2D0 /* SOSTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SOSTableViewCell.swift; path = "RunRRR 2.0/MoreMenuCell/SOSTableViewCell.swift"; sourceTree = SOURCE_ROOT; };
+		432DDE2321133D920054D2D0 /* AboutUsTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AboutUsTableViewCell.swift; path = "RunRRR 2.0/MoreMenuCell/AboutUsTableViewCell.swift"; sourceTree = SOURCE_ROOT; };
+		432DDE2421133D920054D2D0 /* BarcodeTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BarcodeTableViewCell.swift; path = "RunRRR 2.0/MoreMenuCell/BarcodeTableViewCell.swift"; sourceTree = SOURCE_ROOT; };
+		432DDE2521133D920054D2D0 /* LogoutTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LogoutTableViewCell.swift; path = "RunRRR 2.0/MoreMenuCell/LogoutTableViewCell.swift"; sourceTree = SOURCE_ROOT; };
+		432DDE2621133D920054D2D0 /* DieTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DieTableViewCell.swift; path = "RunRRR 2.0/MoreMenuCell/DieTableViewCell.swift"; sourceTree = SOURCE_ROOT; };
 		4330098E20B9DC7F0076FDB9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		4330099220BAEAD50076FDB9 /* MapContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapContextView.swift; sourceTree = "<group>"; };
 		4330099420BAEAE80076FDB9 /* BagContextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BagContextView.swift; sourceTree = "<group>"; };
@@ -127,6 +137,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		432DDE2D21133DA90054D2D0 /* MoreMenuCell */ = {
+			isa = PBXGroup;
+			children = (
+				432DDE2321133D920054D2D0 /* AboutUsTableViewCell.swift */,
+				432DDE2421133D920054D2D0 /* BarcodeTableViewCell.swift */,
+				432DDE2621133D920054D2D0 /* DieTableViewCell.swift */,
+				432DDE2521133D920054D2D0 /* LogoutTableViewCell.swift */,
+				432DDE2221133D920054D2D0 /* SOSTableViewCell.swift */,
+			);
+			name = MoreMenuCell;
+			sourceTree = "<group>";
+		};
 		4366293820F3BD5C00398DD8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -142,8 +164,7 @@
 				43201D9E20A5ED3A00F954A8 /* extension.swift */,
 				43201D9C20A5ECF200F954A8 /* config.swift */,
 			);
-			name = lib;
-			path = "New Group";
+			path = lib;
 			sourceTree = "<group>";
 		};
 		43EAB1B1208C888B00A3A1A2 = {
@@ -193,6 +214,7 @@
 				4330099620BAEB110076FDB9 /* MissionContextView.swift */,
 				4330099820BAEB6A0076FDB9 /* MoreContextView.swift */,
 				433009A020BAEC8E0076FDB9 /* MoreWorker.swift */,
+				432DDE2D21133DA90054D2D0 /* MoreMenuCell */,
 				4366293820F3BD5C00398DD8 /* Model */,
 			);
 			path = "RunRRR 2.0";
@@ -480,10 +502,14 @@
 				4330098F20B9DC7F0076FDB9 /* MainViewController.swift in Sources */,
 				4388A41E209F083700E72B41 /* LoginUIView.swift in Sources */,
 				43EAB1C0208C888B00A3A1A2 /* LoginViewController.swift in Sources */,
+				432DDE2721133D930054D2D0 /* SOSTableViewCell.swift in Sources */,
+				432DDE2821133D930054D2D0 /* AboutUsTableViewCell.swift in Sources */,
 				43EAB1BE208C888B00A3A1A2 /* AppDelegate.swift in Sources */,
 				433009A920BC40780076FDB9 /* MenuBarBelow.swift in Sources */,
 				43201D9F20A5ED3A00F954A8 /* extension.swift in Sources */,
+				432DDE2921133D930054D2D0 /* BarcodeTableViewCell.swift in Sources */,
 				4330099720BAEB110076FDB9 /* MissionContextView.swift in Sources */,
+				432DDE2B21133D930054D2D0 /* DieTableViewCell.swift in Sources */,
 				4330099D20BAEC730076FDB9 /* BagWorker.swift in Sources */,
 				4330099520BAEAE80076FDB9 /* BagContextView.swift in Sources */,
 				433009A120BAEC8E0076FDB9 /* MoreWorker.swift in Sources */,
@@ -495,6 +521,7 @@
 				4330099320BAEAD50076FDB9 /* MapContextView.swift in Sources */,
 				4366293720EA0DE400398DD8 /* MissionModel.swift in Sources */,
 				4330099920BAEB6A0076FDB9 /* MoreContextView.swift in Sources */,
+				432DDE2A21133D930054D2D0 /* LogoutTableViewCell.swift in Sources */,
 				4330099B20BAEC5C0076FDB9 /* MapWorker.swift in Sources */,
 				4386B2AD20F79068005E54CF /* MainViewRouter.swift in Sources */,
 				433009A720BB1CA00076FDB9 /* Checkbox.swift in Sources */,
