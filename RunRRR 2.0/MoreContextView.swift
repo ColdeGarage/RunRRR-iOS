@@ -26,10 +26,11 @@ class MoreContextView: ContextView {
         self.backgroundColor = UIColor.init(hexString: "#FAFBFC")
         
         self.addSubview(moreMenuTableView)
+        moreMenuTableView.backgroundColor = UIColor.init(hexString: "#FAFBFC")
         moreMenuTableView.snp.makeConstraints{(make) in
             make.top.equalTo(self.snp.top).offset(20)
             make.left.equalTo(self.snp.left).offset(20)
-            make.right.equalTo(self.snp.right).offset(20)
+            make.right.equalTo(self.snp.right).offset(-20)
             make.bottom.equalToSuperview().inset(16)
         }
     }

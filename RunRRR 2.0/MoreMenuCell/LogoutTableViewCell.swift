@@ -57,6 +57,12 @@ class LogoutTableViewCell: UITableViewCell {
     }
     
     func setupView(){
+        contentView.snp.makeConstraints{(make) in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+        }
         contentView.addSubview(logoutButton)
         contentView.addSubview(logoutLabel)
         contentView.addSubview(titleBarView)
@@ -95,12 +101,13 @@ class LogoutTableViewCell: UITableViewCell {
         smallCircle.image = UIImage(named: "bar_circle_icon")
         smallCircle.contentMode = .scaleAspectFill
         
-        let smallCircleSize = titleBarView.frame.height - 4
+//        let smallCircleSize = titleBarView.frame.height - 4
         
         smallCircle.snp.makeConstraints{(make) in
             make.left.equalTo(titleBarView).offset(10)
             make.top.equalTo(titleBarView).offset(2)
-            make.height.equalTo(Int(smallCircleSize))
+            make.height.equalTo(titleBarView.snp.height).multipliedBy(0.8)
+            make.width.equalTo(titleBarView.snp.height).multipliedBy(0.8)
         }
         
         titleLabel.snp.makeConstraints{(make) in

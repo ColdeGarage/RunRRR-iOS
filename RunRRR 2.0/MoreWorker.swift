@@ -13,7 +13,7 @@ class MoreWorker: NSObject, Worker, UITableViewDataSource, UITableViewDelegate {
     init(moreTableView: UITableView) {
         self.moreTableView = moreTableView
     }
-    let expenedHeight : CGFloat = 300
+    let expenedHeight : CGFloat = 400
     let defaultHeight : CGFloat = 50
     var preSelectedIndexPath:IndexPath?
     var selectedIndexPath:IndexPath?

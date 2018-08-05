@@ -36,6 +36,7 @@ class AboutUsTableViewCell: UITableViewCell {
     }
     
     func setupView(){
+//        contentView.translatesAutoresizingMaskIntoConstraints = false
         contentView.snp.makeConstraints{(make) in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
@@ -71,19 +72,18 @@ class AboutUsTableViewCell: UITableViewCell {
         smallCircle.image = UIImage(named: "bar_circle_icon")
         smallCircle.contentMode = .scaleAspectFill
         
-        let smallCircleSize = titleBarView.frame.height - 4
+//        let smallCircleSize = titleBarView.frame.height - 4
         smallCircle.snp.makeConstraints{(make) in
             make.left.equalTo(titleBarView).offset(10)
-            make.width.equalTo(Int(smallCircleSize))
-            make.right.equalTo(titleLabel.snp.left).offset(-10)
+            make.width.equalTo(titleBarView.snp.height).multipliedBy(0.8)
             make.top.equalTo(titleBarView).offset(2)
-            make.height.equalTo(Int(smallCircleSize))
+            make.height.equalTo(titleBarView.snp.height).multipliedBy(0.8)
         }
         titleLabel.snp.makeConstraints{(make) in
             make.left.equalTo(smallCircle.snp.right).offset(10)
             make.right.equalTo(titleBarView).offset(-5)
             make.top.equalTo(titleBarView).offset(2)
-            make.height.equalTo(Int(smallCircleSize))
+            make.height.equalTo(titleBarView.snp.height).multipliedBy(0.8)
         }
     }
     func hideContent(_ isHidden:Bool){

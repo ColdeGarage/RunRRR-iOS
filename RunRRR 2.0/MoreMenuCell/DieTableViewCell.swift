@@ -45,13 +45,13 @@ class DieTableViewCell: UITableViewCell {
         titleLabel.textColor = .white
         smallCircle.image = UIImage(named: "bar_circle_icon")
         smallCircle.contentMode = .scaleAspectFill
-        let smallCircleSize = titleBarView.frame.height - 4
+//        let smallCircleSize = titleBarView.frame.height - 4
         
         smallCircle.snp.makeConstraints{(make) in
             make.left.equalTo(titleBarView).offset(10)
-            make.width.equalTo(Int(smallCircleSize))
+            make.width.equalTo(titleBarView.snp.height).multipliedBy(0.8)
             make.top.equalTo(titleBarView).offset(2)
-            make.height.equalTo(Int(smallCircleSize))
+            make.height.equalTo(titleBarView.snp.height).multipliedBy(0.8)
         }
 
         titleLabel.snp.makeConstraints{(make) in
@@ -140,6 +140,12 @@ class DieTableViewCell: UITableViewCell {
     }
     
     private func setupView(){
+        contentView.snp.makeConstraints{(make) in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+        }
         contentView.addSubview(titleBarView)
         contentView.addSubview(hunterIDLabel)
         contentView.addSubview(hunterPWLabel)
@@ -169,7 +175,7 @@ class DieTableViewCell: UITableViewCell {
         hunterPWLabel.snp.makeConstraints{(make) in
             make.left.equalTo(contentView).offset(20)
             make.right.equalTo(contentView).offset(-20)
-            make.top.equalTo(hunterIDTextField).offset(15)
+            make.top.equalTo(hunterIDTextField.snp.bottom).offset(15)
         }
         
         hunterPWTextField.snp.makeConstraints{(make) in

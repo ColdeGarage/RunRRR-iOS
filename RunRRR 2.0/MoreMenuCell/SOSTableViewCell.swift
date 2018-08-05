@@ -136,6 +136,12 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
     }
 
     func setupView(){
+        contentView.snp.makeConstraints{(make) in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+        }
         contentView.addSubview(titleBarView)
         contentView.addSubview(emergencyButton)
         contentView.addSubview(emergencyInfoCollectionView)
@@ -156,7 +162,7 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
         emergencyInfoCollectionView.snp.makeConstraints{(make) in
             make.left.equalTo(contentView).offset(20)
             make.right.equalTo(contentView).offset(-20)
-            make.top.equalTo(emergencyButton).offset(10)
+            make.top.equalTo(emergencyButton.snp.bottom).offset(10)
             make.bottom.equalTo(contentView).offset(-10)
         }
         
@@ -166,7 +172,7 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
     
     func setupTitleBarView(){
         titleBarView.backgroundColor = UIColor(red: 250/255, green: 105/255, blue: 89/255, alpha: 1)
-        emergencyInfoCollectionView.backgroundColor = .white
+        emergencyInfoCollectionView.backgroundColor = .clear
         titleBarView.addSubview(smallCircle)
         titleBarView.addSubview(titleLabel)
         titleLabel.text = "SOS"
@@ -174,20 +180,20 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
         smallCircle.image = UIImage(named: "bar_circle_icon")
         smallCircle.contentMode = .scaleAspectFill
         
-        let smallCircleSize = titleBarView.frame.height - 4
+//        let smallCircleSize = titleBarView.frame.height - 4
         
         smallCircle.snp.makeConstraints{(make) in
             make.left.equalTo(titleBarView).offset(10)
-            make.width.equalTo(Int(smallCircleSize))
+            make.width.equalTo(titleBarView.snp.height).multipliedBy(0.8)
             make.top.equalTo(titleBarView).offset(2)
-            make.height.equalTo(Int(smallCircleSize))
+            make.height.equalTo(titleBarView.snp.height).multipliedBy(0.8)
         }
         
         titleLabel.snp.makeConstraints{(make) in
             make.left.equalTo(smallCircle.snp.right).offset(10)
-            make.right.equalTo(contentView).offset(-5)
-            make.top.equalTo(contentView).offset(2)
-            make.bottom.equalTo(contentView).offset(-2)
+            make.right.equalTo(titleBarView).offset(-5)
+            make.top.equalTo(titleBarView).offset(2)
+            make.bottom.equalTo(titleBarView).offset(-2)
         }
     }
     func hideContent(_ isHidden:Bool){
