@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import SnapKit
 
 protocol itemDetailViewProtocol {
     func itemUseButtonTapped()
@@ -20,6 +21,7 @@ class ItemDetailView: NSObject{
     var delegateViewController:MainViewController?
     var item : Item?
     var itemCount : Int = 0
+    var worker: BagWorker?
     
     func showDetail(_ itemToDisplay: Item, itemCount: Int){
         //show detail view
@@ -44,8 +46,11 @@ class ItemDetailView: NSObject{
             detailWindow.itemUseButton.addTarget(self, action: #selector(useItem), for: .touchUpInside)
             detailWindow.itemCancelButton.addTarget(self, action: #selector(dismissDetail), for: .touchUpInside)
             window.addSubview(detailWindow)
-            window.addConstraintWithFormat(format: "H:|-\(blackView.frame.width/10)-[v0]-\(blackView.frame.width/10)-|", views: detailWindow)
-            window.addConstraintWithFormat(format: "V:|-\(blackView.frame.height/5)-[v0]-\(blackView.frame.height/5)-|", views: detailWindow)
+            detailWindow.snp.makeConstraints{(make) in
+                make.center.equalToSuperview()
+                make.width.equalToSuperview().multipliedBy(0.8)
+                make.height.equalToSuperview().multipliedBy(0.6)
+            }
             detailWindow.setupWindow()
             UIView.animate(withDuration: 0.5, animations: {
                 self.blackView.alpha = 1
@@ -73,7 +78,7 @@ class ItemDetailView: NSObject{
             
             switch(response.result){
             case .success:
-                self.delegateViewController?.refreshData()
+                self.worker!.refreshData()
             case .failure:
                 print("Error!")
             }
@@ -142,17 +147,46 @@ class ItemDetailWindow : UIView{
         addSubview(itemUseButton)
         addSubview(itemCancelButton)
         addSubview(itemCountLabel)
-        
-        addConstraintWithFormat(format: "H:|-20-[v0]-20-|", views: itemNameLabel)
-        addConstraintWithFormat(format: "V:|-8-[v0(50)]-8-[v1]-10-|", views: itemNameLabel, itemContentTextView)
-        
-        addConstraintWithFormat(format: "V:[v0(30)]-15-|", views: itemCountLabel)
-        addConstraintWithFormat(format: "V:[v0(30)]-15-|", views: itemUseButton)
-        addConstraintWithFormat(format: "V:[v0(30)]-15-|", views: itemCancelButton)
-        
-        addConstraintWithFormat(format: "H:|-20-[v0(100)]", views: itemCancelButton)
-        addConstraintWithFormat(format: "H:[v0(50)]-0-[v1(30)]-20-|", views: itemUseButton,itemCountLabel)
-        addConstraintWithFormat(format: "H:|-10-[v0]-10-|", views: itemContentTextView)
+        itemNameLabel.snp.makeConstraints{(make) in
+            make.left.equalToSuperview().inset(20)
+            make.right.equalToSuperview().inset(20)
+            make.top.equalToSuperview().inset(8)
+            make.height.equalTo(50)
+        }
+        itemContentTextView.snp.makeConstraints{(make) in
+            make.top.equalTo(itemNameLabel.snp.bottom).offset(8)
+            make.bottom.equalToSuperview().inset(10)
+            make.left.equalToSuperview().inset(10)
+            make.right.equalToSuperview().inset(10)
+        }
+        itemCountLabel.snp.makeConstraints{(make) in
+            make.bottom.equalToSuperview().inset(15)
+            make.height.equalTo(30)
+            make.right.equalToSuperview().inset(20)
+            make.width.equalTo(30)
+        }
+        itemUseButton.snp.makeConstraints{(make) in
+            make.bottom.equalToSuperview().inset(15)
+            make.height.equalTo(30)
+            make.right.equalTo(itemCountLabel.snp.left)
+            make.width.equalTo(50)
+        }
+        itemCancelButton.snp.makeConstraints{(make) in
+            make.bottom.equalToSuperview().inset(15)
+            make.height.equalTo(30)
+            make.left.equalToSuperview().inset(20)
+            make.width.equalTo(100)
+        }
+//        addConstraintWithFormat(format: "H:|-20-[v0]-20-|", views: itemNameLabel)
+//        addConstraintWithFormat(format: "V:|-8-[v0(50)]-8-[v1]-10-|", views: itemNameLabel, itemContentTextView)
+//        
+//        addConstraintWithFormat(format: "V:[v0(30)]-15-|", views: itemCountLabel)
+//        addConstraintWithFormat(format: "V:[v0(30)]-15-|", views: itemUseButton)
+//        addConstraintWithFormat(format: "V:[v0(30)]-15-|", views: itemCancelButton)
+//
+//        addConstraintWithFormat(format: "H:|-20-[v0(100)]", views: itemCancelButton)
+//        addConstraintWithFormat(format: "H:[v0(50)]-0-[v1(30)]-20-|", views: itemUseButton,itemCountLabel)
+//        addConstraintWithFormat(format: "H:|-10-[v0]-10-|", views: itemContentTextView)
     }
     func hideUseButton(_ isHidden: Bool){
         self.itemUseButton.isHidden = isHidden

@@ -17,9 +17,15 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
     var packs = [Pack]()
     var bag = [[Item]]()
     var memberMoney: Int?
+    var bagCollectionView: UICollectionView?
     
     private let reuseIdentifier = "BagItemCell"
-
+    
+    func refreshData(){
+        fetchMoney()
+        fetchPacks()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return bag.count + 1
         
@@ -59,7 +65,7 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+        return CGSize(width: collectionView.frame.width/3, height: collectionView.frame.height/5)
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
@@ -80,14 +86,16 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
     let itemDetailView = ItemDetailView()
     
     func showItemDetail(_ item: Item, itemCount:Int){
-        itemDetailView.delegateViewController = self
+        itemDetailView.worker = self
         itemDetailView.showDetail(item, itemCount: itemCount)
     }
 
     
     func fetchMoney(){
+        let UID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+        let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
         let moneyParameter : Parameters = ["operator_uid":UID, "token":token, "uid":UID]
-        Alamofire.request("\(API_URL)/member/read", parameters: moneyParameter).responseJSON{ response in
+        Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/member/read", parameters: moneyParameter).responseJSON{ response in
             switch response.result{
             case .success(let value):
                 let memberReadJSON = JSON(value)
@@ -102,7 +110,7 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
                 }
                 self.memberMoney = money
                 print("Money : ",self.memberMoney!)
-                self.collectionView?.reloadData()
+                self.bagCollectionView?.reloadData()
             case .failure:
                 print("error")
             }
@@ -118,9 +126,10 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
         packTemp.removeAll()
         
         //Start calling API
-        let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
-        let packParameter : Parameters = ["operator_uid":UID,"token":self.token, "uid":UID]
-        Alamofire.request("\(API_URL)/pack/read", parameters: packParameter).responseJSON{ response in
+        let UID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+        let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
+        let packParameter : Parameters = ["operator_uid":UID,"token":token, "uid":UID]
+        Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/pack/read", parameters: packParameter).responseJSON{ response in
             
             switch response.result{
             case .success(let value):
@@ -160,11 +169,12 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
         }
     }
     private func fetchItem(){
+        let UID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+        let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
         for itemToFetch in packTemp{
             if(itemToFetch.itemClass == .tool){
-                let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
-                let toolsParameter : Parameters = ["operator_uid":UID,"token":self.token, "tid":itemToFetch.id as Any]
-                Alamofire.request("\(API_URL)/tool/read", parameters:toolsParameter).responseJSON{ response in
+                let toolsParameter : Parameters = ["operator_uid":UID,"token":token, "tid":itemToFetch.id as Any]
+                Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/tool/read", parameters:toolsParameter).responseJSON{ response in
                     print(response)
                     switch(response.result){
                     case .success(let value):
@@ -196,9 +206,8 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
                 }
             }
             else{
-                let UID = LocalUserDefault.integer(forKey: "RunRRR_UID")
-                let toolsParameter : Parameters = ["operator_uid":UID,"token":self.token, "cid":itemToFetch.id as Any]
-                Alamofire.request("\(API_URL)/clue/read", parameters:toolsParameter).responseJSON{ response in
+                let toolsParameter : Parameters = ["operator_uid":UID,"token":token, "cid":itemToFetch.id as Any]
+                Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/clue/read", parameters:toolsParameter).responseJSON{ response in
                     switch(response.result){
                     case .success(let value):
                         let cluesJSON = JSON(value)
@@ -256,7 +265,6 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
             total += item.count
         }
         if(total == packTemp.count){
-            //          self.items.sort(by: {$0.itemClass!.hashValue < $1.itemClass!.hashValue})
             for item in bagTemp{
                 if item.last?.itemClass == .clue{
                     for clue in item{
@@ -273,8 +281,8 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
                 self.bagTemp.append([clue])
             }
             self.bag = self.bagTemp
-            self.collectionView?.reloadData()
-            self.refreshControl.endRefreshing()
+            self.bagCollectionView?.reloadData()
+//            self.refreshControl.endRefreshing()
         }
     }
 }
@@ -316,25 +324,29 @@ class BagItemCell: UICollectionViewCell{
         return count
     }()
     func setupView(){
+        self.backgroundColor = .red
         addSubview(itemImage)
         addSubview(itemName)
         addSubview(itemCount)
         
         itemImage.snp.makeConstraints{(make) in
             make.centerX.equalToSuperview()
-            make.top.equalTo(self).offset(self.snp.width as! ConstraintOffsetTarget).dividedBy(10)
+            make.width.equalTo(self).multipliedBy(0.75)
+            make.top.equalTo(self.snp.bottom).multipliedBy(0.1)
+            make.bottom.equalToSuperview().multipliedBy(0.75)
         }
         
         itemName.snp.makeConstraints{(make) in
             make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().inset(self.snp.width as! ConstraintInsetTarget).dividedBy(10)
+            make.width.equalTo(self).multipliedBy(0.75)
+            make.bottom.equalTo(self.snp.bottom).multipliedBy(0.9)
             make.height.equalToSuperview().dividedBy(8)
         }
         
         itemCount.snp.makeConstraints{(make) in
-            make.right.equalToSuperview().inset(self.snp.width as! ConstraintInsetTarget).dividedBy(40)
+            make.right.equalTo(self.snp.right).multipliedBy(0.97)
             make.width.equalToSuperview().dividedBy(4)
-            make.top.equalToSuperview().inset(self.snp.width as! ConstraintInsetTarget).dividedBy(40)
+            make.top.equalTo(self.snp.bottom).multipliedBy(0.025)
             make.height.equalToSuperview().dividedBy(4)
         }
 //        addConstraintWithFormat(format: "H:|-\(frame.width/8)-[v0]-\(frame.width/8)-|", views: itemImage)

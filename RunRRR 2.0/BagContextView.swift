@@ -30,7 +30,8 @@ class BagContextView: ContextView {
             make.top.equalToSuperview().inset(20)
             make.left.right.bottom.equalToSuperview()
         }
-        
+        let worker = self.worker as! BagWorker
+        worker.bagCollectionView = self.bagCollectionView
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,6 +39,6 @@ class BagContextView: ContextView {
     }
     
     override func viewWillBeDisplayed() {
-        
+        bagCollectionView.reloadData()
     }
 }
