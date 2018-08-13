@@ -22,7 +22,7 @@ class BagContextView: ContextView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.worker = BagWorker()
-        
+        self.backgroundColor = UIColor(hexString: "#FAFBFC")
         bagCollectionView.register(BagItemCell.self, forCellWithReuseIdentifier: "BagItemCell")
         self.addSubview(bagCollectionView)
         

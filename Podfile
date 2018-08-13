@@ -9,7 +9,7 @@ target 'RunRRR 2.0' do
   pod 'Alamofire', '~> 4.7'
   pod 'SwiftyJSON', '~> 4.0'  
   pod 'SWXMLHash', '~> 4.0.0'
-
+  pod 'ALCameraViewController'
   target 'RunRRR 2.0Tests' do
     inherit! :search_paths
     # Pods for testing

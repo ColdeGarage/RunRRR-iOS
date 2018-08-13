@@ -65,7 +65,7 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width/3, height: collectionView.frame.height/5)
+        return CGSize(width: collectionView.frame.width/3-5, height: collectionView.frame.height/4)
     }
     
     func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
@@ -324,7 +324,9 @@ class BagItemCell: UICollectionViewCell{
         return count
     }()
     func setupView(){
-        self.backgroundColor = .red
+        self.backgroundColor = .clear
+        self.layer.borderColor = UIColor(hexString: "#FAFBFC").cgColor
+        self.layer.borderWidth = 4
         addSubview(itemImage)
         addSubview(itemName)
         addSubview(itemCount)

@@ -133,6 +133,18 @@ class MainViewController: UIViewController, segueViewController {
         let index = IndexPath(item: 3, section: 0)
         self.mainContextView.scrollToItem(at: index, at: .left, animated: true)
     }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+        switch(segue.identifier ?? ""){
+        case "ShowMissionDetail":
+            let missionDetailViewController = segue.destination as? MissionsDetailViewController
+            let selectedMission = sender as? MissionsData
+            missionDetailViewController?.mission = selectedMission
+        default: break
+            
+        }
+    }
 }
 
 

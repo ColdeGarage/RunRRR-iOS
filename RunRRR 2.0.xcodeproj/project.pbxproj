@@ -33,6 +33,8 @@
 		4366293720EA0DE400398DD8 /* MissionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4366293620EA0DE400398DD8 /* MissionModel.swift */; };
 		436D1E11211727890037C5C6 /* ItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D1E10211727890037C5C6 /* ItemModel.swift */; };
 		436D1E13211752D20037C5C6 /* ItemDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D1E12211752D20037C5C6 /* ItemDetailView.swift */; };
+		436D1E1521202D200037C5C6 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D1E1421202D1F0037C5C6 /* Reachability.swift */; };
+		436D1E17212037610037C5C6 /* MissionsDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 436D1E16212037610037C5C6 /* MissionsDetailViewController.swift */; };
 		4386B2AD20F79068005E54CF /* MainViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4386B2AC20F79068005E54CF /* MainViewRouter.swift */; };
 		4388A41E209F083700E72B41 /* LoginUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4388A41D209F083700E72B41 /* LoginUIView.swift */; };
 		43EAB1BE208C888B00A3A1A2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43EAB1BD208C888B00A3A1A2 /* AppDelegate.swift */; };
@@ -89,6 +91,8 @@
 		4366293620EA0DE400398DD8 /* MissionModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MissionModel.swift; sourceTree = "<group>"; };
 		436D1E10211727890037C5C6 /* ItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemModel.swift; sourceTree = "<group>"; };
 		436D1E12211752D20037C5C6 /* ItemDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailView.swift; sourceTree = "<group>"; };
+		436D1E1421202D1F0037C5C6 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		436D1E16212037610037C5C6 /* MissionsDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MissionsDetailViewController.swift; sourceTree = "<group>"; };
 		4386B2AC20F79068005E54CF /* MainViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewRouter.swift; sourceTree = "<group>"; };
 		4388A41D209F083700E72B41 /* LoginUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUIView.swift; sourceTree = "<group>"; };
 		43EAB1BA208C888B00A3A1A2 /* RunRRR 2.0.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RunRRR 2.0.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -165,6 +169,7 @@
 		4388A42120A09D1900E72B41 /* lib */ = {
 			isa = PBXGroup;
 			children = (
+				436D1E1421202D1F0037C5C6 /* Reachability.swift */,
 				433009A620BB1CA00076FDB9 /* Checkbox.swift */,
 				43201D9E20A5ED3A00F954A8 /* extension.swift */,
 				43201D9C20A5ECF200F954A8 /* config.swift */,
@@ -218,6 +223,7 @@
 				436D1E12211752D20037C5C6 /* ItemDetailView.swift */,
 				4330099E20BAEC7F0076FDB9 /* MissionWorker.swift */,
 				4330099620BAEB110076FDB9 /* MissionContextView.swift */,
+				436D1E16212037610037C5C6 /* MissionsDetailViewController.swift */,
 				4330099820BAEB6A0076FDB9 /* MoreContextView.swift */,
 				433009A020BAEC8E0076FDB9 /* MoreWorker.swift */,
 				432DDE2D21133DA90054D2D0 /* MoreMenuCell */,
@@ -409,6 +415,7 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-RunRRR 2.0/Pods-RunRRR 2.0-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/ALCameraViewController/ALCameraViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/SWXMLHash/SWXMLHash.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
@@ -416,6 +423,7 @@
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ALCameraViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SWXMLHash.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
@@ -512,6 +520,7 @@
 				432DDE2821133D930054D2D0 /* AboutUsTableViewCell.swift in Sources */,
 				43EAB1BE208C888B00A3A1A2 /* AppDelegate.swift in Sources */,
 				433009A920BC40780076FDB9 /* MenuBarBelow.swift in Sources */,
+				436D1E1521202D200037C5C6 /* Reachability.swift in Sources */,
 				43201D9F20A5ED3A00F954A8 /* extension.swift in Sources */,
 				432DDE2921133D930054D2D0 /* BarcodeTableViewCell.swift in Sources */,
 				4330099720BAEB110076FDB9 /* MissionContextView.swift in Sources */,
@@ -526,6 +535,7 @@
 				43201D9D20A5ECF200F954A8 /* config.swift in Sources */,
 				431BE02A20C5B917004353B8 /* MainContextWorker.swift in Sources */,
 				4330099320BAEAD50076FDB9 /* MapContextView.swift in Sources */,
+				436D1E17212037610037C5C6 /* MissionsDetailViewController.swift in Sources */,
 				4366293720EA0DE400398DD8 /* MissionModel.swift in Sources */,
 				436D1E11211727890037C5C6 /* ItemModel.swift in Sources */,
 				4330099920BAEB6A0076FDB9 /* MoreContextView.swift in Sources */,

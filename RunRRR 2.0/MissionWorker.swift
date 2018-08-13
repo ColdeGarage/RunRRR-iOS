@@ -26,6 +26,10 @@ class MissionWorker: NSObject, Worker, UITableViewDelegate, UITableViewDataSourc
         self.missionQueue = missionQueue
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        UIApplication.shared.keyWindow?.rootViewController?.performSegue(withIdentifier: "ShowMissionDetail", sender: missionShowList[(indexPath.item)])
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return missionShowList.count
     }
