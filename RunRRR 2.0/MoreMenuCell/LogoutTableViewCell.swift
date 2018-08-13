@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import SnapKit
+
 
 class LogoutTableViewCell: UITableViewCell {
     
@@ -55,18 +57,37 @@ class LogoutTableViewCell: UITableViewCell {
     }
     
     func setupView(){
+        contentView.snp.makeConstraints{(make) in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+        }
         contentView.addSubview(logoutButton)
         contentView.addSubview(logoutLabel)
         contentView.addSubview(titleBarView)
-        contentView.addConstraintWithFormat(format: "H:|[v0]|", views: titleBarView)
-        contentView.addConstraintWithFormat(format: "V:|[v0(50)]", views: titleBarView)
-        contentView.addConstraintWithFormat(format: "V:|-100-[v0(50)]-20-[v1(50)]", views: logoutLabel,logoutButton)
-        contentView.addConstraintWithFormat(format: "H:|-80-[v0]-80-|", views: logoutButton)
-        contentView.addConstraintWithFormat(format: "H:|-80-[v0]-80-|", views: logoutLabel)
-//        contentView.addConstraint(NSLayoutConstraint(item: logoutButton, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1, constant: 0))
-//        contentView.addConstraint(NSLayoutConstraint(item: logoutButton, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1, constant: 0))
-        logoutButton.setTitle("Logout", for: .normal)
         
+        titleBarView.snp.makeConstraints{(make) in
+            make.left.right.equalTo(contentView)
+            make.top.equalTo(contentView)
+            make.height.equalTo(50)
+        }
+        
+        logoutLabel.snp.makeConstraints{(make) in
+            make.left.equalTo(contentView).offset(80)
+            make.right.equalTo(contentView).offset(-80)
+            make.top.equalTo(contentView).offset(100)
+            make.height.equalTo(50)
+        }
+        
+        logoutButton.snp.makeConstraints{(make) in
+            make.left.equalTo(contentView).offset(80)
+            make.right.equalTo(contentView).offset(-80)
+            make.top.equalTo(logoutLabel.snp.bottom).offset(20)
+            make.height.equalTo(50)
+        }
+        
+        logoutButton.setTitle("Logout", for: .normal)
         self.logoutButton.addTarget(self, action: #selector(userLogout), for: .touchUpInside)
     }
     func setupTitleBarView(){
@@ -80,25 +101,32 @@ class LogoutTableViewCell: UITableViewCell {
         smallCircle.image = UIImage(named: "bar_circle_icon")
         smallCircle.contentMode = .scaleAspectFill
         
-        let smallCircleSize = titleBarView.frame.height - 4
-        titleBarView.addConstraintWithFormat(format: "H:|-10-[v0(\(smallCircleSize))]-10-[v1]-5-|", views: smallCircle, titleLabel)
-        titleBarView.addConstraintWithFormat(format: "V:|-2-[v0(\(smallCircleSize))]-2-|", views: smallCircle)
-        titleBarView.addConstraintWithFormat(format: "V:|-2-[v0(\(smallCircleSize))]-2-|", views: titleLabel)
+//        let smallCircleSize = titleBarView.frame.height - 4
         
+        smallCircle.snp.makeConstraints{(make) in
+            make.left.equalTo(titleBarView).offset(10)
+            make.top.equalTo(titleBarView).offset(2)
+            make.height.equalTo(titleBarView.snp.height).multipliedBy(0.8)
+            make.width.equalTo(titleBarView.snp.height).multipliedBy(0.8)
+        }
         
+        titleLabel.snp.makeConstraints{(make) in
+            make.left.equalTo(smallCircle.snp.right).offset(10)
+            make.right.equalTo(titleBarView)
+            make.top.equalTo(titleBarView).offset(2)
+            make.bottom.equalTo(titleBarView).offset(-2)
+        }
     }
     func hideContent(_ isHidden:Bool){
         self.logoutButton.isHidden = isHidden
     }
     
-    func userLogout() {
+    @objc func userLogout() {
         let LocalUserDefault = UserDefaults.standard
         LocalUserDefault.removeObject(forKey: "RunRRR_Login")
         LocalUserDefault.removeObject(forKey: "RunRRR_UID")
         LocalUserDefault.synchronize()
         
-        
-        let storyboard = UIStoryboard(name: "Login", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-        vc?.present(storyboard, animated: true)
+        UIApplication.shared.keyWindow?.rootViewController?.present(LoginViewController(), animated: true, completion: nil)
     }
 }

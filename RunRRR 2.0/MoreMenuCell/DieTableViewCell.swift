@@ -9,6 +9,7 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import SnapKit
 
 class DieTableViewCell: UITableViewCell {
     let smallCircle = UIImageView()
@@ -44,10 +45,21 @@ class DieTableViewCell: UITableViewCell {
         titleLabel.textColor = .white
         smallCircle.image = UIImage(named: "bar_circle_icon")
         smallCircle.contentMode = .scaleAspectFill
-        let smallCircleSize = titleBarView.frame.height - 4
-        titleBarView.addConstraintWithFormat(format: "H:|-10-[v0(\(smallCircleSize))]-10-[v1]-5-|", views: smallCircle, titleLabel)
-        titleBarView.addConstraintWithFormat(format: "V:|-2-[v0(\(smallCircleSize))]-2-|", views: smallCircle)
-        titleBarView.addConstraintWithFormat(format: "V:|-2-[v0(\(smallCircleSize))]-2-|", views: titleLabel)
+//        let smallCircleSize = titleBarView.frame.height - 4
+        
+        smallCircle.snp.makeConstraints{(make) in
+            make.left.equalTo(titleBarView).offset(10)
+            make.width.equalTo(titleBarView.snp.height).multipliedBy(0.8)
+            make.top.equalTo(titleBarView).offset(2)
+            make.height.equalTo(titleBarView.snp.height).multipliedBy(0.8)
+        }
+
+        titleLabel.snp.makeConstraints{(make) in
+            make.left.equalTo(smallCircle.snp.right).offset(10)
+            make.right.equalTo(titleBarView).offset(-5)
+            make.top.equalTo(titleBarView).offset(2)
+            make.bottom.equalTo(titleBarView).offset(-2)
+        }
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -104,45 +116,82 @@ class DieTableViewCell: UITableViewCell {
         return bt
     }()
     
-    func goDie(_ sender: UIButton!){
+    @objc func goDie(_ sender: UIButton!){
         let UID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
         let hunterID = self.hunterIDTextField.text!
         let hunterPW = self.hunterPWTextField.text!
         let pmForDie : Parameters = ["operator_uid":hunterID, "token":hunterPW, "uid":UID, "status":1]
-        Alamofire.request("\(API_URL)/member/liveordie", method: .put, parameters: pmForDie).responseJSON{ response in
+        Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/member/liveordie", method: .put, parameters: pmForDie).responseJSON{ response in
             print(response)
             switch(response.result){
                 
             case .success(let value):
                 let resJSON = JSON(value)
                 if resJSON["brea"] == 0 {
-                    self.vc?.showMessage(title:"Caution", message: "OK. You are death now.")
+                    UIApplication.shared.keyWindow?.rootViewController?.showAlertWindow(title:"Caution", message: "OK. You are death now.")
                 }else {
-                    self.vc?.showMessage(title:"Error", message: "Incorrect ID or PW!")
+                    UIApplication.shared.keyWindow?.rootViewController?.showAlertWindow(title:"Error", message: "Incorrect ID or PW!")
                 }
             case .failure:
-                self.vc?.showMessage(title:"Error", message: "Something went wrong.")
+                UIApplication.shared.keyWindow?.rootViewController?.showAlertWindow(title:"Error", message: "Something went wrong.")
                 break
             }
         }
     }
     
     private func setupView(){
+        contentView.snp.makeConstraints{(make) in
+            make.top.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+        }
         contentView.addSubview(titleBarView)
         contentView.addSubview(hunterIDLabel)
         contentView.addSubview(hunterPWLabel)
         contentView.addSubview(hunterIDTextField)
         contentView.addSubview(hunterPWTextField)
         contentView.addSubview(dieButton)
-        contentView.addConstraintWithFormat(format: "H:|[v0]|", views: titleBarView)
-        contentView.addConstraintWithFormat(format: "V:|[v0(50)]", views: titleBarView)
-        contentView.addConstraintWithFormat(format: "H:|-20-[v0]-20-|", views: hunterIDLabel)
-        contentView.addConstraintWithFormat(format: "H:|-20-[v0]-20-|", views: hunterPWLabel)
-        contentView.addConstraintWithFormat(format: "H:|-50-[v0]-50-|", views: hunterIDTextField)
-        contentView.addConstraintWithFormat(format: "H:|-50-[v0]-50-|", views: hunterPWTextField)
-        contentView.addConstraintWithFormat(format: "H:|-80-[v0]-80-|", views: dieButton)
-        let formatForVertical = "V:|-75-[v0]-8-[v1(30)]-15-[v2]-8-[v3(30)]-40-[v4]" as String
-        contentView.addConstraintWithFormat(format: formatForVertical, views: hunterIDLabel, hunterIDTextField, hunterPWLabel, hunterPWTextField, dieButton)
+        
+        titleBarView.snp.makeConstraints{(make) in
+            make.left.right.equalTo(contentView)
+            make.top.equalTo(contentView)
+            make.height.equalTo(50)
+        }
+        
+        hunterIDLabel.snp.makeConstraints{(make) in
+            make.left.equalTo(contentView).offset(20)
+            make.right.equalTo(contentView).offset(-20)
+            make.top.equalTo(contentView).offset(75)
+        }
+        
+        hunterIDTextField.snp.makeConstraints{(make) in
+            make.left.equalTo(contentView).offset(50)
+            make.right.equalTo(contentView).offset(-50)
+            make.top.equalTo(hunterIDLabel.snp.bottom).offset(8)
+            make.height.equalTo(30)
+        }
+        
+        hunterPWLabel.snp.makeConstraints{(make) in
+            make.left.equalTo(contentView).offset(20)
+            make.right.equalTo(contentView).offset(-20)
+            make.top.equalTo(hunterIDTextField.snp.bottom).offset(15)
+        }
+        
+        hunterPWTextField.snp.makeConstraints{(make) in
+            make.left.equalTo(contentView).offset(50)
+            make.right.equalTo(contentView).offset(-50)
+            make.top.equalTo(hunterPWLabel.snp.bottom).offset(8)
+            make.height.equalTo(30)
+        }
+        
+        dieButton.snp.makeConstraints{(make) in
+            make.left.equalTo(contentView).offset(80)
+            make.right.equalTo(contentView).offset(-80)
+            make.top.equalTo(hunterPWTextField.snp.bottom).offset(40)
+            make.height.equalTo(40)
+        }
+        
         self.dieButton.addTarget(self, action: #selector(goDie(_:)), for: .touchUpInside)
     }
     
@@ -154,5 +203,4 @@ class DieTableViewCell: UITableViewCell {
         self.dieButton.isHidden = isHidden
     }
 }
-//self.hunterIDTextField.delegate = self.contentView
-//self.hunterPWTextField.delegate = self.contentView
+

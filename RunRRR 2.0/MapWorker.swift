@@ -111,7 +111,6 @@ class MapWorker: Worker {
     
     private func getMissionLocations() {
         var missionListTemp = [MissionsData]()
-        var completeMissionListTemp = [MissionsData]()
         let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
         let token = UserDefaults.standard.string(forKey: "RunRRR_Token")
         let missionPara = ["operator_uid": userID, "token": token!] as [String : Any]
@@ -308,9 +307,9 @@ class MapWorker: Worker {
         let currentLocationLatitude = currentLocation.coordinate.latitude
         let currentLocationLongitude = currentLocation.coordinate.longitude
         let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
-        let token = UserDefaults.standard.integer(forKey: "RunRRR_Token")
+        let token = UserDefaults.standard.string(forKey: "RunRRR_Token")
         
-        let currentLocationPara : [String:Any] = ["operator_uid":userID,"token":token,"uid":userID, "position_e":currentLocationLongitude, "position_n":currentLocationLatitude]
+        let currentLocationPara : [String:Any] = ["operator_uid":userID,"token":token!,"uid":userID, "position_e":currentLocationLongitude, "position_n":currentLocationLatitude]
         
         Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/member/update", method: .put, parameters: currentLocationPara).responseJSON{ response in
             //print(response.timeline)
