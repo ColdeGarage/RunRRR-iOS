@@ -113,7 +113,6 @@ class SOSTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectio
             switch(response.result){
             case .success(let value):
                 let emergencyInfoArray = JSON(value)["object"].arrayValue
-                print(emergencyInfoArray)
                 for i in 0..<emergencyInfoArray.count{
                     self.teams.append(emergencyInfoArray[i]["team"].description)
                     self.nicknames.append(emergencyInfoArray[i]["nickname"].description)

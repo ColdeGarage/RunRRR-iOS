@@ -19,9 +19,21 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
     var memberMoney: Int?
     var bagCollectionView: UICollectionView?
     
-    private let reuseIdentifier = "BagItemCell"
+    init(_ bagCollectionView: UICollectionView) {
+        super.init()
+        self.bagCollectionView = bagCollectionView
+        if #available(iOS 10.0, *) {
+            self.bagCollectionView?.refreshControl = refreshControl
+        } else{
+            self.bagCollectionView?.addSubview(refreshControl)
+        }
+        self.refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+    }
     
-    func refreshData(){
+    private let reuseIdentifier = "BagItemCell"
+    private let refreshControl = UIRefreshControl()
+    
+    @objc func refreshData(){
         fetchMoney()
         fetchPacks()
     }
@@ -133,10 +145,19 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
             
             switch response.result{
             case .success(let value):
-                
                 //Parse the "packs" into array
+                print(response)
                 let packJSON = JSON(value)
+                print(packJSON)
+                
+                if (packJSON["payload"]["objects"] == nil) {
+                    self.bagCollectionView?.reloadData()
+                    self.refreshControl.endRefreshing()
+                    return
+                }
                 guard let packsArray = packJSON["payload"]["objects"].arrayValue as Array? else{
+                    self.bagCollectionView?.reloadData()
+                    self.refreshControl.endRefreshing()
                     return
                 }
                 
@@ -155,13 +176,15 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
                     self.packTemp += [pack]
                     //                    self.packs += [pack]
                 }
+                self.packs = self.packTemp
+                self.fetchItem()
                 
             case .failure:
                 print("error")
+                self.bagCollectionView?.reloadData()
+                self.refreshControl.endRefreshing()
+                return
             }
-            print("fetchItem")
-            self.packs = self.packTemp
-            self.fetchItem()
             //            self.packs.sort(by: {($0.itemClass?.hashValue)! > ($1.itemClass?.hashValue)!})
             //            for i in self.packs{
             //                print(i.itemClass.debugDescription)
@@ -181,6 +204,8 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
                         let toolsJSON = JSON(value)
                         guard let toolsArray = toolsJSON["payload"]["objects"].arrayValue as Array?
                             else{
+                                self.bagCollectionView?.reloadData()
+                                self.refreshControl.endRefreshing()
                                 return
                         }
                         let tool : Item = {
@@ -213,6 +238,8 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
                         let cluesJSON = JSON(value)
                         guard let clueArray = cluesJSON["payload"]["objects"].arrayValue as Array?
                             else{
+                                self.bagCollectionView?.reloadData()
+                                self.refreshControl.endRefreshing()
                                 return
                         }
                         let clue : Item = {
@@ -282,7 +309,7 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
             }
             self.bag = self.bagTemp
             self.bagCollectionView?.reloadData()
-//            self.refreshControl.endRefreshing()
+            self.refreshControl.endRefreshing()
         }
     }
 }

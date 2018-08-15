@@ -77,11 +77,12 @@ class MapWorker: Worker {
             switch response.result {
             case .success(let value):
                 let boundaryXML = SWXMLHash.parse(value)
-                let boundaryArray = boundaryXML["kml"]["Document"]["Placemark"]["Polygon"]["outerBoundaryIs"]["LinearRing"]["coordinates"].element?.text
+                let boundaryArray = boundaryXML["kml"]["Document"]["Folder"]["Placemark"]["Polygon"]["outerBoundaryIs"]["LinearRing"]["coordinates"].element?.text
                 
                 var trimmingBoundaryArray = boundaryArray?.replacingOccurrences(of: "\n", with: "")
                 trimmingBoundaryArray = trimmingBoundaryArray?.trimmingCharacters(in: .whitespacesAndNewlines)
                 trimmingBoundaryArray = trimmingBoundaryArray?.replacingOccurrences(of: " ", with: "")
+                
                 //print(trimmingBoundaryArray)
                 let boundaryForGoogleMaps = trimmingBoundaryArray?.components(separatedBy: ",0")
                 //print(boundaryForGoogleMaps)

@@ -51,10 +51,6 @@ class MissionsData{
             return nil
         }
         
-        guard !content.isEmpty else{
-            return nil
-        }
-        
         guard !timeStart.isEmpty else{
             return nil
         }
