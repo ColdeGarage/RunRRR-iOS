@@ -14,14 +14,14 @@ class BagContextView: ContextView {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = UIColor(red: 230/255, green: 230/255, blue:230/255, alpha: 1)
-        cv.delegate = (self.worker as! UICollectionViewDelegate)
-        cv.dataSource = (self.worker as! UICollectionViewDataSource)
         return cv
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.worker = BagWorker()
+        self.worker = BagWorker(self.bagCollectionView)
+        self.bagCollectionView.delegate = (self.worker as! UICollectionViewDelegate)
+        self.bagCollectionView.dataSource = (self.worker as! UICollectionViewDataSource)
         self.backgroundColor = UIColor(hexString: "#FAFBFC")
         bagCollectionView.register(BagItemCell.self, forCellWithReuseIdentifier: "BagItemCell")
         self.addSubview(bagCollectionView)
@@ -39,6 +39,8 @@ class BagContextView: ContextView {
     }
     
     override func viewWillBeDisplayed() {
+        let worker = self.worker as! BagWorker
+        worker.refreshData()
         bagCollectionView.reloadData()
     }
 }

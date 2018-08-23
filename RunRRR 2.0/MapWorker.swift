@@ -36,7 +36,6 @@ class MapWorker: Worker {
         self.map.clear()
         self.getMapsBoundary()
         self.getMissionLocations()
-        print("Loading Map Data")
     }
     
     func loadLocationData() {
@@ -77,15 +76,14 @@ class MapWorker: Worker {
             switch response.result {
             case .success(let value):
                 let boundaryXML = SWXMLHash.parse(value)
-                let boundaryArray = boundaryXML["kml"]["Document"]["Placemark"]["Polygon"]["outerBoundaryIs"]["LinearRing"]["coordinates"].element?.text
+                let boundaryArray = boundaryXML["kml"]["Document"]["Folder"]["Placemark"]["Polygon"]["outerBoundaryIs"]["LinearRing"]["coordinates"].element?.text
                 
                 var trimmingBoundaryArray = boundaryArray?.replacingOccurrences(of: "\n", with: "")
                 trimmingBoundaryArray = trimmingBoundaryArray?.trimmingCharacters(in: .whitespacesAndNewlines)
                 trimmingBoundaryArray = trimmingBoundaryArray?.replacingOccurrences(of: " ", with: "")
-                //print(trimmingBoundaryArray)
+
                 let boundaryForGoogleMaps = trimmingBoundaryArray?.components(separatedBy: ",0")
-                //print(boundaryForGoogleMaps)
-                
+
                 let path = GMSMutablePath()     //Create an path obj and braw a polygon
                 for item in boundaryForGoogleMaps!{
                     if !item.isEmpty{
@@ -120,14 +118,11 @@ class MapWorker: Worker {
                 switch response.result{
                     
                 case .success(let value):
-                    print(value)
                     let missionJson = JSON(value)
                     let missionObjects = missionJson["payload"]["objects"].arrayValue
                     guard let serverTime = missionJson["server_time"].stringValue.components(separatedBy: "T")[1] as String? else{
                         return
                     }
-                    //let serverHour = 7
-                    //let serverMin = 0
                     guard let serverHour = Int(serverTime.components(separatedBy: ":")[0]) else {
                         return
                     }
@@ -136,8 +131,6 @@ class MapWorker: Worker {
                     }
                     
                     for item in missionObjects{
-                        
-                        print(item)
                         guard let timeEnd = item["time_end"].stringValue as String?,
                             let timeWithoutDate = timeEnd.components(separatedBy: "T")[1] as String?,
                             let timeHour = Int(timeWithoutDate.components(separatedBy: ":")[0]),
@@ -217,7 +210,6 @@ class MapWorker: Worker {
                     
                 case .success(let value):
                     let missionReportJson = JSON(value)
-                    //print(missionReportJson.description)
                     guard let missionReport = missionReportJson["payload"]["objects"].arrayValue as Array?,
                         let serverTime = missionReportJson["server_time"].stringValue.components(separatedBy: "T")[1] as String? else {
                             print("missionReport error!")
@@ -312,19 +304,15 @@ class MapWorker: Worker {
         let currentLocationPara : [String:Any] = ["operator_uid":userID,"token":token!,"uid":userID, "position_e":currentLocationLongitude, "position_n":currentLocationLatitude]
         
         Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/member/update", method: .put, parameters: currentLocationPara).responseJSON{ response in
-            //print(response.timeline)
-            //print(response)
             switch response.result{
                 
             case .success(let value):
                 let memberUpdateInfo = JSON(value)
-                //print(memberUpdateInfo)
                 guard let memberValidArea = memberUpdateInfo["payload"]["valid_area"].bool else{
                     return
                 }
                 self.validArea = memberValidArea
-                //print(self.validArea)
-            //print(self.validArea)
+
             case .failure(let error):
                 print(error)
             }

@@ -17,8 +17,8 @@ protocol segueViewController {
 }
 
 
-class MenuBarBelow : UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
+class MenuBarBelow : UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, ScrollOutput {
+
     var delegate:segueViewController?
     var dataSource:segueViewController?
     
@@ -36,6 +36,11 @@ class MenuBarBelow : UIView, UICollectionViewDelegate, UICollectionViewDataSourc
         cv.dataSource = self
         return cv
     }()
+    
+    func scrollTo(_ contentViewIndex: IndexPath) {
+        self.collectionView.selectItem(at: contentViewIndex, animated: true, scrollPosition: .right)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.frame.width/4-15, height: self.frame.height-25)
     }

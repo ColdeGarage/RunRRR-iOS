@@ -16,12 +16,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow? = UIWindow(frame: UIScreen.main.bounds)
     var currentInternetStatusTimer = Timer()
 
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return UIInterfaceOrientationMask(rawValue: UIInterfaceOrientationMask.portrait.rawValue)
+    }
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         GMSServices.provideAPIKey("AIzaSyDSClxYw2JwFHITWL9vLSALbeC3p8VGYzA")
         window?.makeKeyAndVisible()
-//        window?.rootViewController = LoginViewController()
-        // Override point for customization after application launch.
         
+        let uid = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+        
+        if (uid == 0) {
+            window?.rootViewController = LoginViewController()
+            return true
+        }
         window?.rootViewController = MainViewController()
         return true
     }

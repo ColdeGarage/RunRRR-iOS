@@ -34,20 +34,16 @@ class MainViewController: UIViewController, segueViewController {
         }
         self.view.backgroundColor = .white
         mainContextView.isPagingEnabled = true
+        mainContextWorker.menubar = self.menuBar
         initView()
         initLayout()
 
         updateConstraints()
         
-//        self.router!.checkIsLogin()             // If not login, will segue to LoginViewController
+        // self.router!.checkIsLogin()             // If not login, will segue to LoginViewController
 
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        if (self.router!.checkIsLogin()){
-            
-        }
-    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -134,17 +130,17 @@ class MainViewController: UIViewController, segueViewController {
         self.mainContextView.scrollToItem(at: index, at: .left, animated: true)
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-        switch(segue.identifier ?? ""){
-        case "ShowMissionDetail":
-            let missionDetailViewController = segue.destination as? MissionsDetailViewController
-            let selectedMission = sender as? MissionsData
-            missionDetailViewController?.mission = selectedMission
-        default: break
-            
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        super.prepare(for: segue, sender: sender)
+//        switch(segue.identifier ?? ""){
+//        case "ShowMissionDetail":
+//            let missionDetailViewController = segue.destination as? MissionsDetailViewController
+//            let selectedMission = sender as? MissionsData
+//            missionDetailViewController?.mission = selectedMission
+//        default: break
+//            
+//        }
+//    }
 }
 
 

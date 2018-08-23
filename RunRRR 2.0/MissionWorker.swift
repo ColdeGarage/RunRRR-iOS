@@ -18,16 +18,28 @@ class MissionWorker: NSObject, Worker, UITableViewDelegate, UITableViewDataSourc
     var completeMissionListTemp = [MissionsData]()
     var missionQueue: UITableView?
     
-    
-    let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
-    let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
+    private let refreshControl = UIRefreshControl()
     
     init (_ missionQueue: UITableView) {
+        super.init()
         self.missionQueue = missionQueue
+        
+        self.refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+        if #available(iOS 10.0, *){
+            self.missionQueue?.refreshControl = refreshControl
+        } else{
+            self.missionQueue?.addSubview(refreshControl)
+        }
+    }
+    
+    @objc func refreshData(){
+        self.loadMissions()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        UIApplication.shared.keyWindow?.rootViewController?.performSegue(withIdentifier: "ShowMissionDetail", sender: missionShowList[(indexPath.item)])
+        let missionDetailViewController = MissionsDetailViewController()
+        missionDetailViewController.mission = missionShowList[(indexPath.item)]
+        UIApplication.shared.keyWindow?.rootViewController?.present(missionDetailViewController, animated: true, completion: nil)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -97,17 +109,15 @@ class MissionWorker: NSObject, Worker, UITableViewDelegate, UITableViewDataSourc
     }
     
     func loadMissions() {
-        
+        let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+        let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
         self.missionShowListTemp.removeAll()
-        let missionReadParameter: [String:Any] = ["operator_uid":self.userID,"token":self.token]
+        let missionReadParameter: [String:Any] = ["operator_uid":userID,"token":token]
         Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/mission/read", parameters:missionReadParameter).responseJSON{ response in
-            print(missionReadParameter)
-            print(response)
             switch response.result{
             case .success(let value):
                 let missionsJson = JSON(value)
                 let missions = missionsJson["payload"]["objects"].arrayValue
-                
                 for mission in missions{
                     guard let mid = mission["mid"].intValue as Int?,
                         let title = mission["title"].stringValue as String?,
@@ -140,7 +150,9 @@ class MissionWorker: NSObject, Worker, UITableViewDelegate, UITableViewDataSourc
     }
     
     func checkMissionStatus(){
-        let reportReadParameter = ["operator_uid":self.userID,"token":self.token, "uid":self.userID] as [String : Any]
+        let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+        let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
+        let reportReadParameter = ["operator_uid":userID,"token":token, "uid":userID] as [String : Any]
         Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/report/read",parameters:reportReadParameter).responseJSON{ response in
             switch response.result{
                 
@@ -216,9 +228,9 @@ class MissionWorker: NSObject, Worker, UITableViewDelegate, UITableViewDataSourc
             self.missionShowList = self.missionShowListTemp
             self.missionQueue!.reloadData()
             
-//            if self.refreshControl.isRefreshing {
-//                self.refreshControl.endRefreshing()
-//            }
+            if self.refreshControl.isRefreshing {
+                self.refreshControl.endRefreshing()
+            }
         }
     }
 }

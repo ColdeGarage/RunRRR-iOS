@@ -14,14 +14,10 @@ import SwiftyJSON
 import SnapKit
 
 class MissionsDetailViewController: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    
-    //var imagePicker: UIImagePickerController!
     let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
     let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
     var mission : MissionsData?
     var missionReportImage2Show : UIImage?
-    //var missionReportImage: UIImageView?
-    //var missionImage: UIImageView?
 
     
     let cameraButton : UIButton = {
@@ -86,21 +82,14 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                         urlReport = "\(CONFIG.API_PREFIX.ROOT)/report/edit"
                         methodReport = Alamofire.HTTPMethod.put
                         reportImagePara = ["operator_uid":self!.userID,"token":self!.token,"rid" : self!.mission!.rid!, "image":imageBase64!]
-                        
-                        //print("fail")
                     }
                     else{  //未解任務
                         urlReport = "\(CONFIG.API_PREFIX.ROOT)/report/create"
                         methodReport = Alamofire.HTTPMethod.post
                         reportImagePara = ["operator_uid":self!.userID,"token":self!.token,"mid" : mid, "image":imageBase64!]
                     }
-                    
-                    
-//                    let reportImagePara : [String:Any] = ["operator_uid":self!.userID,"token":self!.token,"mid" : mid, "image":imageBase64!]
-                    
+
                     Alamofire.request(urlReport,method: methodReport, parameters:reportImagePara).validate().responseData{ response in
-                        //print("watch here")
-                        //print(response)
                         switch response.result{
                             
                         case .success( _):
@@ -108,7 +97,6 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
                             self?.missionReportImage2Show = image
                             self?.mission?.check = 1 //審核中
                             self?.setupMissionDetail()
-                        //print(photoUpdateInfo.description)
                         case .failure(let error):
                             print(error)
                         }
@@ -129,34 +117,7 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
             present(checkingAlert,animated: true)
         }
     }
-    
-    /*func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let chosenImage = info[UIImagePickerControllerOriginalImage] as! UIImage
-        
-        UIImageWriteToSavedPhotosAlbum(chosenImage, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
-        
-        missionReportImage?.image = chosenImage
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func image(_ image: UIImage, didFinishSavingWithError error: NSError?, contextInfo: UnsafeRawPointer) {
-        if let error = error {
-            // we got back an error!
-            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
-        } else {
-            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
-        }
-    }
-    */
-    
+
     @objc func dismissDetail(){
         self.dismiss(animated: false, completion: nil)
     }
@@ -346,45 +307,6 @@ class MissionsDetailViewController: UIViewController,UIImagePickerControllerDele
         view.addSubview(missionNameLabel)
         view.addSubview(missionContentTextView)
         view.addSubview(missionImage)
-        
-//        missionTopView.snp.makeConstraints{(make) in
-//            make.top.equalToSuperview().inset(20)
-//            make.height.equalTo(80)
-//            make.left.right.equalToSuperview()
-//        }
-//        
-//        missionPriorityLabel.snp.makeConstraints{(make) in
-//            make.top.equalToSuperview().inset(25)
-//            make.height.equalTo(70)
-//            make.left.equalToSuperview().inset(5)
-//            make.width.equalTo(70)
-//        }
-//        
-//        missionTimingLabel.snp.makeConstraints{(make) in
-//            make.top.equalToSuperview().inset(65)
-//            make.height.equalTo(30)
-//            make.left.equalTo(missionNameLabel.snp.right).offset(5)
-//            make.right.equalToSuperview().inset(5)
-//        }
-//        
-//        missionStatusImage.snp.makeConstraints{(make) in
-//            make.top.equalToSuperview().inset(70)
-//            make.height.equalTo(30)
-//            make.left.equalToSuperview().inset(50)
-//            make.width.equalTo(30)
-//        }
-//        
-//        missionNameLabel.snp.makeConstraints{(make) in
-//            make.top.equalToSuperview().inset(25)
-//            make.height.equalTo(70)
-//            make.left.equalTo(missionPriorityLabel.snp.right).offset(5)
-//            make.right.equalTo(missionTimingLabel.snp.left).offset(-5)
-//        }
-//        
-//        missionContentTextView.snp.makeConstraints{(make) in
-//            
-//        }
-        
         
         view.addConstraintWithFormat(format: "V:|-20-[v0(80)]", views: missionTopView)
         view.addConstraintWithFormat(format: "V:|-25-[v0(70)]", views: missionPriorityLabel)

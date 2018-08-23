@@ -41,8 +41,7 @@ class ItemDetailView: NSObject{
             detailWindow.itemNameLabel.text = itemToDisplay.name
             detailWindow.itemContentTextView.text = itemToDisplay.content
             detailWindow.itemCountLabel.text = self.itemCount.description
-            //detailWindow.itemCountLabel.text = String(self.bag[indexPath.item-1].count)
-            
+
             detailWindow.itemUseButton.addTarget(self, action: #selector(useItem), for: .touchUpInside)
             detailWindow.itemCancelButton.addTarget(self, action: #selector(dismissDetail), for: .touchUpInside)
             window.addSubview(detailWindow)
@@ -73,7 +72,6 @@ class ItemDetailView: NSObject{
         let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
         
         let paraForDelete : Parameters = ["operator_uid":UID, "token":token, "pid":(self.item?.pid)!]
-        print(paraForDelete.description)
         Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/pack/delete", method: HTTPMethod.delete, parameters: paraForDelete, encoding: URLEncoding.httpBody).responseJSON{ response in
             
             switch(response.result){

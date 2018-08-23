@@ -40,7 +40,6 @@ class MoreContextView: ContextView {
     }
     
     override func viewWillBeDisplayed() {
-        print(moreMenuTableView)
         moreMenuTableView.reloadData()
     }
 }

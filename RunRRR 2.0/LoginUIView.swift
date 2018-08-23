@@ -12,7 +12,12 @@ import SnapKit
 class LoginUIView: UIView {
     var loginViewDelegate: LoginViewDelegate?
     
-    let RunRRRLogoView = UIImageView()
+    let RunRRRLogoView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(named: "ic_login")
+        iv.contentMode = .scaleAspectFit
+        return iv
+    }()
     
     let userEmailTextField: UITextField = {
         let userEmailTextField = UITextField()
@@ -46,6 +51,13 @@ class LoginUIView: UIView {
         return cb
     }()
     
+    let showPasswordLabel: UILabel = {
+        let label = UILabel()
+        label.text = "顯示密碼"
+        label.textColor = UIColor(hexString: "#282828")
+        return label
+    }()
+    
     let loginButton: UIButton = {
         let loginButton = UIButton(type: .system)
         loginButton.backgroundColor = UIColor.black
@@ -66,12 +78,13 @@ class LoginUIView: UIView {
         self.addSubview(userPwdTextField)
         self.addSubview(loginButton)
         self.addSubview(showPasswordCheckBox)
+        self.addSubview(showPasswordLabel)
         
         RunRRRLogoView.snp.makeConstraints{ make in
             make.centerX.equalTo(self)
-            make.height.equalTo(self.snp.height).multipliedBy(0.5)
+            make.height.equalTo(self.snp.height).multipliedBy(0.4)
             make.width.equalTo(self.snp.width)
-            make.top.equalTo(self)
+            make.top.equalTo(self).offset(20)
         }
         
         userEmailTextField.snp.makeConstraints{ make in
@@ -99,6 +112,13 @@ class LoginUIView: UIView {
             make.top.equalTo(userPwdTextField.snp.bottom).offset(10)
             make.height.equalTo(24)
             make.width.equalTo(24)
+        }
+        
+        showPasswordLabel.snp.makeConstraints{(make) in
+            make.left.equalTo(showPasswordCheckBox.snp.right).offset(5)
+            make.top.equalTo(showPasswordCheckBox)
+            make.height.equalTo(showPasswordCheckBox)
+            make.width.equalTo(userPwdTextField)
         }
     }
     

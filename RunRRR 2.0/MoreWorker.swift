@@ -68,7 +68,6 @@ class MoreWorker: NSObject, Worker, UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         selectedIndexPath = indexPath
-        print(indexPath.description)
         tableView.reloadData()
     }
     

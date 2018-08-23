@@ -12,16 +12,26 @@ import SnapKit
 import SwiftyJSON
 
 class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
-    let UID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
-    let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
     var packs = [Pack]()
     var bag = [[Item]]()
     var memberMoney: Int?
     var bagCollectionView: UICollectionView?
     
-    private let reuseIdentifier = "BagItemCell"
+    init(_ bagCollectionView: UICollectionView) {
+        super.init()
+        self.bagCollectionView = bagCollectionView
+        if #available(iOS 10.0, *) {
+            self.bagCollectionView?.refreshControl = refreshControl
+        } else{
+            self.bagCollectionView?.addSubview(refreshControl)
+        }
+        self.refreshControl.addTarget(self, action: #selector(refreshData), for: .valueChanged)
+    }
     
-    func refreshData(){
+    private let reuseIdentifier = "BagItemCell"
+    private let refreshControl = UIRefreshControl()
+    
+    @objc func refreshData(){
         fetchMoney()
         fetchPacks()
     }
@@ -33,7 +43,6 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! BagItemCell
-        print("number : ",indexPath)
         // Configure the cell
         if(indexPath.item == 0){  // the first block displays money
             cell.itemImage.image = UIImage(named: "money")
@@ -109,7 +118,6 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
                     return
                 }
                 self.memberMoney = money
-                print("Money : ",self.memberMoney!)
                 self.bagCollectionView?.reloadData()
             case .failure:
                 print("error")
@@ -133,10 +141,16 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
             
             switch response.result{
             case .success(let value):
-                
                 //Parse the "packs" into array
                 let packJSON = JSON(value)
+                if (packJSON["payload"]["objects"] == nil) {
+                    self.bagCollectionView?.reloadData()
+                    self.refreshControl.endRefreshing()
+                    return
+                }
                 guard let packsArray = packJSON["payload"]["objects"].arrayValue as Array? else{
+                    self.bagCollectionView?.reloadData()
+                    self.refreshControl.endRefreshing()
                     return
                 }
                 
@@ -155,17 +169,15 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
                     self.packTemp += [pack]
                     //                    self.packs += [pack]
                 }
+                self.packs = self.packTemp
+                self.fetchItem()
                 
             case .failure:
                 print("error")
+                self.bagCollectionView?.reloadData()
+                self.refreshControl.endRefreshing()
+                return
             }
-            print("fetchItem")
-            self.packs = self.packTemp
-            self.fetchItem()
-            //            self.packs.sort(by: {($0.itemClass?.hashValue)! > ($1.itemClass?.hashValue)!})
-            //            for i in self.packs{
-            //                print(i.itemClass.debugDescription)
-            //            }
         }
     }
     private func fetchItem(){
@@ -175,12 +187,13 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
             if(itemToFetch.itemClass == .tool){
                 let toolsParameter : Parameters = ["operator_uid":UID,"token":token, "tid":itemToFetch.id as Any]
                 Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/tool/read", parameters:toolsParameter).responseJSON{ response in
-                    print(response)
                     switch(response.result){
                     case .success(let value):
                         let toolsJSON = JSON(value)
                         guard let toolsArray = toolsJSON["payload"]["objects"].arrayValue as Array?
                             else{
+                                self.bagCollectionView?.reloadData()
+                                self.refreshControl.endRefreshing()
                                 return
                         }
                         let tool : Item = {
@@ -195,9 +208,8 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
                             item.name = toolsArray[0]["title"].stringValue
                             return item
                         }()
-                        //                        print(tool)
+
                         self.putIntoBag(tool)
-                        //                        self.items += [tool]
                         
                     case .failure:
                         print("error")
@@ -213,6 +225,8 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
                         let cluesJSON = JSON(value)
                         guard let clueArray = cluesJSON["payload"]["objects"].arrayValue as Array?
                             else{
+                                self.bagCollectionView?.reloadData()
+                                self.refreshControl.endRefreshing()
                                 return
                         }
                         let clue : Item = {
@@ -234,9 +248,6 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
                 }
             }
         }
-        //self.bag = self.bagTemp
-        //self.collectionView?.reloadData()
-        //self.refreshControl.endRefreshing()
     }
     
     private func putIntoBag(_ itemPutInto: Item){
@@ -282,7 +293,7 @@ class BagWorker: NSObject, Worker, UICollectionViewDataSource, UICollectionViewD
             }
             self.bag = self.bagTemp
             self.bagCollectionView?.reloadData()
-//            self.refreshControl.endRefreshing()
+            self.refreshControl.endRefreshing()
         }
     }
 }

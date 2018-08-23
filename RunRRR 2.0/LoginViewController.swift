@@ -56,6 +56,7 @@ class LoginViewController: UIViewController, LoginViewDelegate {
             switch (result){
             case .succeed:
                 print("Login Successfully")
+                self.endLoginAndStartMainController()
                 self.dismiss(animated: false, completion: nil)
             case .emptyPwd:
                 print("Password is Empty!")
@@ -72,6 +73,12 @@ class LoginViewController: UIViewController, LoginViewDelegate {
             }
         })
         print("Login Button Tapped")
+    }
+    
+    private func endLoginAndStartMainController() {
+        let mainVC = MainViewController()
+        UIApplication.shared.keyWindow?.rootViewController = mainVC
+        self.present(mainVC, animated: true, completion: nil)
     }
 }
 
