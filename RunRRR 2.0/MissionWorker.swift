@@ -20,9 +20,6 @@ class MissionWorker: NSObject, Worker, UITableViewDelegate, UITableViewDataSourc
     
     private let refreshControl = UIRefreshControl()
     
-    let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
-    let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
-    
     init (_ missionQueue: UITableView) {
         super.init()
         self.missionQueue = missionQueue
@@ -112,9 +109,10 @@ class MissionWorker: NSObject, Worker, UITableViewDelegate, UITableViewDataSourc
     }
     
     func loadMissions() {
-        
+        let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+        let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
         self.missionShowListTemp.removeAll()
-        let missionReadParameter: [String:Any] = ["operator_uid":self.userID,"token":self.token]
+        let missionReadParameter: [String:Any] = ["operator_uid":userID,"token":token]
         Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/mission/read", parameters:missionReadParameter).responseJSON{ response in
             switch response.result{
             case .success(let value):
@@ -152,7 +150,9 @@ class MissionWorker: NSObject, Worker, UITableViewDelegate, UITableViewDataSourc
     }
     
     func checkMissionStatus(){
-        let reportReadParameter = ["operator_uid":self.userID,"token":self.token, "uid":self.userID] as [String : Any]
+        let userID = UserDefaults.standard.integer(forKey: "RunRRR_UID")
+        let token = UserDefaults.standard.string(forKey: "RunRRR_Token")!
+        let reportReadParameter = ["operator_uid":userID,"token":token, "uid":userID] as [String : Any]
         Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/report/read",parameters:reportReadParameter).responseJSON{ response in
             switch response.result{
                 

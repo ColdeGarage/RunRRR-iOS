@@ -21,6 +21,7 @@ class MainContextWorker: NSObject, Worker, UICollectionViewDelegate, UICollectio
         ]
         return cvs
     }()
+    var menubar: ScrollOutput?
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 4
@@ -31,7 +32,12 @@ class MainContextWorker: NSObject, Worker, UICollectionViewDelegate, UICollectio
         cell.mainView = self.contextViews[contextViewName[indexPath.item]]!
         return cell
     }
-    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        print(targetContentOffset.pointee.x / scrollView.frame.width)
+        let index = targetContentOffset.pointee.x / scrollView.frame.width
+        let indexPath = NSIndexPath(item: Int(index), section: 0)
+        menubar?.scrollTo(indexPath as IndexPath)
+    }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
     }
@@ -88,3 +94,8 @@ class MainContextViewCell: UICollectionViewCell {
         mv.viewWillBeDisplayed()
     }
 }
+
+protocol ScrollOutput {
+    func scrollTo(_ contentViewIndex: IndexPath)
+}
+

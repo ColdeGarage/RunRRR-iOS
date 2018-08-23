@@ -122,7 +122,6 @@ class DieTableViewCell: UITableViewCell {
         let hunterPW = self.hunterPWTextField.text!
         let pmForDie : Parameters = ["operator_uid":hunterID, "token":hunterPW, "uid":UID, "status":1]
         Alamofire.request("\(CONFIG.API_PREFIX.ROOT)/member/liveordie", method: .put, parameters: pmForDie).responseJSON{ response in
-            print(response)
             switch(response.result){
                 
             case .success(let value):
